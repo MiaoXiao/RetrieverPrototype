@@ -1,32 +1,43 @@
 #ifndef FIGMENT_H
 #define FIGMENT_H
 
-#include "Enemy.h"
+#include "Character.h"
 
 #include <map>
 #include <string>
 
-//Every normal/evolved figment in-game
+//every enemy in game
 class Figment: public Character
 {
 	public:	
-		//CONSTRUCTOR: creates normal figment based on type, difficulty
-		Figment(int type, int difficulty);
-		//CONSTRUCTOR: creates evolved figment based on type, difficulty
-		Figment(int type, int difficulty, int numbperks);
-		
+		//CONSTRUCTOR: creates figment based on type, level, area, number of perks
+		Figment(int type, unsigned int l, unsigned int a, unsigned int np):
+			level(l),
+			area(a),
+			numbPerks(np)
+		{
+			set_Name(chooseType(type));
+			assign_Stats();
+		}
+
 		//assign starting stats
 		void assign_Stats();
-		
-		//ai management
 	private:
+		//difficulty of figment
+		unsigned int level;
+		//area value where figment is
+		unsigned int area;
+		//numb of perks
+		unsigned int numbPerks;
 		//number of abilities
-		int numbAbilities;
-		
-		//damage multiplier
-		float swingX;
+		unsigned int numbAbilities;
+
 		//health multiplier
 		float healthX;
+		//energy multiplier
+		float energyX;
+		//damage multiplier
+		float swingX;
 		//haste multiplier
 		float hasteX;
 		//resistance multiplier

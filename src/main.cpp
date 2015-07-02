@@ -1,20 +1,14 @@
 #include <iostream>
 
-#include "Character.h"
-//#include "Player.h"
-//#include "Tylor.h"
-//#include "Liza.h"
+#include "Player.h"
+#include "Figment.h"
 
 using namespace std;
 
 int main() 
 {
-	Character character;
-	//Player player;
-	//Tylor tylor;
-	//Liza liza;
-	
-	cout << character.get_MaxHealth() << endl;
-	//cout << tylor.get_MaxHealth() << endl;
-	//cout << liza.get_MaxHealth() << endl;
+	Player p1("Tylor");
+	Player p2("Liza");
+	Figment f1(0, 1, 0, 0);
+	f1.showall_Stats();
 }

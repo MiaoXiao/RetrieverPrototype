@@ -1,6 +1,8 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
+#include "Entity.h"
+
 #include <string>
 #include <vector>
 
@@ -71,57 +73,59 @@ struct Status
 };
 
 //Any entity with skills, abilities, and stats
-class Character
+class Character: public Entity
 {
 	public:		
 		//assign starting stats for a character
-		void assign_Stats(int mh, int me, int h, int s, int r, int e, int i);
+		virtual void assign_Stats() = 0;
 		
 		//get max health
-		int get_MaxHealth();
+		int get_MaxHealth() const;
 		//set max health
-		void set_MaxHealth(int v);
+		void set_MaxHealth(const int v);
 		
 		//get current health
-		int get_CurrHealth();
+		int get_CurrHealth() const;
 		//set current health
-		void set_CurrHealth(int v);
+		void set_CurrHealth(const int v);
 
 		//get max energy
-		int get_MaxEnergy();
+		int get_MaxEnergy() const;
 		//set max energy
-		void set_MaxEnergy(int v);
+		void set_MaxEnergy(const int v);
 	
 		//get current energy
-		int get_CurrEnergy();
+		int get_CurrEnergy() const;
 		//set current energy
-		void set_CurrEnergy(int v);
+		void set_CurrEnergy(const int v);
 
 		//get haste
-		int get_Haste();
+		int get_Haste() const;
 		//set haste
-		void set_Haste(int v);
+		void set_Haste(const int v);
 
 		//get swing (damage)
-		int get_Swing();
+		int get_Swing() const;
 		//set swing (damage)
-		void set_Swing(int v);
+		void set_Swing(const int v);
 
 		//get resistance
-		int get_Resistance();
+		int get_Resistance() const;
 		//set resistance
-		void set_Resistance(int v);
+		void set_Resistance(const int v);
 		
 		//get evasiveness
-		int get_Evasiveness();
+		int get_Evasiveness() const;
 		//set evasiveness
-		void set_Evasiveness(int v);
+		void set_Evasiveness(const int v);
 		
 		//get intelligence
-		int get_Intelligence();
+		int get_Intelligence() const;
 		//set intelligence
-		void set_Intelligence(int v);
-		
+		void set_Intelligence(const int v);
+
+		//DEBUG: show all stats currently
+		void showall_Stats() const;
 	protected:
 		//combat stats
 		Stats stats;

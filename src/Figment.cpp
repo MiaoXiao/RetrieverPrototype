@@ -3,50 +3,61 @@
 #include <stdlib.h>
 #include <time.h> 
 
-//CONSTRUCTOR: creates normal figment based on type, difficulty
-Figment::Figment(int type, int difficulty)
-{
-	chooseType(type);
-}
-//CONSTRUCTOR: creates evolved figment based on type, difficulty
-Figment::Figment(int type, int difficulty, int numbperks)
-{
-	chooseType(type);
-}
+using namespace std;
 
 //assign starting stats based on parameters
 void Figment::assign_Stats()
 {
+	//base values for level 1 figments
+	int startMh = 20;
+	int startMe = 10;
+	int startH = 15;
+	int startS = 7;
+	int startR = 1;
+	int startE = 10;
 
+	//FIX ME: levels currently have no effect
+	stats.maxhealth = startMh + (startMh * healthX);
+	stats.currhealth = stats.maxhealth;
+	stats.maxenergy = startMe + (startMe * energyX);
+	stats.currenergy = stats.maxenergy;
+	stats.haste = startH + (startH * hasteX);
+	stats.swing = startS + (startS * swingX);
+	stats.resistance = startR + (startR * resistanceX);
+	if (name == "Tank") stats.evasiveness == 0;
+	else stats.evasiveness = startE + (startE * evasivenessX);
 }
 
 //changes attribute multipliers of figment based on type. return figment type
-std::string Figment::chooseType(int t)
+string Figment::chooseType(int t)
 {
 	switch (t)
 	{
 		//hatchlings
 		case 0:
-			swingX = -0.25;
 			healthX = -0.25;
-			hasteX = 1.0;
-			resistanceX = 1.0;
-			evasivenessX = 1.0;
+			energyX = 0.0;
+			swingX = -0.25;
+			hasteX = 0.0;
+			resistanceX = 0.0;
+			evasivenessX = 0.0;
 			return "Hatchling";
 			break;
 		//normals
 		case 1:
-			swingX = 1.0;
-			healthX = 1.0;
-			hasteX = 1.0;
-			resistanceX = 1.0;
-			evasivenessX = 1.0;
+			healthX = 0.0;
+			energyX = 0.0;
+			swingX = 0.0;
+			hasteX = 0.0;
+			resistanceX = 0.0;
+			evasivenessX = 0.0;
 			return "Normal";
 			break;
 		//tanks
 		case 2:
-			swingX = 1.0;
 			healthX = 2.0;
+			energyX = 0.0;
+			swingX = 0.0;
 			hasteX = 0.5;
 			resistanceX = 1.5;
 			evasivenessX = 0.0;
@@ -54,8 +65,9 @@ std::string Figment::chooseType(int t)
 			break;
 		//swarms
 		case 3:
+			healthX = 1.0;
+			energyX = 1.0;
 			swingX = -0.25;
-			healthX = 1.00;
 			hasteX = 2.0;
 			resistanceX = 1.0;
 			evasivenessX = 2.0;
@@ -63,8 +75,9 @@ std::string Figment::chooseType(int t)
 			break;
 		//glassers
 		case 4:
-			swingX = 1.5;
 			healthX = -0.5;
+			energyX = 1.0;
+			swingX = 1.5;
 			hasteX = 1.0;
 			resistanceX = 1.0;
 			evasivenessX = 1.0;
