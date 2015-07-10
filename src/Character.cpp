@@ -1,65 +1,43 @@
 #include "Character.h"
 
 #include <iostream>
+#include <stdlib.h>
+#include <time.h>
 
 using namespace std;
 
-//get max health
-int Character::get_MaxHealth() const {return stats.maxhealth;}
-//set max health
-void Character::set_MaxHealth(const int v) {stats.maxhealth = v;}
+//inflict swing damage on target. damage is within range of swing
+int Character::inflict_Swing()
+{
+	int range = 3;
+	return generateRandomNumber(-range, range) + stats.get_Swing();
+}
 
-//get current health
-int Character::get_CurrHealth() const {return stats.currhealth;}
-//set current health
-void Character::set_CurrHealth(const int v) {stats.currhealth = v;}
+//inflict ability 
+void Character::inflict_Ability()
+{
 
-//get max energy
-int Character::get_MaxEnergy() const {return stats.maxenergy;}
-//set max energy
-void Character::set_MaxEnergy(const int v) {stats.maxenergy = v;}
+}
 
-//get current energy
-int Character::get_CurrEnergy() const {return stats.currenergy;}
-//set current energy
-void Character::set_CurrEnergy(const int v) {stats.currenergy = v;}
 
-//get haste
-int Character::get_Haste() const {return stats.haste;}
-//set haste
-void Character::set_Haste(const int v) {stats.haste = v;}
-
-//get swing (damage)
-int Character::get_Swing() const {return stats.swing;}
-//set swing (damage)
-void Character::set_Swing(const int v) {stats.swing = v;}
-
-//get resistance
-int Character::get_Resistance() const {return stats.resistance;}
-//set resistance
-void Character::set_Resistance(const int v) {stats.resistance = v;}
-
-//get evasiveness
-int Character::get_Evasiveness() const {return stats.evasiveness;}
-//set evasiveness
-void Character::set_Evasiveness(const int v) {stats.evasiveness = v;}
-
-//get intelligence
-int Character::get_Intelligence() const {return stats.intelligence;}
-//set intelligence
-void Character::set_Intelligence(const int v) {stats.intelligence = v;}
+//HELPER FUNCTION: return random number between lower bound and higher bound
+int Character::generateRandomNumber(int lb, int hb)
+{
+        //seed
+        srand(time(0));
+        return rand() % hb + lb;
+}
 
 //DEBUG: show all stats
 void Character::showall_Stats() const
 {
-	cout << "Max Health: " << stats.maxhealth << endl;
-	cout << "Current Health: " << stats.currhealth << endl;
-	cout << "Max Energy: " << stats.maxenergy << endl;
-	cout << "Current Energy: " << stats.currenergy << endl;
-	cout << "Haste: " << stats.haste << endl;
-	cout << "Swing: " << stats.swing << endl;
-	cout << "Resistance: " << stats.resistance << endl;
-	cout << "Evasiveness: " << stats.evasiveness << endl;
+	cout << "Max Health: " << stats.get_MaxHealth() << endl;
+	cout << "Current Health: " << stats.get_CurrHealth() << endl;
+	cout << "Max Energy: " << stats.get_MaxEnergy() << endl;
+	cout << "Current Energy: " << stats.get_CurrEnergy() << endl;
+	cout << "Haste: " << stats.get_Haste() << endl;
+	cout << "Swing: " << stats.get_Swing() << endl;
+	cout << "Resistance: " << stats.get_Resistance() << endl;
+	cout << "Evasiveness: " << stats.get_Evasiveness() << endl;
 	//FIX ME: does not show intelligence yet
 }
-

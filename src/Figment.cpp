@@ -1,8 +1,5 @@
 #include "Figment.h"
 
-#include <stdlib.h>
-#include <time.h> 
-
 using namespace std;
 
 //assign starting stats based on parameters
@@ -28,7 +25,13 @@ void Figment::assign_Stats()
 	else stats.evasiveness = startE + (startE * evasivenessX);
 }
 
-//changes attribute multipliers of figment based on type. return figment type
+//decide whether to use attack or ability, and on who
+void Figment::combatDecision()
+{
+
+}
+
+//HELPER FUNCTION: changes attribute multipliers of figment based on type. return figment type
 string Figment::chooseType(int t)
 {
 	switch (t)

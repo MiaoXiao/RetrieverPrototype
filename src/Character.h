@@ -27,6 +27,52 @@ struct Stats
 	int evasiveness;
 	//how smart the ai of entity is
 	int intelligence;
+
+
+	//get max health
+	int get_MaxHealth() const {return maxhealth;}
+	//set max health
+	void set_MaxHealth(const int v) {maxhealth = v;}
+	
+	//get current health
+	int get_CurrHealth() const {return currhealth;}
+	//set current health
+	void set_CurrHealth(const int v) {currhealth = v;}
+
+	//get max energy
+	int get_MaxEnergy() const {return maxenergy;}
+	//set max energy
+	void set_MaxEnergy(const int v) {maxenergy = v;}
+
+	//get current energy
+	int get_CurrEnergy() const {return currenergy;}
+	//set current energy
+	void set_CurrEnergy(const int v) {currenergy = v;}
+
+	//get haste
+	int get_Haste() const {return haste;}
+	//set haste
+	void set_Haste(const int v) {haste = v;}
+
+	//get swing (damage)
+	int get_Swing() const {return swing;}
+	//set swing (damage)
+	void set_Swing(const int v) {swing = v;}
+
+	//get resistance
+	int get_Resistance() const {return resistance;}
+	//set resistance
+	void set_Resistance(const int v) {resistance = v;}
+	
+	//get evasiveness
+	int get_Evasiveness() const {return evasiveness;}
+	//set evasiveness
+	void set_Evasiveness(const int v) {evasiveness = v;}
+	
+	//get intelligence
+	int get_Intelligence() const {return intelligence;}
+	//set intelligence
+	void set_Intelligence(const int v) {intelligence = v;}
 };
 
 //manages abilities of a character
@@ -76,63 +122,29 @@ struct Status
 class Character: public Entity
 {
 	public:		
-		//assign starting stats for a character
-		virtual void assign_Stats() = 0;
-		
-		//get max health
-		int get_MaxHealth() const;
-		//set max health
-		void set_MaxHealth(const int v);
-		
-		//get current health
-		int get_CurrHealth() const;
-		//set current health
-		void set_CurrHealth(const int v);
-
-		//get max energy
-		int get_MaxEnergy() const;
-		//set max energy
-		void set_MaxEnergy(const int v);
-	
-		//get current energy
-		int get_CurrEnergy() const;
-		//set current energy
-		void set_CurrEnergy(const int v);
-
-		//get haste
-		virtual int get_Haste() const;
-		//set haste
-		void set_Haste(const int v);
-
-		//get swing (damage)
-		int get_Swing() const;
-		//set swing (damage)
-		void set_Swing(const int v);
-
-		//get resistance
-		int get_Resistance() const;
-		//set resistance
-		void set_Resistance(const int v);
-		
-		//get evasiveness
-		int get_Evasiveness() const;
-		//set evasiveness
-		void set_Evasiveness(const int v);
-		
-		//get intelligence
-		int get_Intelligence() const;
-		//set intelligence
-		void set_Intelligence(const int v);
-
-		//DEBUG: show all stats currently
-		void showall_Stats() const;
-	protected:
 		//combat stats
 		Stats stats;
 		//combat abilities
 		Abilities abilities;
 		//current status
 		Status status;
+
+		//inflict swing damage
+		int inflict_Swing();
+
+		//inflict ability
+		void inflict_Ability();	
+		
+		//HELPER FUNCTION: return random number between lb and hb
+		int generateRandomNumber(int lb, int hb);
+
+		//DEBUG: show all stats currently
+		void showall_Stats() const;
+	protected:
+		//assign starting stats for a character
+		virtual void assign_Stats() = 0;
+
+
 };
 
 #endif

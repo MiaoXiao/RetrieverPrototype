@@ -16,12 +16,17 @@ class Figment: public Character
 			area(a),
 			numbPerks(np)
 		{
+			//set name
 			set_Name(chooseType(type));
+			//assign starting stats
 			assign_Stats();
 		}
 
 		//assign starting stats
 		void assign_Stats();
+
+		//decide to use attack or ability, and on which target
+		void combatDecision();
 	private:
 		//difficulty of figment
 		unsigned int level;
