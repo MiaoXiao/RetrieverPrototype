@@ -100,7 +100,7 @@ class Character: public Entity
 		void set_CurrEnergy(const int v);
 
 		//get haste
-		int get_Haste() const;
+		virtual int get_Haste() const;
 		//set haste
 		void set_Haste(const int v);
 
