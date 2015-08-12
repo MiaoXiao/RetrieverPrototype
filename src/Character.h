@@ -122,6 +122,9 @@ struct Status
 class Character: public Entity
 {
 	public:		
+		//set to true if player, set to false if enemy
+		bool isPlayer;
+
 		//combat stats
 		Stats stats;
 		//combat abilities
@@ -129,12 +132,9 @@ class Character: public Entity
 		//current status
 		Status status;
 
-		//inflict swing damage
-		int inflict_Swing();
+		//combat decision
+		void combatDecision();		
 
-		//inflict ability
-		void inflict_Ability();	
-		
 		//HELPER FUNCTION: return random number between lb and hb
 		int generateRandomNumber(int lb, int hb);
 
@@ -144,6 +144,11 @@ class Character: public Entity
 		//assign starting stats for a character
 		virtual void assign_Stats() = 0;
 
+		//inflict swing damage
+		int inflict_Swing();
+
+		//inflict ability
+		void inflict_Ability();	
 
 };
 

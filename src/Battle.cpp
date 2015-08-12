@@ -7,9 +7,12 @@
 using namespace std;
 
 //start battle
-bool start_Battle()
+bool Battle::start_Battle()
 {
-	
+	for (multimap<int, Character*>::iterator it = battlelog.begin(); it != battlelog.end(); ++it)
+	{
+		(*it).second->combatDecision();	
+	}
 }
 
 //assign battle log

@@ -11,11 +11,13 @@ class Figment: public Character
 {
 	public:	
 		//CONSTRUCTOR: creates figment based on type, level, area, number of perks
-		Figment(int type, unsigned int l, unsigned int a, unsigned int np):
+		Figment(const int type, const unsigned int l, const unsigned int a, const unsigned int np):
 			level(l),
 			area(a),
 			numbPerks(np)
 		{
+			//set player flag to false
+			isPlayer = false;	
 			//set name
 			set_Name(chooseType(type));
 			//assign starting stats
@@ -25,8 +27,6 @@ class Figment: public Character
 		//assign starting stats
 		void assign_Stats();
 
-		//decide to use attack or ability, and on which target
-		void combatDecision();
 	private:
 		//difficulty of figment
 		unsigned int level;

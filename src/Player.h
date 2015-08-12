@@ -19,6 +19,7 @@ class Player: public Character
 			digits(0),
 			fullParty(false)
 		{
+			isPlayer = true;
 			set_Name(n);
 			assign_Stats();
 		}
