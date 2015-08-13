@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <time.h>
+#include <stdlib.h>
 
 #include "Player.h"
 #include "Figment.h"
@@ -9,6 +11,8 @@ using namespace std;
 
 int main() 
 {
+	srand(time(0));	
+
 	vector<Figment> figmentlist;
 
 	Player player;
@@ -16,7 +20,7 @@ int main()
 	Player liza("Liza");
 
 	Figment f1(0, 1, 0, 0);
-	f1.showall_Stats();
+	//f1.showall_Stats();
 	
 	figmentlist.push_back(f1);	
 

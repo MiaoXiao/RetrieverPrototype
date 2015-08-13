@@ -9,6 +9,7 @@ using namespace std;
 //start battle
 bool Battle::start_Battle()
 {
+	assign_BattleLog();
 	for (multimap<int, Character*>::iterator it = battlelog.begin(); it != battlelog.end(); ++it)
 	{
 		(*it).second->combatDecision();	
@@ -16,7 +17,7 @@ bool Battle::start_Battle()
 }
 
 //assign battle log
-void Battle::assign_BattleLog(Player p1, Player p2, vector<Figment> figmentlist)
+void Battle::assign_BattleLog()
 {
 	//add tylor and liza to battlelog 
 	Character* tylor = &p1;

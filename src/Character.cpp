@@ -9,7 +9,8 @@ using namespace std;
 //make decision in combat
 void Character::combatDecision() 
 {
-	cout << "combat decision" << endl;
+	cout << "rand numb: " << generateRandomNumber(0, 40) << endl;
+	//cout << "combat decision" << endl;
 	if (isPlayer) 
 	{
 		cout << "player turn" << endl;
@@ -25,7 +26,7 @@ void Character::combatDecision()
 int Character::generateRandomNumber(int lb, int hb)
 {
         //seed
-        srand(time(0));
+        //srand(time(NULL));
         return rand() % hb + lb;
 }
 
