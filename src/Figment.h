@@ -12,10 +12,11 @@ class Figment: public Character
 	public:	
 		//CONSTRUCTOR: creates figment based on type, level, area, number of perks
 		Figment(const int type, const unsigned int l, const unsigned int a, const unsigned int np):
-			level(l),
 			area(a),
 			numbPerks(np)
 		{
+			//set level
+			level.level = l;
 			//set player flag to false
 			isPlayer = false;
 			//character is alive at start
@@ -24,11 +25,12 @@ class Figment: public Character
 			set_Name(chooseType(type));
 			//assign starting stats
 			assign_Stats();
+			
+			//exp gained is level times 10
+			level.experience = l * 10;
 		}
 
 	private:
-		//difficulty of figment
-		unsigned int level;
 		//area value where figment is
 		unsigned int area;
 		//numb of perks

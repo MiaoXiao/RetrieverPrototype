@@ -46,7 +46,7 @@ void Battle::assign_BattleLog()
 	for (unsigned int i = 0; i < figmentlist.size(); ++i)
 	{
 		Character* figment = &figmentlist[i];
-		battlelog.insert(pair<int, Character*>(100 - figment->stats.get_Haste(), figment));
+		battlelog.insert(pair<int, Character*>(Globals::STAT_CAP - figment->stats.get_Haste(), figment));
 	}	
 }
 
@@ -65,11 +65,11 @@ void Battle::combatDecision(Character* c)
 	//decide if player or enemy turn
 	if (c->isPlayer)
 	{
+		//prompt choice
 		do
 		{
 			badInput = false;
 			
-			//prompt ability
 			cout << "0 to attack, 1 to use ability, 2 to defend, 3 to use item, 4 to run" << endl;
 			cin >> choice;
 			if (choice < 0 && choice > 4)
@@ -83,6 +83,7 @@ void Battle::combatDecision(Character* c)
 		//target selector if swing or ability and battling more than 1 figment
 		if ((choice == Swing || choice == Ability) && figmentlist.size() > 1)
 		{
+			//prompt choose target
 			do
 			{
 				cout << "Choose target between 0 and " << figmentlist.size() - 1 << endl;
@@ -100,8 +101,12 @@ void Battle::combatDecision(Character* c)
 		switch (choice)
 		{
 			case Swing:
-				cout << figmentlist[target].get_Name() << " takes " << c->inflict_Damage() << " damage!" << endl;
-				figmentlist[target].take_Damage(c->inflict_Damage());
+			{
+				//calculate damage
+				int d = c->inflict_Damage();
+			
+				cout << figmentlist[target].get_Name() << " takes " << d << " damage!" << endl;
+				figmentlist[target].take_Damage(d);
 				
 				//remove target from battlelog and figmentlist if destroyed
 				if (!figmentlist[target].isAlive)
@@ -110,7 +115,7 @@ void Battle::combatDecision(Character* c)
 					cout << figmentlist[target].get_Name() << " is defeated!" << endl;
 					figmentlist.erase(figmentlist.begin()+target);
 				}
-				
+			}
 				break;
 			case Ability:
 				break;
@@ -130,11 +135,13 @@ void Battle::combatDecision(Character* c)
 	}
 }
 
-
 //add loot to player
 //exp to tylor, exp to liza, digits
 void Battle::add_Loot(const unsigned int expT, const unsigned int expL, const unsigned int digits)
 {
-
+	if (p1->isAlive)
+	{
+		
+	}
 }
 

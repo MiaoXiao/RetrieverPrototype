@@ -2,6 +2,7 @@
 #define CHARACTER_H
 
 #include "Entity.h"
+#include "Globals.h"
 
 #include <string>
 #include <vector>
@@ -125,6 +126,32 @@ struct Status
 	}
 };
 
+//manages leveling
+struct Level
+{
+	//current combat level
+	int level = 0;
+	//amount of exp gained upon death, or current amount of exp
+	int experience = 0;
+	
+	//get level
+	int get_Level() const {return level;}
+	//set level
+	void set_Level(const int v) {level = v;}
+
+	//get experience
+	int get_Experience() const {return experience;}
+	//set experience
+	void set_Experience(const int v) {experience = v;}
+
+	//returns true if leveled up, given exp
+	bool checkLevelUp(int e)
+	{
+		if (e + experience >= Globals::LEVELRANGE[level]) return true;
+		return false;
+	}
+};
+
 //Any entity with skills, abilities, and stats
 class Character: public Entity
 {
@@ -141,7 +168,10 @@ class Character: public Entity
 		Abilities abilities;
 		//current status
 		Status status;
-	
+		//current level
+		Level level;
+		
+		
 		//inflict damage
 		int inflict_Damage();
 
