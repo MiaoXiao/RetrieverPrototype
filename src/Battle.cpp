@@ -19,7 +19,7 @@ bool Battle::start_Battle()
 		
 		//battle is finished if no figments left in battle, or both tylor and liza are wiped out
 		if (figmentlist.empty()) return true;
-		else if (p1.isAlive == false && p2.isAlive == false) return false;
+		else if (p1->isAlive == false && p2->isAlive == false) return false;
 	}
 }
 
@@ -30,8 +30,8 @@ bool Battle::start_Battle()
 void Battle::assign_BattleLog()
 {
 	//add tylor and liza to battlelog 
-	Character* tylor = &p1;
-	Character* liza = &p2;	
+	Character* tylor = p1;
+	Character* liza = p2;	
 	battlelog.insert(pair<int, Character*>(Globals::STAT_CAP - tylor->stats.get_Haste(), tylor));
 	battlelog.insert(pair<int, Character*>(Globals::STAT_CAP - liza->stats.get_Haste(), liza));
 

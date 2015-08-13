@@ -25,6 +25,6 @@ int main()
 	
 	figmentlist.push_back(f1);	
 
-	Battle battle(player, tylor, liza, figmentlist);
+	Battle battle(&player, &tylor, &liza, figmentlist);
 	battle.start_Battle();
 }

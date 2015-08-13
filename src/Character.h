@@ -21,13 +21,16 @@ struct Stats
 	int haste;
 	//damage
 	int swing;
-	//chance to resist/negative abilities
+	//chance to resist harmful abilities
 	int resistance;
 	//chance to dodge attacks
 	int evasiveness;
-	//how smart the ai of entity is
+	//how smart the ai of character is
 	int intelligence;
-
+	
+	//crit chance
+	int focus;
+	
 	//get max health
 	int get_MaxHealth() const {return maxhealth;}
 	//set max health
@@ -72,6 +75,11 @@ struct Stats
 	int get_Intelligence() const {return intelligence;}
 	//set intelligence
 	void set_Intelligence(const int v) {intelligence = v;}
+	
+	//get focus
+	int get_Focus() const {return focus;}
+	//set focus
+	void set_Focus(const int v) {focus = v;}
 };
 
 //manages abilities of a character

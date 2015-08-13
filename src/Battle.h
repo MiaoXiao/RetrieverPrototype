@@ -13,7 +13,7 @@ class Battle
 {
 	public:
 		//CONSTRUCTOR: construct battle using both players and vector of figments
-		Battle(Player &p, Player &p1, Player &p2, std::vector<Figment> figmentlist):
+		Battle(Player* p, Player* p1, Player* p2, std::vector<Figment> figmentlist):
 			p(p),
 			p1(p1),
 			p2(p2),
@@ -28,9 +28,9 @@ class Battle
 		//enum for target
 		enum Target {Enemy0, Enemy1, Enemy2, Enemy3, Enemy4, Enemy5, All};
 		
-		Player p;		
-		Player p1;
-		Player p2;
+		Player* p;		
+		Player* p1;
+		Player* p2;
 		
 		std::vector<Figment> figmentlist;		
 
