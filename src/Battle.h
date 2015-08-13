@@ -7,12 +7,13 @@
 #include <map>
 #include <vector>
 
-//manages and directs character decisions. alters player objects at the end of the battle
+//manages and directs character decisions. alters player objects at the end of the battle.
+//manages battle prompts and diolouge
 class Battle
 {
 	public:
 		//CONSTRUCTOR: construct battle using both players and vector of figments
-		Battle(Player &p, Player &p1, Player &p2, std::vector<Figment> &figmentlist):
+		Battle(Player &p, Player &p1, Player &p2, std::vector<Figment> figmentlist):
 			p(p),
 			p1(p1),
 			p2(p2),
@@ -31,7 +32,7 @@ class Battle
 		Player p1;
 		Player p2;
 		
-		std::vector<Figment> &figmentlist;		
+		std::vector<Figment> figmentlist;		
 
 		//multimap of battlelog
 		std::multimap<int, Character*> battlelog;

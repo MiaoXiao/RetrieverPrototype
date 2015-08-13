@@ -18,7 +18,8 @@ int Character::inflict_Damage()
 void Character::take_Damage(const int damage)
 {
 	stats.set_CurrHealth(stats.get_CurrHealth() - damage);
-	cout << get_Name() << " takes " << damage << " damage!" << endl;
+	//if health is brought below 1, change flag
+	if (stats.get_CurrHealth() < 1) { isAlive = false; }
 }
 
 //inflict ability 
@@ -30,6 +31,7 @@ void Character::inflict_Ability()
 //DEBUG: show all stats
 void Character::showall_Stats() const
 {
+	cout << endl << get_Name() << " STATS" << endl;
 	cout << "Max Health: " << stats.get_MaxHealth() << endl;
 	cout << "Current Health: " << stats.get_CurrHealth() << endl;
 	cout << "Max Energy: " << stats.get_MaxEnergy() << endl;
@@ -37,7 +39,7 @@ void Character::showall_Stats() const
 	cout << "Haste: " << stats.get_Haste() << endl;
 	cout << "Swing: " << stats.get_Swing() << endl;
 	cout << "Resistance: " << stats.get_Resistance() << endl;
-	cout << "Evasiveness: " << stats.get_Evasiveness() << endl;
+	cout << "Evasiveness: " << stats.get_Evasiveness() << endl << endl;
 	//FIX ME: does not show intelligence yet
 }
 

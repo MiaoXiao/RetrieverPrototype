@@ -16,8 +16,8 @@ bool Battle::start_Battle()
 	{
 		combatDecision((*it).second);
 		
-		//battle is finished if no figments left in battle
-		if (figmentlist.size() == 0) return true;
+		//battle is finished if no figments left in battle, or both tylor and liza are wiped out
+		if (figmentlist.empty()) return true;
 		else if (p1.isAlive == false && p2.isAlive == false) return false;
 	}
 }
@@ -52,10 +52,7 @@ void Battle::combatDecision(Character* c)
 				cout << "Not a valid input, try again" << endl;
 				badInput = true;
 			}
-			else
-			{
-				badInput = false;
-			}
+			else { badInput = false; }
 		} while (badInput);
 		
 		//target selector if swing or ability and battling more than 1 figment
@@ -63,17 +60,14 @@ void Battle::combatDecision(Character* c)
 		{
 			do
 			{
-				cout << "choose target between 0 and " << figmentlist.size() - 1 << endl;
+				cout << "Choose target between 0 and " << figmentlist.size() - 1 << endl;
 				cin >> target;
 				if (target < 0 || target > figmentlist.size() - 1)
 				{
 					badInput = true;
 					cout << "Not a valid target, please enter again" << endl;
 				}
-				else
-				{
-					badInput = false;
-				}
+				else { badInput = false; }
 			} while (badInput);
 		}
 		
@@ -81,7 +75,17 @@ void Battle::combatDecision(Character* c)
 		switch (choice)
 		{
 			case Swing:
+				cout << figmentlist[target].get_Name() << " takes " << c->inflict_Damage() << " damage!" << endl;
 				figmentlist[target].take_Damage(c->inflict_Damage());
+				
+				//remove target from battlelog and figmentlist if destroyed
+				if (!figmentlist[target].isAlive)
+				{
+					battlelog.erase(target);
+					cout << figmentlist[target].get_Name() << " is defeated!" << endl;
+					figmentlist.erase(figmentlist.begin()+target);
+				}
+				
 				break;
 			case Ability:
 				break;
@@ -95,6 +99,9 @@ void Battle::combatDecision(Character* c)
 				badInput = true;
 				break;
 		}
+		
+		figmentlist[target].showall_Stats();
+		
 	}
 }
 
