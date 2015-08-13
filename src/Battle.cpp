@@ -1,4 +1,5 @@
 #include "Battle.h"
+#include "Globals.h"
 
 #include <iostream>
 #include <string>
@@ -25,6 +26,30 @@ bool Battle::start_Battle()
 //--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//
 
 //--------------------------------------------------------------------PRIVATE--------------------------------------------------------------------//
+//assign battle log
+void Battle::assign_BattleLog()
+{
+	//add tylor and liza to battlelog 
+	Character* tylor = &p1;
+	Character* liza = &p2;	
+	battlelog.insert(pair<int, Character*>(Globals::STAT_CAP - tylor->stats.get_Haste(), tylor));
+	battlelog.insert(pair<int, Character*>(Globals::STAT_CAP - liza->stats.get_Haste(), liza));
+
+	//ERROR: no figment to fight
+	if (!figmentlist.size()) 
+	{	
+		cerr << "No figment to fight. exiting" << endl;
+		exit(1);
+	}	
+
+	//add all figments to battle log
+	for (unsigned int i = 0; i < figmentlist.size(); ++i)
+	{
+		Character* figment = &figmentlist[i];
+		battlelog.insert(pair<int, Character*>(100 - figment->stats.get_Haste(), figment));
+	}	
+}
+
 //make decision in combat based on selected character's turn
 void Battle::combatDecision(Character* c)
 {
@@ -105,29 +130,6 @@ void Battle::combatDecision(Character* c)
 	}
 }
 
-//assign battle log
-void Battle::assign_BattleLog()
-{
-	//add tylor and liza to battlelog 
-	Character* tylor = &p1;
-	Character* liza = &p2;	
-	battlelog.insert(pair<int, Character*>(100 - tylor->stats.get_Haste(), tylor));
-	battlelog.insert(pair<int, Character*>(100 - liza->stats.get_Haste(), liza));
-
-	//ERROR: no figment to fight
-	if (!figmentlist.size()) 
-	{	
-		cerr << "No figment to fight. exiting" << endl;
-		exit(1);
-	}	
-
-	//add all figments to battle log
-	for (unsigned int i = 0; i < figmentlist.size(); ++i)
-	{
-		Character* figment = &figmentlist[i];
-		battlelog.insert(pair<int, Character*>(100 - figment->stats.get_Haste(), figment));
-	}	
-}
 
 //add loot to player
 //exp to tylor, exp to liza, digits

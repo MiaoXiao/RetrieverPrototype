@@ -1,4 +1,5 @@
 #include "Character.h"
+#include "Globals.h"
 
 #include <iostream>
 #include <stdlib.h>
@@ -10,8 +11,7 @@ using namespace std;
 int Character::inflict_Damage()
 {
 	//cout << "inflict swing" << endl;
-	int range = 3;
-	return generateRandomNumber(-range, range) + stats.get_Swing();
+	return generateRandomNumber(-Globals::RANGE, Globals::RANGE) + stats.get_Swing();
 }
 
 //take damage from enemy

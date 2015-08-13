@@ -37,11 +37,13 @@ class Battle
 		//multimap of battlelog
 		std::multimap<int, Character*> battlelog;
 	
+		//compare haste between players and figments. assign battlelog of turn order
+		void assign_BattleLog();
+	
 		//make decision in combat, based on current turn
 		void combatDecision(Character* c);
 		
-		//compare haste between players and figments. assign battlelog of turn order
-		void assign_BattleLog();
+
 
 		//add loot to player
 		//exp to tylor, exp to liza, digits
