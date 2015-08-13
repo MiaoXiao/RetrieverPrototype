@@ -4,6 +4,20 @@
 
 using namespace std;
 
+//--------------------------------------------------------------------PUBLIC--------------------------------------------------------------------//
+//current money set
+void Player::set_Digits(const int v) {digits = v;}
+//current money get
+int Player::get_Digits() const {return digits;}
+
+//set enemy point score
+void Player::set_Eps(const int v) {eps = v;}
+//get enemy point score
+int Player::get_Eps() const {return eps;}
+
+//--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//
+
+//--------------------------------------------------------------------PRIVATE--------------------------------------------------------------------//
 //assign starting stats to player character
 void Player::assign_Stats()
 {
@@ -38,12 +52,4 @@ void Player::assign_Stats()
 	}
 }
 
-//current money set
-void Player::set_Digits(const int v) {digits = v;}
-//current money get
-int Player::get_Digits() const {return digits;}
 
-//set enemy point score
-void Player::set_Eps(const int v) {eps = v;}
-//get enemy point score
-int Player::get_Eps() const {return eps;}

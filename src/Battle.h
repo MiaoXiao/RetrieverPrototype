@@ -20,6 +20,7 @@ class Battle
 
 		//begin battle. return true if player wins
 		bool start_Battle();
+		
 	private:
 		//enum for player decisions
 		enum PlayerChoice {Swing, Ability, Defend, Item, Run};

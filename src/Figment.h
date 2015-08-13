@@ -26,9 +26,6 @@ class Figment: public Character
 			assign_Stats();
 		}
 
-		//assign starting stats
-		void assign_Stats();
-
 	private:
 		//difficulty of figment
 		unsigned int level;
@@ -52,7 +49,10 @@ class Figment: public Character
 		//Eevasiveness multiplier
 		float evasivenessX;
 		
-		//HELPER FUNCTION: change attribute based on type, return type name
+		//assign starting stats
+		void assign_Stats();
+		
+		//change attribute based on type, return type name
 		std::string chooseType(int t);
 };
 

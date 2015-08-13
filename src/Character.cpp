@@ -5,6 +5,7 @@
 
 using namespace std;
 
+//--------------------------------------------------------------------PUBLIC--------------------------------------------------------------------//
 //inflict swing damage on target. damage is within range of swing
 int Character::inflict_Damage()
 {
@@ -40,9 +41,11 @@ void Character::showall_Stats() const
 	//FIX ME: does not show intelligence yet
 }
 
-//HELPER FUNCTION: return random number between lower bound and higher bound exclusive
+//--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//
+//return random number between lower bound and higher bound exclusive
 int Character::generateRandomNumber(const int lb, const int hb) const { return rand() % hb + lb; }
 
+//--------------------------------------------------------------------PRIVATE--------------------------------------------------------------------//
 
 
 

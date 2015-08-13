@@ -6,15 +6,23 @@
 
 using namespace std;
 
-//start battle
+//--------------------------------------------------------------------PUBLIC--------------------------------------------------------------------//
+//start battle by creating initial battle log
+//runs through all combat decisions
 bool Battle::start_Battle()
 {
 	assign_BattleLog();
 	for (multimap<int, Character*>::iterator it = battlelog.begin(); it != battlelog.end(); ++it)
 	{
-		combatDecision((*it).second);	
+		combatDecision((*it).second);
+		
+		//battle is finished if no figments left in battle
+		if (figmentlist.size() == 0) return true;
+		else if (p1.isAlive == false && p2.isAlive == false) return false;
 	}
 }
+
+//--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//
 
 //--------------------------------------------------------------------PRIVATE--------------------------------------------------------------------//
 //make decision in combat based on selected character's turn
@@ -120,3 +128,4 @@ void Battle::add_Loot(const unsigned int expT, const unsigned int expL, const un
 {
 
 }
+

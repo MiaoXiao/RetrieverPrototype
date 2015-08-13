@@ -150,9 +150,8 @@ class Character: public Entity
 		//assign starting stats for a character
 		virtual void assign_Stats() = 0;
 
-		//HELPER FUNCTION: return random number between lb and hb exclusive
+		//return random number between lb and hb exclusive
 		int generateRandomNumber(const int lb, const int hb) const;
-
 
 };
 

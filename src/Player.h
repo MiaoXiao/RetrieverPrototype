@@ -24,9 +24,6 @@ class Player: public Character
 			set_Name(n);
 			assign_Stats();
 		}
-
-		//assign starting stats
-		void assign_Stats();	
 		
 		//set current funds
 		void set_Digits(const int v);
@@ -46,6 +43,8 @@ class Player: public Character
 		//set to true if both party members are active. set to false if only Tylor is active
 		bool fullParty;
 		
+		//assign starting stats
+		void assign_Stats();	
 };
 
 #endif
