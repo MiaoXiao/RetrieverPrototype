@@ -17,7 +17,9 @@ class Figment: public Character
 			numbPerks(np)
 		{
 			//set player flag to false
-			isPlayer = false;	
+			isPlayer = false;
+			//character is alive at start
+			isAlive = true;
 			//set name
 			set_Name(chooseType(type));
 			//assign starting stats

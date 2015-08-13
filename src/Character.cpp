@@ -2,32 +2,28 @@
 
 #include <iostream>
 #include <stdlib.h>
-#include <time.h>
 
 using namespace std;
 
-//make decision in combat
-void Character::combatDecision() 
+//inflict swing damage on target. damage is within range of swing
+int Character::inflict_Damage()
 {
-	cout << "rand numb: " << generateRandomNumber(0, 40) << endl;
-	//cout << "combat decision" << endl;
-	if (isPlayer) 
-	{
-		cout << "player turn" << endl;
-	}
-	else 
-	{
-		cout << "figment turn" << endl;
-	}
-	
+	//cout << "inflict swing" << endl;
+	int range = 3;
+	return generateRandomNumber(-range, range) + stats.get_Swing();
 }
 
-//HELPER FUNCTION: return random number between lower bound and higher bound
-int Character::generateRandomNumber(int lb, int hb)
+//take damage from enemy
+void Character::take_Damage(const int damage)
 {
-        //seed
-        //srand(time(NULL));
-        return rand() % hb + lb;
+	stats.set_CurrHealth(stats.get_CurrHealth() - damage);
+	cout << get_Name() << " takes " << damage << " damage!" << endl;
+}
+
+//inflict ability 
+void Character::inflict_Ability()
+{
+	cout << "inflict ability";
 }
 
 //DEBUG: show all stats
@@ -44,18 +40,9 @@ void Character::showall_Stats() const
 	//FIX ME: does not show intelligence yet
 }
 
-//inflict swing damage on target. damage is within range of swing
-int Character::inflict_Swing()
-{
-	cout << "inflict swing" << endl;
-	int range = 3;
-	return generateRandomNumber(-range, range) + stats.get_Swing();
-}
+//HELPER FUNCTION: return random number between lower bound and higher bound exclusive
+int Character::generateRandomNumber(const int lb, const int hb) const { return rand() % hb + lb; }
 
-//inflict ability 
-void Character::inflict_Ability()
-{
-	cout << "inflict ability";
-}
+
 
 

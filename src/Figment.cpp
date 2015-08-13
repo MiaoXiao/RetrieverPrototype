@@ -6,7 +6,7 @@ using namespace std;
 void Figment::assign_Stats()
 {
 	//base values for level 1 figments
-	int startMh = 20;
+	int startMh = 25;
 	int startMe = 10;
 	int startH = 10;
 	int startS = 7;

@@ -9,7 +9,7 @@
 class Player: public Character
 {
 	public:
-		//CONSTRUCTOR: init instance of player and starting funds
+		//CONSTRUCTOR: ini#FFFFFFt instance of player and starting funds
 		Player():
 			digits(0),
 			fullParty(false) {}
@@ -20,6 +20,7 @@ class Player: public Character
 			fullParty(false)
 		{
 			isPlayer = true;
+			isAlive = true;
 			set_Name(n);
 			assign_Stats();
 		}

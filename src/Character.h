@@ -28,7 +28,6 @@ struct Stats
 	//how smart the ai of entity is
 	int intelligence;
 
-
 	//get max health
 	int get_MaxHealth() const {return maxhealth;}
 	//set max health
@@ -124,31 +123,36 @@ class Character: public Entity
 	public:		
 		//set to true if player, set to false if enemy
 		bool isPlayer;
-
+		
+		//set to false if this character is wiped out, destroyed
+		bool isAlive;
+		
 		//combat stats
 		Stats stats;
 		//combat abilities
 		Abilities abilities;
 		//current status
 		Status status;
+	
+		//inflict damage
+		int inflict_Damage();
 
-		//combat decision
-		void combatDecision();		
+		//take hostile damage
+		void take_Damage(const int damage);
 
-		//HELPER FUNCTION: return random number between lb and hb
-		int generateRandomNumber(int lb, int hb);
-
+		//inflict ability on target
+		void inflict_Ability();	
+	
 		//DEBUG: show all stats currently
 		void showall_Stats() const;
+		
 	protected:
 		//assign starting stats for a character
 		virtual void assign_Stats() = 0;
 
-		//inflict swing damage
-		int inflict_Swing();
+		//HELPER FUNCTION: return random number between lb and hb exclusive
+		int generateRandomNumber(const int lb, const int hb) const;
 
-		//inflict ability
-		void inflict_Ability();	
 
 };
 
