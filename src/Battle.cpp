@@ -195,7 +195,14 @@ void Battle::combatDecision(Character* c)
 				{
 					//calculate damage
 					int d = c->inflict_Damage();
-				
+					
+					//check critical
+					if (c->check_Critical()) 
+					{
+						d *= c->stats.get_FocusMultiplier();
+						cout << c->get_Name() << " lands a critical attack!" << endl;
+					}
+					
 					cout << figmentlist[target].get_Name() << " takes " << d << " damage!" << endl;
 					figmentlist[target].take_Damage(d);
 					

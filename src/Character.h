@@ -10,14 +10,13 @@
 //manages basic combat skills
 struct Stats
 {
+	//PRIMARY STATS: stats you can level up throughout the game
 	//life force of an entity
 	unsigned int maxhealth;
 	unsigned int currhealth;
-	
 	//energy is how often an entity can use abilities/attacks
 	unsigned int maxenergy;
 	unsigned int currenergy;
-	
 	//how quickly the entity can attack. A smaller reaction stat means your character will have their turn faster
 	unsigned int reaction;
 	//damage
@@ -26,11 +25,14 @@ struct Stats
 	unsigned int resistance;
 	//chance to dodge attacks
 	unsigned int evasiveness;
+	
+	//UNIQUE STATS: stats that cannot be improved by normal means
 	//how smart the ai of character is
 	unsigned int intelligence;
-	
 	//crit chance
 	unsigned int focus;
+	//focus multiplier
+	unsigned int focusmultiplier;
 	
 	//get max health
 	int get_MaxHealth() const {return maxhealth;}
@@ -81,6 +83,11 @@ struct Stats
 	int get_Focus() const {return focus;}
 	//set focus
 	void set_Focus(const int v) {focus = v;}
+	
+	//get focus multiplier
+	int get_FocusMultiplier() const {return focusmultiplier;}
+	//set focus multiplier
+	void set_FocusMultiplier(const int v) {focusmultiplier = v;}
 };
 
 //manages abilities of a character
@@ -170,6 +177,9 @@ class Character: public Entity
 		Status status;
 		//current level
 		Level level;
+		
+		//check if an attack is critical
+		bool check_Critical() const;
 		
 		//returns true if attack is dodged, based on character evasion stat
 		bool check_Evasion() const;

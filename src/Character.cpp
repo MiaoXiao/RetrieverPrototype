@@ -7,10 +7,16 @@
 using namespace std;
 
 //--------------------------------------------------------------------PUBLIC--------------------------------------------------------------------//
+//check if an attack is critical
+bool Character::check_Critical() const
+{
+	return Probability::chanceToOccur(stats.get_Focus() * 0.01);
+}
+
 //returns true if attack is dodged, based on character evasion stat
 bool Character::check_Evasion() const
 {
-	cout << "dodge: " << stats.get_Evasiveness() * 0.01 << endl;
+	//cout << "dodge: " << stats.get_Evasiveness() * 0.01 << endl;
 	return Probability::chanceToOccur(stats.get_Evasiveness() * 0.01);
 }
 

@@ -34,6 +34,8 @@ void Player::assign_Stats()
 		stats.resistance = 15;
 		stats.evasiveness = 10;
 		stats.intelligence = 115;
+		stats.focus = 5;
+		stats.focusmultiplier = 3;
 	}
 	else if (name == "Liza")
 	{
@@ -46,10 +48,12 @@ void Player::assign_Stats()
 		stats.resistance = 5;
 		stats.evasiveness = 15;
 		stats.intelligence = 115;
+		stats.focus = 5;
+		stats.focusmultiplier = 3;
 	}
 	else
 	{
-		cerr << "Invalid player name" << endl;
+		cerr << "Invalid player name. Exiting." << endl;
 	}
 }
 
