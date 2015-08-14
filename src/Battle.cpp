@@ -14,13 +14,20 @@ bool Battle::start_Battle()
 {
 	assign_BattleLog();
 	show_TurnOrder();
-	for (multimap<int, Character*>::iterator it = battlelog.begin(); it != battlelog.end(); ++it)
+	
+	unsigned int turnnumber = 0;
+	while (true)
 	{
-		combatDecision((*it).second);
-		
-		//battle is finished if no figments left in battle, or both tylor and liza are wiped out
-		if (figmentlist.empty()) return true;
-		else if (p1->isAlive == false && p2->isAlive == false) return false;
+		for (multimap<int, Character*>::iterator it = battlelog.begin(); it != battlelog.end(); ++it)
+		{
+			cout << "Turn Number: " << turnnumber << endl;
+			combatDecision((*it).second);
+			
+			//battle is finished if no figments left in battle, or both tylor and liza are wiped out
+			if (figmentlist.empty()) return true;
+			else if (p1->isAlive == false && p2->isAlive == false) return false;
+			turnnumber++;
+		}
 	}
 }
 
@@ -53,47 +60,43 @@ void Battle::assign_BattleLog()
 	battlelog.clear();
 	
 	//stores reaction for tylor and liza
-	int r_t = p1->stats.get_Reaction();
-	int r_l = p2->stats.get_Reaction();
-	//add tylor and liza to battlelog 
-	battlelog.insert(pair<int, Character*>(r_t, p1));
-	battlelog.insert(pair<int, Character*>(r_l, p2));
+	unsigned int r_t = p1->stats.get_Reaction();
+	unsigned int r_l = p2->stats.get_Reaction();
 
-	vector<int> r_enemy(6, 1);
-	//add all figments to battle log. store enemy reaction in vector
-	for (unsigned int i = 0; i < figmentlist.size(); ++i)
-	{
-		//stores enemy reaction in vector
-		r_enemy[i] = (&figmentlist[i])->stats.get_Reaction();
-		battlelog.insert(pair<int, Character*>(r_enemy[i], &figmentlist[i]));
-	}	
+	vector<unsigned int> r_enemy(6, 1);
+	//store enemy reaction in vector
+	for (unsigned int i = 0; i < figmentlist.size(); ++i) { r_enemy[i] = (&figmentlist[i])->stats.get_Reaction(); }	
 	
 	//get entire gcd
 	const int entireGCD = getall_Lcd(r_t, r_l, r_enemy[0], r_enemy[1], r_enemy[2], r_enemy[3], r_enemy[4], r_enemy[5]);
 	//cout << r_t << " " << r_l << " " << r_enemy[0] << " " << r_enemy[1] << endl;
-	//cout << entireGCD << endl;
-	//get extra tylor turns
-	while (r_t <= entireGCD)
+	//cout << "LCD: " << entireGCD << endl;
+	
+	//get all tylor turns
+	int reactionvalue = r_t;
+	while (r_t < entireGCD)
 	{
 		//cout << "tylor" << endl;
-		r_t += r_t;
 		battlelog.insert(pair<int, Character*>(r_t, p1));
+		r_t += reactionvalue;
 	}
-	//get extra liza turns
-	while (r_l <= entireGCD)
+	//get all liza turns
+	reactionvalue = r_l;
+	while (r_l < entireGCD)
 	{
 		//cout << "liza" << endl;
-		r_l += r_l;
 		battlelog.insert(pair<int, Character*>(r_l, p2));
+		r_l += reactionvalue;
 	}
-	//get rest of enemy turns
+	//get all enemy turns
 	for (unsigned int i = 0; i < figmentlist.size(); ++i)
 	{
-		while (r_enemy[i] <= entireGCD)
+		reactionvalue = r_enemy[i];
+		while (r_enemy[i] < entireGCD)
 		{
 			//cout << "enemy" << endl;
-			r_enemy[i] += r_enemy[i];
 			battlelog.insert(pair<int, Character*>(r_enemy[i], &figmentlist[i]));
+			r_enemy[i] += reactionvalue;
 		}
 	}
 }

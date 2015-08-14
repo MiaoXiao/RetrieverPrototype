@@ -27,7 +27,7 @@ void Figment::assign_Stats()
 	stats.swing = startS + (startS * swingX);
 	stats.resistance = startR + (startR * resistanceX);
 	
-	if (name == "Tank") stats.evasiveness == 0;
+	if (name == "Tank") stats.evasiveness = 0;
 	else stats.evasiveness = startE + (startE * evasivenessX);
 }
 
@@ -39,31 +39,31 @@ string Figment::chooseType(int t)
 		//hatchlings
 		case 0:
 			healthX = -0.25;
-			energyX = 0.0;
+			energyX = 1.0;
 			swingX = -0.25;
-			reactionX = 0.0;
-			resistanceX = 0.0;
-			evasivenessX = 0.0;
+			reactionX = 1.0;
+			resistanceX = 1.0;
+			evasivenessX = 1.0;
 			return "Hatchling";
 			break;
 		//normals
 		case 1:
-			healthX = 0.0;
-			energyX = 0.0;
-			swingX = 0.0;
-			reactionX = 0.0;
-			resistanceX = 0.0;
-			evasivenessX = 0.0;
+			healthX = 1.0;
+			energyX = 1.0;
+			swingX = 1.0;
+			reactionX = 1.0;
+			resistanceX = 1.0;
+			evasivenessX = 1.0;
 			return "Normal";
 			break;
 		//tanks
 		case 2:
-			healthX = 2.0;
-			energyX = 0.0;
-			swingX = 0.0;
+			healthX = 10.0;
+			energyX = 1.0;
+			swingX = 1.0;
 			reactionX = 0.5;
 			resistanceX = 1.5;
-			evasivenessX = 0.0;
+			evasivenessX = 1.0;
 			return "Tank";
 			break;
 		//swarms
