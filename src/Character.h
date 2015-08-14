@@ -179,16 +179,13 @@ class Character: public Entity
 
 		//inflict ability on target
 		void inflict_Ability();	
-	
+		
 		//DEBUG: show all stats currently
 		void showall_Stats() const;
 		
 	protected:
 		//assign starting stats for a character
 		virtual void assign_Stats() = 0;
-
-		//return random number between lb and hb exclusive
-		int generateRandomNumber(const int lb, const int hb) const;
 
 };
 

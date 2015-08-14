@@ -1,6 +1,7 @@
 #include "Player.h"
 
 #include <iostream>
+#include <stdlib.h>
 
 using namespace std;
 

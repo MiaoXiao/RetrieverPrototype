@@ -58,7 +58,7 @@ string Figment::chooseType(int t)
 			break;
 		//tanks
 		case 2:
-			healthX = 10.0;
+			healthX = 2.0;
 			energyX = 1.0;
 			swingX = 1.0;
 			reactionX = 0.5;

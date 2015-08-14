@@ -35,7 +35,7 @@ class Battle
 		std::vector<Figment> figmentlist;		
 
 		//multimap of battlelog
-		std::multimap<int, Character*> battlelog;
+		std::multimap<float, Character*> battlelog;
 		
 		//get gcd of 2 numbers
 		int gcd(int a, int b);

@@ -18,7 +18,7 @@ bool Battle::start_Battle()
 	unsigned int turnnumber = 0;
 	while (true)
 	{
-		for (multimap<int, Character*>::iterator it = battlelog.begin(); it != battlelog.end(); ++it)
+		for (multimap<float, Character*>::iterator it = battlelog.begin(); it != battlelog.end(); ++it)
 		{
 			cout << "Turn Number: " << turnnumber << endl;
 			combatDecision((*it).second);
@@ -70,21 +70,21 @@ void Battle::assign_BattleLog()
 	//get entire gcd
 	const int entireGCD = getall_Lcd(r_t, r_l, r_enemy[0], r_enemy[1], r_enemy[2], r_enemy[3], r_enemy[4], r_enemy[5]);
 	//cout << r_t << " " << r_l << " " << r_enemy[0] << " " << r_enemy[1] << endl;
-	//cout << "LCD: " << entireGCD << endl;
+	cout << "LCD: " << entireGCD << endl;
 	
 	//get all tylor turns
 	int reactionvalue = r_t;
-	while (r_t < entireGCD)
+	while (r_t <= entireGCD)
 	{
-		//cout << "tylor" << endl;
-		battlelog.insert(pair<int, Character*>(r_t, p1));
+		cout << "tylor" << endl;
+		battlelog.insert(pair<float, Character*>(r_t, p1));
 		r_t += reactionvalue;
 	}
 	//get all liza turns
 	reactionvalue = r_l;
-	while (r_l < entireGCD)
+	while (r_l <= entireGCD)
 	{
-		//cout << "liza" << endl;
+		cout << "liza" << endl;
 		battlelog.insert(pair<int, Character*>(r_l, p2));
 		r_l += reactionvalue;
 	}
@@ -92,10 +92,42 @@ void Battle::assign_BattleLog()
 	for (unsigned int i = 0; i < figmentlist.size(); ++i)
 	{
 		reactionvalue = r_enemy[i];
-		while (r_enemy[i] < entireGCD)
+		while (r_enemy[i] <= entireGCD)
 		{
 			//cout << "enemy" << endl;
-			battlelog.insert(pair<int, Character*>(r_enemy[i], &figmentlist[i]));
+			battlelog.insert(pair<float, Character*>(r_enemy[i], &figmentlist[i]));
+			//check if a player and an enemy have the same reaction, then choose one randomly to go first
+			/*
+			if (battlelog.count(r_enemy[i]) > 1)
+			{
+				bool playerFirstTurn = false;
+				cout << "calculating 50percent chance..." << endl;
+				if (chanceToOccur(0.5))
+				{
+					playerFirstTurn = true;
+				}
+				
+				for (std::multimap<float, Character*>::iterator it = battlelog.equal_range(r_enemy[i]).first; it!=battlelog.equal_range(r_enemy[i]).second; ++it)
+				{
+					//only look at player
+					if ((*it).second->isPlayer)
+					{
+						int saveReaction = ((*it).first);
+						Character* tempc = ((*it).second);
+						battlelog.erase(it);
+						
+						if (playerFirstTurn)
+						{
+							battlelog.insert(pair<float, Character*>(saveReaction -= 0.5, tempc));
+						}
+						else
+						{
+							battlelog.insert(pair<float, Character*>(saveReaction += 0.5, tempc));
+						}
+					}
+				}
+			}*/
+			
 			r_enemy[i] += reactionvalue;
 		}
 	}
@@ -153,6 +185,9 @@ void Battle::combatDecision(Character* c)
 		{
 			case Swing:
 			{
+				cout << c->get_Name() << " swings at " << figmentlist[target].get_Name() << "!" << endl;
+				//check if attack is evaded
+				
 				//calculate damage
 				int d = c->inflict_Damage();
 			
@@ -206,9 +241,9 @@ void Battle::show_TurnOrder()
 {
 	cout << endl << "TURN ORDER" << endl;
 	int i = 0;
-	for (multimap<int, Character*>::iterator it = battlelog.begin(); it != battlelog.end(); ++it)
+	for (multimap<float, Character*>::iterator it = battlelog.begin(); it != battlelog.end(); ++it)
 	{
-		cout << i << ": " << (*it).second->get_Name() << endl;
+		cout << i << ": " << (*it).second->get_Name() << " on timeline " << (*it).first << endl;
 		++i;
 	}
 	cout << endl;

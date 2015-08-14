@@ -11,7 +11,7 @@ using namespace std;
 int Character::inflict_Damage()
 {
 	//cout << "inflict swing" << endl;
-	return generateRandomNumber(-Globals::RANGE, Globals::RANGE) + stats.get_Swing();
+	return Probability::generateRandomNumber(-Globals::RANGE, Globals::RANGE) + stats.get_Swing();
 }
 
 //take damage from enemy
@@ -44,8 +44,6 @@ void Character::showall_Stats() const
 }
 
 //--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//
-//return random number between lower bound and higher bound exclusive
-int Character::generateRandomNumber(const int lb, const int hb) const { return rand() % hb + lb; }
 
 //--------------------------------------------------------------------PRIVATE--------------------------------------------------------------------//
 

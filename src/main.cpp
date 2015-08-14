@@ -19,7 +19,7 @@ int main()
 	Player tylor("Tylor");
 	Player liza("Liza");
 
-	Figment f1(2, 10, 0, 0);
+	Figment f1(1, 1, 0, 0);
 	f1.showall_Stats();
 	cout << endl;
 	
