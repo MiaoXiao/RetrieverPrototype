@@ -136,7 +136,7 @@ void Battle::assign_BattleLog()
 //make decision in combat based on selected character's turn
 void Battle::combatDecision(Character* c)
 {
-	//cout << "It is " << c->get_Name() << "'s turn" << endl;
+	cout << "It is " << c->get_Name() << "'s turn" << endl;
 	
 	//choice of the player
 	int choice;
@@ -148,6 +148,9 @@ void Battle::combatDecision(Character* c)
 	//decide if player or enemy turn
 	if (c->isPlayer)
 	{
+		//reset back to neutral stance
+		c->status.defending = false;
+		
 		//prompt choice
 		do
 		{
@@ -203,6 +206,20 @@ void Battle::combatDecision(Character* c)
 						cout << c->get_Name() << " lands a critical attack!" << endl;
 					}
 					
+					//check if enemy was defending
+					if (figmentlist[target].status.defending)
+					{
+						int rp = figmentlist[target].stats.get_ReflectPercentage();
+						c->take_Retaliation(d, rp);
+						
+						//damage done back to attacker
+						int rd = rp * d;
+						//damage done to defender
+						d *= (1 - rp);
+						cout << figmentlist[target].get_Name() << " defends against the attack, and returns " << rd 
+							<< " damage back to " << c->get_Name() << "!" << endl;
+					}
+					
 					cout << figmentlist[target].get_Name() << " takes " << d << " damage!" << endl;
 					figmentlist[target].take_Damage(d);
 					
@@ -219,6 +236,8 @@ void Battle::combatDecision(Character* c)
 			case Ability:
 				break;
 			 case Defend:
+				c->status.defending = true;
+				cout << c->get_Name() << " forms a defensive stance." << endl;
 				break;
 			case Item:
 				break;

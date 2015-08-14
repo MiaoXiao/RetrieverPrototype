@@ -35,6 +35,19 @@ void Character::take_Damage(const int damage)
 	if (stats.get_CurrHealth() < 1) { isAlive = false; }
 }
 
+//if enemy is defending, apply percentage of damage done back to the attacker.
+void Character::take_Retaliation(const int damage, const float enemyreflect)
+{
+	if (enemyreflect < 0 || enemyreflect > 1)
+	{
+		cout << "Reflect percentage not between 0 and 1. Exiting." << endl;
+		exit(1);
+	}
+	
+	//sets current health
+	stats.set_CurrHealth(stats.get_CurrHealth() - (damage * enemyreflect));
+}
+
 //inflict ability 
 void Character::inflict_Ability()
 {

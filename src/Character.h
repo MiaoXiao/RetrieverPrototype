@@ -33,6 +33,8 @@ struct Stats
 	unsigned int focus;
 	//focus multiplier
 	unsigned int focusmultiplier;
+	//reflect percentage. percentage of damage reflected back to an attacker, when this character defends
+	float reflectpercentage;
 	
 	//get max health
 	int get_MaxHealth() const {return maxhealth;}
@@ -88,6 +90,11 @@ struct Stats
 	int get_FocusMultiplier() const {return focusmultiplier;}
 	//set focus multiplier
 	void set_FocusMultiplier(const int v) {focusmultiplier = v;}
+	
+	//get reflect percentage
+	float get_ReflectPercentage() const {return reflectpercentage;}
+	//set reflect percentage
+	void set_ReflectPercentage(const int v) {reflectpercentage = v;}
 };
 
 //manages abilities of a character
@@ -106,6 +113,10 @@ struct Status
 {
 	//between -10 and 10 inclusive
 	int mood = 0;
+	
+	//whether unit is defending or not
+	bool defending = false;
+	
 	//cannot perform any action
 	bool stunned = false;
 	//percent damage every turn, does not stack
@@ -124,6 +135,7 @@ struct Status
 	//after every battle reset most statuses; unless characters are wiped out, then reset all
 	void resetStatus()
 	{
+		bool defending = false;
 		bool stunned = false;
 		bool silenced = false;
 		bool swingsilenced = false;
@@ -184,12 +196,16 @@ class Character: public Entity
 		//returns true if attack is dodged, based on character evasion stat
 		bool check_Evasion() const;
 		
+		
 		//inflict damage
 		int inflict_Damage();
 
 		//take hostile damage
 		void take_Damage(const int damage);
-
+		
+		//if enemy is defending, apply percentage of damage done back to the attacker.
+		void take_Retaliation(const int damage, const float enemyreflect);
+		
 		//inflict ability on target
 		void inflict_Ability();	
 		
