@@ -11,26 +11,26 @@
 struct Stats
 {
 	//life force of an entity
-	int maxhealth;
-	int currhealth;
+	unsigned int maxhealth;
+	unsigned int currhealth;
 	
 	//energy is how often an entity can use abilities/attacks
-	int maxenergy;
-	int currenergy;
+	unsigned int maxenergy;
+	unsigned int currenergy;
 	
-	//how quickly the entity can attack
-	int haste;
+	//how quickly the entity can attack. A smaller reaction stat means your character will have their turn faster
+	unsigned int reaction;
 	//damage
-	int swing;
+	unsigned int swing;
 	//chance to resist harmful abilities
-	int resistance;
+	unsigned int resistance;
 	//chance to dodge attacks
-	int evasiveness;
+	unsigned int evasiveness;
 	//how smart the ai of character is
-	int intelligence;
+	unsigned int intelligence;
 	
 	//crit chance
-	int focus;
+	unsigned int focus;
 	
 	//get max health
 	int get_MaxHealth() const {return maxhealth;}
@@ -52,10 +52,10 @@ struct Stats
 	//set current energy
 	void set_CurrEnergy(const int v) {currenergy = v;}
 
-	//get haste
-	int get_Haste() const {return haste;}
-	//set haste
-	void set_Haste(const int v) {haste = v;}
+	//get reaction
+	int get_Reaction() const {return reaction;}
+	//set reaction
+	void set_Reaction(const int v) {reaction = v;}
 
 	//get swing (damage)
 	int get_Swing() const {return swing;}
@@ -170,7 +170,6 @@ class Character: public Entity
 		Status status;
 		//current level
 		Level level;
-		
 		
 		//inflict damage
 		int inflict_Damage();

@@ -13,6 +13,7 @@ using namespace std;
 bool Battle::start_Battle()
 {
 	assign_BattleLog();
+	show_TurnOrder();
 	for (multimap<int, Character*>::iterator it = battlelog.begin(); it != battlelog.end(); ++it)
 	{
 		combatDecision((*it).second);
@@ -26,28 +27,75 @@ bool Battle::start_Battle()
 //--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//
 
 //--------------------------------------------------------------------PRIVATE--------------------------------------------------------------------//
+//get gcd of 2 numbers
+int Battle::gcd(int a, int b) { return b == 0 ? a : gcd(b, a % b); }
+
+//get lcd of 2 numbers
+int Battle::lcd(int a, int b) { return abs(a * b) / (gcd(a, b)); }
+
+//get lcd of all possible units' reaction in battle
+int Battle::getall_Lcd(int a, int b, int c, int d, int e, int f, int g, int h) 
+{
+		return lcd(a, lcd(b, lcd(c, lcd(d, lcd(e, lcd(f, lcd(g, h)))))));
+}
+
 //assign battle log
 void Battle::assign_BattleLog()
 {
-	//add tylor and liza to battlelog 
-	Character* tylor = p1;
-	Character* liza = p2;	
-	battlelog.insert(pair<int, Character*>(Globals::STAT_CAP - tylor->stats.get_Haste(), tylor));
-	battlelog.insert(pair<int, Character*>(Globals::STAT_CAP - liza->stats.get_Haste(), liza));
-
 	//ERROR: no figment to fight
 	if (!figmentlist.size()) 
 	{	
-		cerr << "No figment to fight. exiting" << endl;
+		cerr << "No figment to fight. Exiting." << endl;
 		exit(1);
 	}	
+	
+	//clear any existing battle log
+	battlelog.clear();
+	
+	//stores reaction for tylor and liza
+	int r_t = p1->stats.get_Reaction();
+	int r_l = p2->stats.get_Reaction();
+	//add tylor and liza to battlelog 
+	battlelog.insert(pair<int, Character*>(r_t, p1));
+	battlelog.insert(pair<int, Character*>(r_l, p2));
 
-	//add all figments to battle log
+	vector<int> r_enemy(6, 1);
+	//add all figments to battle log. store enemy reaction in vector
 	for (unsigned int i = 0; i < figmentlist.size(); ++i)
 	{
-		Character* figment = &figmentlist[i];
-		battlelog.insert(pair<int, Character*>(Globals::STAT_CAP - figment->stats.get_Haste(), figment));
+		//stores enemy reaction in vector
+		r_enemy[i] = (&figmentlist[i])->stats.get_Reaction();
+		battlelog.insert(pair<int, Character*>(r_enemy[i], &figmentlist[i]));
 	}	
+	
+	//get entire gcd
+	const int entireGCD = getall_Lcd(r_t, r_l, r_enemy[0], r_enemy[1], r_enemy[2], r_enemy[3], r_enemy[4], r_enemy[5]);
+	//cout << r_t << " " << r_l << " " << r_enemy[0] << " " << r_enemy[1] << endl;
+	//cout << entireGCD << endl;
+	//get extra tylor turns
+	while (r_t <= entireGCD)
+	{
+		//cout << "tylor" << endl;
+		r_t += r_t;
+		battlelog.insert(pair<int, Character*>(r_t, p1));
+	}
+	//get extra liza turns
+	while (r_l <= entireGCD)
+	{
+		//cout << "liza" << endl;
+		r_l += r_l;
+		battlelog.insert(pair<int, Character*>(r_l, p2));
+	}
+	//get rest of enemy turns
+	for (unsigned int i = 0; i < figmentlist.size(); ++i)
+	{
+		while (r_enemy[i] <= entireGCD)
+		{
+			//cout << "enemy" << endl;
+			r_enemy[i] += r_enemy[i];
+			battlelog.insert(pair<int, Character*>(r_enemy[i], &figmentlist[i]));
+		}
+	}
 }
 
 //make decision in combat based on selected character's turn
@@ -141,7 +189,24 @@ void Battle::add_Loot(const unsigned int expT, const unsigned int expL, const un
 {
 	if (p1->isAlive)
 	{
-		
+		p1->level.experience += expT;
 	}
+	if (p2->isAlive)
+	{
+		p2->level.experience += expL;		
+	}
+	p->set_Digits(p->get_Digits() + digits);
 }
 
+//DEBUG: display complete turn order for one cycle
+void Battle::show_TurnOrder()
+{
+	cout << endl << "TURN ORDER" << endl;
+	int i = 0;
+	for (multimap<int, Character*>::iterator it = battlelog.begin(); it != battlelog.end(); ++it)
+	{
+		cout << i << ": " << (*it).second->get_Name() << endl;
+		++i;
+	}
+	cout << endl;
+}

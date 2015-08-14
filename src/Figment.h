@@ -44,8 +44,8 @@ class Figment: public Character
 		float energyX;
 		//damage multiplier
 		float swingX;
-		//haste multiplier
-		float hasteX;
+		//reaction multiplier
+		float reactionX;
 		//resistance multiplier
 		float resistanceX;
 		//Eevasiveness multiplier

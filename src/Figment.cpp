@@ -13,7 +13,7 @@ void Figment::assign_Stats()
 	//base values for level 1 figments
 	int startMh = 25;
 	int startMe = 10;
-	int startH = 10;
+	int startReac = 60;
 	int startS = 7;
 	int startR = 1;
 	int startE = 10;
@@ -23,9 +23,10 @@ void Figment::assign_Stats()
 	stats.currhealth = stats.maxhealth;
 	stats.maxenergy = startMe + (startMe * energyX);
 	stats.currenergy = stats.maxenergy;
-	stats.haste = startH + (startH * hasteX);
+	stats.reaction = startReac + (startReac * reactionX);
 	stats.swing = startS + (startS * swingX);
 	stats.resistance = startR + (startR * resistanceX);
+	
 	if (name == "Tank") stats.evasiveness == 0;
 	else stats.evasiveness = startE + (startE * evasivenessX);
 }
@@ -40,7 +41,7 @@ string Figment::chooseType(int t)
 			healthX = -0.25;
 			energyX = 0.0;
 			swingX = -0.25;
-			hasteX = 0.0;
+			reactionX = 0.0;
 			resistanceX = 0.0;
 			evasivenessX = 0.0;
 			return "Hatchling";
@@ -50,7 +51,7 @@ string Figment::chooseType(int t)
 			healthX = 0.0;
 			energyX = 0.0;
 			swingX = 0.0;
-			hasteX = 0.0;
+			reactionX = 0.0;
 			resistanceX = 0.0;
 			evasivenessX = 0.0;
 			return "Normal";
@@ -60,7 +61,7 @@ string Figment::chooseType(int t)
 			healthX = 2.0;
 			energyX = 0.0;
 			swingX = 0.0;
-			hasteX = 0.5;
+			reactionX = 0.5;
 			resistanceX = 1.5;
 			evasivenessX = 0.0;
 			return "Tank";
@@ -70,7 +71,7 @@ string Figment::chooseType(int t)
 			healthX = 1.0;
 			energyX = 1.0;
 			swingX = -0.25;
-			hasteX = 2.0;
+			reactionX = 2.0;
 			resistanceX = 1.0;
 			evasivenessX = 2.0;
 			return "Swarm";
@@ -80,7 +81,7 @@ string Figment::chooseType(int t)
 			healthX = -0.5;
 			energyX = 1.0;
 			swingX = 1.5;
-			hasteX = 1.0;
+			reactionX = 1.0;
 			resistanceX = 1.0;
 			evasivenessX = 1.0;
 			return "Glasser";

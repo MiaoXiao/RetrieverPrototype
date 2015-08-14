@@ -36,7 +36,7 @@ void Character::showall_Stats() const
 	cout << "Current Health: " << stats.get_CurrHealth() << endl;
 	cout << "Max Energy: " << stats.get_MaxEnergy() << endl;
 	cout << "Current Energy: " << stats.get_CurrEnergy() << endl;
-	cout << "Haste: " << stats.get_Haste() << endl;
+	cout << "Reaction: " << stats.get_Reaction() << endl;
 	cout << "Swing: " << stats.get_Swing() << endl;
 	cout << "Resistance: " << stats.get_Resistance() << endl;
 	cout << "Evasiveness: " << stats.get_Evasiveness() << endl << endl;

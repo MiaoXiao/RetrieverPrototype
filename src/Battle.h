@@ -8,7 +8,7 @@
 #include <vector>
 
 //manages and directs character decisions. alters player objects at the end of the battle.
-//manages battle prompts and diolouge
+//manages battle prompts
 class Battle
 {
 	public:
@@ -36,22 +36,28 @@ class Battle
 
 		//multimap of battlelog
 		std::multimap<int, Character*> battlelog;
-	
+		
+		//get gcd of 2 numbers
+		int gcd(int a, int b);
+		
+		//get lcd of 2 numbers
+		int lcd(int a, int b);
+		
+		//get lcd of all possible units' reaction in battle
+		int getall_Lcd(int a, int b, int c, int d, int e, int f, int g, int h);
+		
 		//compare haste between players and figments. assign battlelog of turn order
 		void assign_BattleLog();
 	
 		//make decision in combat, based on current turn
 		void combatDecision(Character* c);
-		
-
 
 		//add loot to player
 		//exp to tylor, exp to liza, digits
 		void add_Loot(const unsigned int expT, const unsigned int expL, const unsigned int digits);
-
 		
-
-		
+		//DEBUG: display complete turn order
+		void show_TurnOrder();
 };
 
 #endif

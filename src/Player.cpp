@@ -28,7 +28,7 @@ void Player::assign_Stats()
 		stats.currhealth = stats.maxhealth;
 		stats.maxenergy = 25;
 		stats.currenergy = stats.maxenergy;
-		stats.haste = 10;
+		stats.reaction = 50;
 		stats.swing = 15;
 		stats.resistance = 15;
 		stats.evasiveness = 10;
@@ -40,7 +40,7 @@ void Player::assign_Stats()
 		stats.currhealth = stats.maxhealth;
 		stats.maxenergy = 25;
 		stats.currenergy = stats.maxenergy;
-		stats.haste = 10;
+		stats.reaction = 50;
 		stats.swing = 20;
 		stats.resistance = 5;
 		stats.evasiveness = 15;
