@@ -76,7 +76,7 @@ void Battle::assign_BattleLog()
 	int reactionvalue = r_t;
 	while (r_t <= entireGCD)
 	{
-		cout << "tylor" << endl;
+		//cout << "tylor" << endl;
 		battlelog.insert(pair<float, Character*>(r_t, p1));
 		r_t += reactionvalue;
 	}
@@ -84,7 +84,7 @@ void Battle::assign_BattleLog()
 	reactionvalue = r_l;
 	while (r_l <= entireGCD)
 	{
-		cout << "liza" << endl;
+		//cout << "liza" << endl;
 		battlelog.insert(pair<int, Character*>(r_l, p2));
 		r_l += reactionvalue;
 	}
@@ -136,7 +136,7 @@ void Battle::assign_BattleLog()
 //make decision in combat based on selected character's turn
 void Battle::combatDecision(Character* c)
 {
-	cout << "It is " << c->get_Name() << "'s turn" << endl;
+	//cout << "It is " << c->get_Name() << "'s turn" << endl;
 	
 	//choice of the player
 	int choice;
@@ -187,19 +187,25 @@ void Battle::combatDecision(Character* c)
 			{
 				cout << c->get_Name() << " swings at " << figmentlist[target].get_Name() << "!" << endl;
 				//check if attack is evaded
-				
-				//calculate damage
-				int d = c->inflict_Damage();
-			
-				cout << figmentlist[target].get_Name() << " takes " << d << " damage!" << endl;
-				figmentlist[target].take_Damage(d);
-				
-				//remove target from battlelog and figmentlist if destroyed
-				if (!figmentlist[target].isAlive)
+				if (figmentlist[target].check_Evasion())
 				{
-					battlelog.erase(target);
-					cout << figmentlist[target].get_Name() << " is defeated!" << endl;
-					figmentlist.erase(figmentlist.begin()+target);
+					cout << figmentlist[target].get_Name() << " evades the attack!" << endl;
+				}
+				else
+				{
+					//calculate damage
+					int d = c->inflict_Damage();
+				
+					cout << figmentlist[target].get_Name() << " takes " << d << " damage!" << endl;
+					figmentlist[target].take_Damage(d);
+					
+					//remove target from battlelog and figmentlist if destroyed
+					if (!figmentlist[target].isAlive)
+					{
+						battlelog.erase(target);
+						cout << figmentlist[target].get_Name() << " is defeated!" << endl;
+						figmentlist.erase(figmentlist.begin()+target);
+					}
 				}
 			}
 				break;

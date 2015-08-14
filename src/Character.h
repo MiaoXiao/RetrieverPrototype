@@ -171,6 +171,9 @@ class Character: public Entity
 		//current level
 		Level level;
 		
+		//returns true if attack is dodged, based on character evasion stat
+		bool check_Evasion() const;
+		
 		//inflict damage
 		int inflict_Damage();
 

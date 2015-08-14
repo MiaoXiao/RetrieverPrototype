@@ -11,7 +11,7 @@ bool Probability::chanceToOccur(const float p)
 		exit(1);
 	}
 	
-	return p >= (((double) rand() / (RAND_MAX)) + 1);
+	return p >= (double) rand() / (RAND_MAX);
 }
 
 //return random number between lower bound and higher bound exclusive

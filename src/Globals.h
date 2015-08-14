@@ -9,7 +9,7 @@ namespace Globals
 		//no stat can go past this cap
 		const int STAT_CAP = 100;
 		//range of all swing attacks
-		const int RANGE = 3;
+		const int RANGE = 5;
 		
 		//level range - up tp lv 9
 		const int LEVELRANGE[20] = 

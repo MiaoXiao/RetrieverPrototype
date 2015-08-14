@@ -7,6 +7,13 @@
 using namespace std;
 
 //--------------------------------------------------------------------PUBLIC--------------------------------------------------------------------//
+//returns true if attack is dodged, based on character evasion stat
+bool Character::check_Evasion() const
+{
+	cout << "dodge: " << stats.get_Evasiveness() * 0.01 << endl;
+	return Probability::chanceToOccur(stats.get_Evasiveness() * 0.01);
+}
+
 //inflict swing damage on target. damage is within range of swing
 int Character::inflict_Damage()
 {
