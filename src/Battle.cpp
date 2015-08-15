@@ -13,7 +13,7 @@ using namespace std;
 bool Battle::start_Battle()
 {
 	assign_BattleLog();
-	show_TurnOrder();
+	//show_TurnOrder();
 	
 	unsigned int turnnumber = 0;
 	while (true)
@@ -70,7 +70,7 @@ void Battle::assign_BattleLog()
 	//get entire gcd
 	const int entireGCD = getall_Lcd(r_t, r_l, r_enemy[0], r_enemy[1], r_enemy[2], r_enemy[3], r_enemy[4], r_enemy[5]);
 	//cout << r_t << " " << r_l << " " << r_enemy[0] << " " << r_enemy[1] << endl;
-	cout << "LCD: " << entireGCD << endl;
+	//cout << "LCD: " << entireGCD << endl;
 	
 	//get all tylor turns
 	int reactionvalue = r_t;
@@ -135,7 +135,7 @@ void Battle::assign_BattleLog()
 
 //make decision in combat based on selected character's turn
 void Battle::combatDecision(Character* c)
-{
+{	
 	cout << "It is " << c->get_Name() << "'s turn" << endl;
 	
 	//choice of the player
@@ -144,6 +144,8 @@ void Battle::combatDecision(Character* c)
 	int target = 0;
 	//sets to true if bad input
 	bool badInput;
+	//change in energy for an action
+	int energychange;
 	
 	//decide if player or enemy turn
 	if (c->isPlayer)
@@ -151,44 +153,61 @@ void Battle::combatDecision(Character* c)
 		//reset back to neutral stance
 		c->status.defending = false;
 		
-		//prompt choice
 		do
 		{
-			badInput = false;
-			
-			cout << "0 to attack, 1 to use ability, 2 to defend, 3 to use item, 4 to run" << endl;
-			cin >> choice;
-			if (choice < 0 && choice > 4)
-			{
-				cout << "Not a valid input, try again" << endl;
-				badInput = true;
-			}
-			else { badInput = false; }
-		} while (badInput);
-		
-		//target selector if swing or ability and battling more than 1 figment
-		if ((choice == Swing || choice == Ability) && figmentlist.size() > 1)
-		{
-			//prompt choose target
+			//prompt choice
 			do
 			{
-				cout << "Choose target between 0 and " << figmentlist.size() - 1 << endl;
-				cin >> target;
-				if (target < 0 || target > figmentlist.size() - 1)
+				badInput = false;
+				
+				cout << "0 to attack, 1 to use ability, 2 to defend, 3 to use item, 4 to wait, 5 to run" << endl;
+				cin >> choice;
+				if (choice < 0 && choice > 4)
 				{
+					cout << "Not a valid input, try again" << endl;
 					badInput = true;
-					cout << "Not a valid target, please enter again" << endl;
 				}
 				else { badInput = false; }
 			} while (badInput);
-		}
+
+			
+			//target selector if swing or ability and battling more than 1 figment
+			if ((choice == Swing || choice == Ability) && figmentlist.size() > 1)
+			{
+				//prompt choose target
+				do
+				{
+					cout << "Choose target between 0 and " << figmentlist.size() - 1 << endl;
+					cin >> target;
+					if (target < 0 || target > figmentlist.size() - 1)
+					{
+						badInput = true;
+						cout << "Not a valid target, please enter again" << endl;
+					}
+					else { badInput = false; }
+				} while (badInput);
+			}
+
+			//get enery change
+			energychange = c->get_EnergyDifference(choice);
+			//check if action is possible with current energy
+			if (c->stats.get_CurrEnergy() + energychange < 0)
+			{
+				cout << "You do not have enough energy to complete this action!" << endl;
+				badInput = true;
+			}
+		} while(badInput);
+		
+		//do energy change
+		c->stats.set_CurrEnergy(c->stats.get_CurrEnergy() + energychange);
 		
 		//run specified action on specified target
 		switch (choice)
 		{
 			case Swing:
-			{
-				cout << c->get_Name() << " swings at " << figmentlist[target].get_Name() << "!" << endl;
+			{	
+				
+				cout << c->get_Name() << " uses " << abs(energychange) << " energy and swings at " << figmentlist[target].get_Name() << "!" << endl;
 				//check if attack is evaded
 				if (figmentlist[target].check_Evasion())
 				{
@@ -241,16 +260,21 @@ void Battle::combatDecision(Character* c)
 				break;
 			case Item:
 				break;
+			case Wait:
+				cout << c->get_Name() << " waits and catches " << c->pronoun << " breath, restoring " << energychange << " energy." << endl;
+				break;
 			 case Run:
+				cout << c->get_Name() << " and company use " << energychange << " energy in an attempt to run away!" << endl;
 				break;
 			default:
 				badInput = true;
 				break;
 		}
-		
-		figmentlist[target].showall_Stats();
-		
 	}
+		c->showall_Stats();
+		//figmentlist[target].showall_Stats();
+		
+	
 }
 
 //add loot to player

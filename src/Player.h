@@ -14,11 +14,12 @@ class Player: public Character
 			digits(0),
 			fullParty(false) {}
 		
-		//CONSTRUCTOR: init instance of playable character
-		Player(std::string n):
+		//CONSTRUCTOR: init instance of playable character and pronoun
+		Player(std::string n, std::string p):
 			digits(0),
 			fullParty(false)
 		{
+			pronoun = p;
 			isPlayer = true;
 			isAlive = true;
 			set_Name(n);

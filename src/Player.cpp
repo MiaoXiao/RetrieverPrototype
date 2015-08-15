@@ -25,6 +25,7 @@ void Player::assign_Stats()
 	//based on name, assign starting stats
 	if (name == "Tylor")
 	{
+		//main stats
 		stats.maxhealth = 50;
 		stats.currhealth = stats.maxhealth;
 		stats.maxenergy = 25;
@@ -33,12 +34,14 @@ void Player::assign_Stats()
 		stats.swing = 15;
 		stats.resistance = 15;
 		stats.evasiveness = 10;
+		//unique stats
 		stats.intelligence = 115;
 		stats.focus = 5;
 		stats.focusmultiplier = 3;
 	}
 	else if (name == "Liza")
 	{
+		//main stats
 		stats.maxhealth = 40;
 		stats.currhealth = stats.maxhealth;
 		stats.maxenergy = 25;
@@ -47,6 +50,7 @@ void Player::assign_Stats()
 		stats.swing = 20;
 		stats.resistance = 5;
 		stats.evasiveness = 15;
+		//unique stats
 		stats.intelligence = 115;
 		stats.focus = 5;
 		stats.focusmultiplier = 3;
@@ -54,6 +58,7 @@ void Player::assign_Stats()
 	else
 	{
 		cerr << "Invalid player name. Exiting." << endl;
+		exit(1);
 	}
 }
 

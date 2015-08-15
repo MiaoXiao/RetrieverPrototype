@@ -28,6 +28,9 @@ class Figment: public Character
 			
 			//exp gained is level times 10
 			level.experience = l * 10;
+			
+			//set pronoun
+			pronoun = "its";
 		}
 
 	private:

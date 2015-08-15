@@ -16,8 +16,8 @@ int main()
 	vector<Figment> figmentlist;
 
 	Player player;
-	Player tylor("Tylor");
-	Player liza("Liza");
+	Player tylor("Tylor", "his");
+	Player liza("Liza", "her");
 
 	Figment f1(1, 1, 0, 0);
 	f1.showall_Stats();

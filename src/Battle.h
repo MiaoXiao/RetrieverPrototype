@@ -24,7 +24,7 @@ class Battle
 		
 	private:
 		//enum for player decisions
-		enum PlayerChoice {Swing, Ability, Defend, Item, Run};
+		enum PlayerChoice {Swing, Ability, Defend, Item, Wait, Run};
 		//enum for target
 		enum Target {Enemy0, Enemy1, Enemy2, Enemy3, Enemy4, Enemy5, All};
 		

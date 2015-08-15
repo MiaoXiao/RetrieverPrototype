@@ -44,7 +44,7 @@ struct Stats
 	//get current health
 	int get_CurrHealth() const {return currhealth;}
 	//set current health
-	void set_CurrHealth(const int v) {currhealth = v;}
+	void set_CurrHealth(const int v) {(v >= 0) ? currhealth = v : currhealth = 0;}
 
 	//get max energy
 	int get_MaxEnergy() const {return maxenergy;}
@@ -54,7 +54,11 @@ struct Stats
 	//get current energy
 	int get_CurrEnergy() const {return currenergy;}
 	//set current energy
-	void set_CurrEnergy(const int v) {currenergy = v;}
+	void set_CurrEnergy(const int v) 
+	{
+		(v >= 0) ? currenergy = v : currenergy = 0;
+		if (currenergy > maxenergy) currenergy = maxenergy;
+	}
 
 	//get reaction
 	int get_Reaction() const {return reaction;}
@@ -181,6 +185,9 @@ class Character: public Entity
 		//set to false if this character is wiped out, destroyed
 		bool isAlive;
 		
+		//pronoun for prompts
+		std::string pronoun;
+		
 		//combat stats
 		Stats stats;
 		//combat abilities
@@ -196,6 +203,8 @@ class Character: public Entity
 		//returns true if attack is dodged, based on character evasion stat
 		bool check_Evasion() const;
 		
+		//get energy change, given an action
+		int get_EnergyDifference(const unsigned int action);
 		
 		//inflict damage
 		int inflict_Damage();

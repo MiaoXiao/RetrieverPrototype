@@ -20,6 +20,29 @@ bool Character::check_Evasion() const
 	return Probability::chanceToOccur(stats.get_Evasiveness() * 0.01);
 }
 
+//get energy change, given an action
+int Character::get_EnergyDifference(const unsigned int action)
+{
+	switch (action)
+	{
+		case 0: //swing
+			return -5;
+		case 1: //ability
+			return 0;
+		case 2: //defend
+			return 0;
+		case 3: //item
+			return 0;
+		case 4: //wait
+			return 10;
+		case 5: //run
+			return -10;
+		default:
+			cerr << "Not a valid action. Exciting" << endl;
+			exit(1);
+	}
+}
+
 //inflict swing damage on target. damage is within range of swing
 int Character::inflict_Damage()
 {

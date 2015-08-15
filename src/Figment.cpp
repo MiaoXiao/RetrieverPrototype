@@ -48,7 +48,7 @@ string Figment::chooseType(int t)
 			break;
 		//normals
 		case 1:
-			healthX = 1.0;
+			healthX = 50.0;
 			energyX = 1.0;
 			swingX = 1.0;
 			reactionX = 1.0;
