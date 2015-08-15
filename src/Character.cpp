@@ -53,9 +53,9 @@ int Character::inflict_Damage()
 //take damage from enemy
 void Character::take_Damage(const int damage)
 {
-	stats.set_CurrHealth(stats.get_CurrHealth() - damage);
-	//if health is brought below 1, change flag
-	if (stats.get_CurrHealth() < 1) { isAlive = false; }
+	stats.change_CurrHealth(-damage);
+	//if currhealth is 0 or below, character is defeated
+	if (stats.get_CurrHealth() <= 0) isAlive = false;
 }
 
 //if enemy is defending, apply percentage of damage done back to the attacker.
@@ -68,7 +68,7 @@ void Character::take_Retaliation(const int damage, const float enemyreflect)
 	}
 	
 	//sets current health
-	stats.set_CurrHealth(stats.get_CurrHealth() - (damage * enemyreflect));
+	stats.change_CurrHealth(-(damage * enemyreflect));
 }
 
 //inflict ability 
