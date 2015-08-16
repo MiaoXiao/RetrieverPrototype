@@ -26,6 +26,8 @@ class Battle
 		bool start_Battle();
 		
 	private:
+		//enum for different battle menus
+		enum State {ChooseAction_S, ChooseTarget_S, ChooseAbility_S, ChooseItem_S, Prompt_S, Done_S};
 		//enum for player decisions
 		enum PlayerChoice {Swing, Ability, Defend, Item, Wait, Run};
 		//enum for target
@@ -56,7 +58,22 @@ class Battle
 		
 		//compare haste between players and figments. assign battlelog of turn order
 		void assign_BattleLog();
-	
+		
+		//choose action menu
+		void chooseAction_State(int &state, int &lastaction);
+		
+		//choose target menu
+		int chooseTarget_State(int &state, int &lastaction);
+		
+		//choose ability menu
+		void chooseAbility_State(int &state, int &lastaction);
+		
+		//choose item menu
+		void chooseItem_State(int &state, int &lastaction);
+		
+		//calculate outcome menu
+		void prompt_State(int lastaction, int target, Character* c);
+		
 		//make decision in combat, based on current turn
 		void combatDecision(Character* c);
 

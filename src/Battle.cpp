@@ -133,80 +133,107 @@ void Battle::assign_BattleLog()
 	}
 }
 
-//make decision in combat based on selected character's turn
-void Battle::combatDecision(Character* c)
-{	
-	cout << "It is " << c->get_Name() << "'s turn" << endl;
-	
-	//choice of the player
+//choose action menu
+void Battle::chooseAction_State(int &state, int &lastaction)
+{
 	int choice;
-	//target of player/figment. default is 0
-	int target = 0;
-	//sets to true if bad input
-	bool badInput;
-	//change in energy for an action
-	int energychange;
-	
-	//decide if player or enemy turn
-	if (c->isPlayer)
+	cout << "0 to attack, 1 to use ability, 2 to defend, 3 to use item, 4 to wait, 5 to run" << endl;
+	cin >> choice;
+	if (choice < 0 && choice > 5)
 	{
-		//reset back to neutral stance
-		c->status.set_Defense(false);
-		
-		do
-		{
-			//prompt choice
-			do
-			{
-				badInput = false;
-				
-				cout << "0 to attack, 1 to use ability, 2 to defend, 3 to use item, 4 to wait, 5 to run" << endl;
-				cin >> choice;
-				if (choice < 0 && choice > 4)
-				{
-					cout << "Not a valid input, try again" << endl;
-					badInput = true;
-				}
-				else { badInput = false; }
-			} while (badInput);
-
-			
-			//target selector if swing or ability and battling more than 1 figment
-			if ((choice == Swing || choice == Ability) && figmentlist.size() > 1)
-			{
-				//prompt choose target
-				do
-				{
-					cout << "Choose target between 0 and " << figmentlist.size() - 1 << endl;
-					cin >> target;
-					if (target < 0 || target > figmentlist.size() - 1)
-					{
-						badInput = true;
-						cout << "Not a valid target, please enter again" << endl;
-					}
-					else { badInput = false; }
-				} while (badInput);
-			}
-
-			//get enery change
-			energychange = c->get_EnergyDifference(choice);
-			//check if action is possible with current energy
-			if (c->stats.get_CurrEnergy() + energychange < 0)
-			{
-				cout << "You do not have enough energy to complete this action!" << endl;
-				badInput = true;
-			}
-		} while(badInput);
-		
-		//do energy change
-		c->stats.set_CurrEnergy(c->stats.get_CurrEnergy() + energychange);
-		
-		//run specified action on specified target
-		switch (choice)
+		cout << "Not a valid input, try again." << endl;
+		state = ChooseAction_S;
+	}
+	else
+	{
+		switch(choice)
 		{
 			case Swing:
-			{	
-				
+				if (figmentlist.size() > 1) state = ChooseTarget_S;
+				else state = Prompt_S;
+				lastaction = Swing;
+				break;
+			case Ability:
+				state = ChooseAbility_S;
+				lastaction = Ability;
+				break;
+			case Defend:
+				state = Prompt_S;
+				lastaction = Defend;
+				break;
+			case Item:
+				state = ChooseItem_S;
+				lastaction = Item;
+				break;
+			case Wait:
+				state = Prompt_S;
+				lastaction = Wait;
+				break;
+			case Run:
+				state = Prompt_S;
+				lastaction = Run;
+				break;
+			default:
+				cout << "ChooseAction state error. Exiting" << endl;
+				exit(1);
+				break;
+		}
+	}
+}
+
+//choose target menu
+int Battle::chooseTarget_State(int &state, int &lastaction)
+{
+		int choice;
+		//target of player/figment.
+		int target;
+		//prompt choose target
+		cout << "Choose target between 0 and " << figmentlist.size() - 1 << endl;
+		cin >> target;
+		if (target < 0 || target > figmentlist.size() - 1)
+		{
+			cout << "Not a valid target, please enter again." << endl;
+			state = ChooseTarget_S;
+		}
+		else state = Prompt_S;
+		lastaction = Swing;
+		
+		return target;
+}
+
+//choose ability menu
+void Battle::chooseAbility_State(int &state, int &lastaction)
+{
+	lastaction = Ability;
+	state = Prompt_S;
+}
+
+//choose item menu
+void Battle::chooseItem_State(int &state, int &lastaction)
+{
+	lastaction = Item;
+	state = Prompt_S;
+}
+
+//calculate outcome menu
+void Battle::prompt_State(int lastaction, int target, Character* c)
+{
+	//get energy change
+	int energychange = c->get_EnergyDifference(lastaction);
+	//check if action is possible with current energy
+	if (c->stats.get_CurrEnergy() + energychange < 0)
+	{
+		cout << "You do not have enough energy to complete this action!" << endl;
+	}
+	
+	//do energy change
+	c->stats.set_CurrEnergy(c->stats.get_CurrEnergy() + energychange);
+	
+	//based on last prompt, calculate action and display prompts
+	switch (lastaction)
+	{
+		case Swing:
+		{
 				cout << c->get_Name() << " uses " << abs(energychange) << " energy and swings at " << figmentlist[target].get_Name() << "!" << endl;
 				//check if attack is evaded
 				if (figmentlist[target].check_Evasion())
@@ -250,37 +277,80 @@ void Battle::combatDecision(Character* c)
 						figmentlist.erase(figmentlist.begin()+target);
 					}
 				}
-			}
-				break;
-			case Ability:
-				break;
-			 case Defend:
-				c->status.set_Defense(true);
-				cout << c->get_Name() << " forms a defensive stance." << endl;
-				break;
-			case Item:
-				break;
-			case Wait:
-				cout << c->get_Name() << " waits and catches " << c->pronoun << " breath, restoring " << energychange << " energy." << endl;
-				break;
-			 case Run:
-				cout << c->get_Name() << " and company use " << abs(energychange) << " energy in an attempt to run away!" << endl;
-				if (Probability::chanceToOccur(Globals::RUNPROBABILITY))
-				{
-					cout << "Run was successful!" << endl;
-					runsuccessful = true;
-				}
-				else cout << "Running was not successful!" << endl;
-				break;
-			default:
-				badInput = true;
 				break;
 		}
+		case Ability:
+			break;
+		case Defend:
+			c->status.set_Defense(true);
+			cout << c->get_Name() << " forms a defensive stance." << endl;
+			break;
+		case Item:
+		case Wait:
+			cout << c->get_Name() << " waits and catches " << c->pronoun << " breath, restoring " << energychange << " energy." << endl;
+			break;
+		case Run:
+			cout << c->get_Name() << " and company use " << abs(energychange) << " energy in an attempt to run away!" << endl;
+			if (Probability::chanceToOccur(Globals::RUNPROBABILITY))
+			{
+				cout << "Run was successful!" << endl;
+				runsuccessful = true;
+			}
+			else cout << "Running was not successful!" << endl;
+			break;
 	}
-		c->showall_Stats();
-		//figmentlist[target].showall_Stats();
-		
+}
+
+//make decision in combat based on selected character's turn
+void Battle::combatDecision(Character* c)
+{	
+	cout << "It is " << c->get_Name() << "'s turn" << endl;
 	
+	//default target;
+	int target = 0;
+	//change in energy for an action
+	int energychange;
+	//whether turn is over  or not
+	bool nextturn = false;
+	//current state, set initial state
+	int state = ChooseAction_S;
+	//last action - used for determining what prompt to use
+	int lastaction;
+	
+	//decide if player or enemy turn
+	if (c->isPlayer)
+	{
+		//reset back to neutral stance
+		c->status.set_Defense(false);
+		
+		//used to transition between different menus during a battle
+		while (!nextturn)
+		{
+			switch (state)
+			{
+					case ChooseAction_S:
+						chooseAction_State(state, lastaction);
+						break;
+					case ChooseTarget_S:
+						target = chooseTarget_State(state, lastaction);
+						break;
+					case ChooseAbility_S:
+						chooseAbility_State(state, lastaction);
+						break;
+					case ChooseItem_S:
+						chooseItem_State(state, lastaction);
+						break;
+					case Prompt_S:
+						prompt_State(lastaction, target, c);
+						nextturn = true;
+						break;
+			}
+		}
+	}
+	
+	c->showall_Stats();
+	//figmentlist[target].showall_Stats();
+		
 }
 
 //add loot to player
