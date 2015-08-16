@@ -13,7 +13,6 @@ using namespace std;
 bool Battle::start_Battle()
 {
 	assign_BattleLog();
-	//show_TurnOrder();
 	
 	unsigned int turnnumber = 0;
 	while (true)

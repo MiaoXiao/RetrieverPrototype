@@ -20,7 +20,7 @@ int main()
 	Player tylor(statpath + "p0_stats");
 	Player liza(statpath + "p1_stats");
 
-	Figment f1(statpath + "e1_stats", 1, 0, 0);
+	Figment f1(statpath + "e2_stats", 1, 0, 0);
 	//f1.showall_Stats();
 	cout << endl;
 	

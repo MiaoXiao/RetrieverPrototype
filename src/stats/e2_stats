@@ -3,6 +3,6 @@ gender i
 healthX 2.5
 energyX 1.0
 swingX 1.0
-reactionX 0.5
+reactionX -0.5
 resistanceX 1.5
 evasivenessX 0.0

@@ -52,32 +52,32 @@ void Figment::assign_StartInfo(string filename)
 		if (info == "healthX")
 		{
 			f >> info;
-			healthX = atoi(info.c_str());
+			healthX = atof(info.c_str());
 		}
 		else if (info == "energyX") 
 		{
 			f >> info;
-			energyX = atoi(info.c_str());
+			energyX = atof(info.c_str());
 		}
 		else if (info == "swingX")  
 		{
 			f >> info;
-			swingX = atoi(info.c_str());
+			swingX = atof(info.c_str());
 		}
 		else if (info == "reactionX") 
 		{
 			f >> info;
-			reactionX = atoi(info.c_str());
+			reactionX = atof(info.c_str());
 		}
 		else if (info == "resistanceX") 
 		{
 			f >> info;
-			resistanceX = atoi(info.c_str());
+			resistanceX = atof(info.c_str());
 		}
 		else if (info == "evasivenessX") 
 		{
 			f >> info;
-			evasivenessX = atoi(info.c_str());
+			evasivenessX = atof(info.c_str());
 		}
 		else 
 		{
@@ -94,7 +94,7 @@ void Figment::assign_StartInfo(string filename)
 	stats.set_CurrHealth(stats.get_MaxHealth());
 	stats.set_MaxEnergy(Enemy::STARTME * energyX);
 	stats.set_CurrEnergy(stats.get_MaxEnergy());
-	stats.set_Reaction(Enemy::STARTREAC * reactionX);
+	stats.set_Reaction(Enemy::STARTREAC + -(Enemy::STARTREAC * reactionX));
 	stats.set_Swing(Enemy::STARTS * swingX);
 	stats.set_Resistance(Enemy::STARTR * resistanceX);
 	stats.set_Evasiveness(Enemy::STARTE * evasivenessX); 

@@ -3,6 +3,7 @@
 
 #include "Character.h"
 
+#include <iostream>
 #include <map>
 #include <string>
 
@@ -22,7 +23,7 @@ class Figment: public Character
 		
 			//assign starting stats
 			assign_StartInfo(fn);
-			
+				
 			//set level
 			level.set_Level(l);
 			//exp gained is level times 10
