@@ -1,4 +1,5 @@
 #include "Figment.h"
+#include "Globals.h"
 
 using namespace std;
 
@@ -88,25 +89,17 @@ void Figment::assign_Stats(string filename)
 	}
 	f.close();
 	
-	//base values for level 1 figments
-	int startMh = 25;
-	int startMe = 10;
-	int startReac = 60;
-	int startS = 7;
-	int startR = 1;
-	int startE = 5;
-	
 	//FIX ME: levels currently have no effect
-	stats.maxhealth = (startMh * healthX);
+	stats.maxhealth = (Enemy::STARTMH * healthX);
 	stats.currhealth = stats.maxhealth;
-	stats.maxenergy = (startMe * energyX);
+	stats.maxenergy = (Enemy::STARTME * energyX);
 	stats.currenergy = stats.maxenergy;
-	stats.reaction = (startReac * reactionX);
-	stats.swing = (startS * swingX);
-	stats.resistance = (startR * resistanceX);
+	stats.reaction = (Enemy::STARTREAC * reactionX);
+	stats.swing = (Enemy::STARTS * swingX);
+	stats.resistance = (Enemy::STARTR * resistanceX);
 	
 	if (name == "Tank") stats.evasiveness = 0;
-	else stats.evasiveness = startE + (startE * evasivenessX); 
+	else stats.evasiveness = (Enemy::STARTE * evasivenessX); 
 	
 	showall_Stats();
 }

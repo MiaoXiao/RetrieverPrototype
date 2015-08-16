@@ -18,6 +18,17 @@ namespace Globals
 		{0, 50, 100, 200, 400, 800, 1600, 2400, 4800};
 }
 
+namespace Enemy
+{
+	//base values for level 1 figments
+	const int STARTMH = 25;
+	const int STARTME = 10;
+	const int STARTREAC = 60;
+	const int STARTS = 7;
+	const int STARTR = 1;
+	const int STARTE = 5;
+}
+
 namespace Probability
 {
 	//will return true given probability, given number between 0 - 1
