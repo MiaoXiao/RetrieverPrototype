@@ -225,17 +225,14 @@ void Battle::checkEnergy_State(int &state, int lastaction, int &energychange, Ch
 		//reset to default
 		energychange = 0;
 	}
-	else
-	{
-		//calculate energy addition/reduction for character
-		c->stats.set_CurrEnergy(c->stats.get_CurrEnergy() + energychange);
-		state = Prompt_S;
-	}
+	else state = Prompt_S;
 }
 
 //outcome menu
 void Battle::prompt_State(int lastaction, int target, int energychange, Character* c)
 {
+	//calculate energy addition/reduction for character
+	c->stats.set_CurrEnergy(c->stats.get_CurrEnergy() + energychange);
 	//based on last prompt, calculate action and display prompts
 	switch (lastaction)
 	{
