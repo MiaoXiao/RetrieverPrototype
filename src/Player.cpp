@@ -7,22 +7,34 @@
 using namespace std;
 
 //--------------------------------------------------------------------PUBLIC--------------------------------------------------------------------//
-//current money set
-void Player::set_Digits(const int v) {digits = v;}
 //current money get
 int Player::get_Digits() const {return digits;}
+//current money set to v
+void Player::set_Digits(const unsigned int v) {digits = v;}
+//change current funds by addving v to digits
+void Player::change_Digits(const int v)
+{
+	if (v + digits < 0) digits = 0;
+	else set_Digits(v + digits);
+}
 
-//set enemy point score
-void Player::set_Eps(const int v) {eps = v;}
 //get enemy point score
 int Player::get_Eps() const {return eps;}
+//set enemy point score to v
+void Player::set_Eps(const unsigned int v) {eps = v;}
+//change current funds by addving v to digits
+void Player::change_Eps(const int v)
+{
+	if (v + eps < 0) eps = 0;
+	else set_Eps(v + eps);
+}
 
 //--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//
 
 //--------------------------------------------------------------------PRIVATE--------------------------------------------------------------------//
 
-//assign starting stats to player character
-void Player::assign_Stats(string filename)
+//assign starting stats and other information for a character
+void Player::assign_StartInfo(string filename)
 {
 	fstream f;
 	//info from stream

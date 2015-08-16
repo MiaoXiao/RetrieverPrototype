@@ -152,7 +152,7 @@ void Battle::combatDecision(Character* c)
 	if (c->isPlayer)
 	{
 		//reset back to neutral stance
-		c->status.defending = false;
+		c->status.set_Defense(false);
 		
 		do
 		{
@@ -227,7 +227,7 @@ void Battle::combatDecision(Character* c)
 					}
 					
 					//check if enemy was defending
-					if (figmentlist[target].status.defending)
+					if (figmentlist[target].status.get_Defense())
 					{
 						int rp = figmentlist[target].stats.get_ReflectPercentage();
 						c->take_Retaliation(d, rp);
@@ -256,7 +256,7 @@ void Battle::combatDecision(Character* c)
 			case Ability:
 				break;
 			 case Defend:
-				c->status.defending = true;
+				c->status.set_Defense(true);
 				cout << c->get_Name() << " forms a defensive stance." << endl;
 				break;
 			case Item:
@@ -290,13 +290,13 @@ void Battle::add_Loot(const unsigned int expT, const unsigned int expL, const un
 {
 	if (p1->isAlive)
 	{
-		p1->level.experience += expT;
+		p1->level.change_Level(expT);
 	}
 	if (p2->isAlive)
 	{
-		p2->level.experience += expL;		
+		p2->level.change_Experience(expL);		
 	}
-	p->set_Digits(p->get_Digits() + digits);
+	p->change_Digits(digits);
 }
 
 //DEBUG: display complete turn order for one cycle

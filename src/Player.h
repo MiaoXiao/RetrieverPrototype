@@ -23,18 +23,22 @@ class Player: public Character
 			isPlayer = true;
 			isAlive = true;
 			
-			assign_Stats(fn);
+			assign_StartInfo(fn);
 		}
 		
-		//set current funds
-		void set_Digits(const int v);
 		//get current funds
 		int get_Digits() const;
+		//set current funds to v
+		void set_Digits(const unsigned int v);
+		//change current funds by addving v to digits
+		void change_Digits(const int v);
 		
-		//set enemy point score
-		void set_Eps(const int v);
 		//get enemy point score
 		int get_Eps() const;
+		//set enemy point score to v
+		void set_Eps(const unsigned int v);
+		//change current eps by addving v to eps
+		void change_Eps(const int v);
 
 	private:
 		//current funds
@@ -44,8 +48,8 @@ class Player: public Character
 		//set to true if both party members are active. set to false if only Tylor is active
 		bool fullParty;
 		
-		//assign starting stats
-		void assign_Stats(std::string filename);
+		//assign starting stats and other information for a character
+		void assign_StartInfo(std::string filename);
 };
 
 #endif

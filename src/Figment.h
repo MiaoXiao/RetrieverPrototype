@@ -21,12 +21,12 @@ class Figment: public Character
 			isAlive = true;
 		
 			//assign starting stats
-			assign_Stats(fn);
+			assign_StartInfo(fn);
 			
 			//set level
-			level.level = l;
+			level.set_Level(l);
 			//exp gained is level times 10
-			level.experience = l * 10;
+			level.set_Experience(l * 10);
 		}
 
 	private:
@@ -50,8 +50,8 @@ class Figment: public Character
 		//Eevasiveness multiplier
 		float evasivenessX;
 		
-		//assign starting stats
-		void assign_Stats(std::string filename);
+		//assign starting stats and other information for a character
+		void assign_StartInfo(std::string filename);
 };
 
 #endif

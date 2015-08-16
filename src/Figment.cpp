@@ -8,8 +8,8 @@ using namespace std;
 //--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//
 
 //--------------------------------------------------------------------PRIVATE--------------------------------------------------------------------//
-//assign starting stats based on parameters and enemy type
-void Figment::assign_Stats(string filename)
+//assign starting stats and other information for a character
+void Figment::assign_StartInfo(string filename)
 {
 	fstream f;
 	//info from stream
@@ -90,16 +90,14 @@ void Figment::assign_Stats(string filename)
 	f.close();
 	
 	//FIX ME: levels currently have no effect
-	stats.maxhealth = (Enemy::STARTMH * healthX);
-	stats.currhealth = stats.maxhealth;
-	stats.maxenergy = (Enemy::STARTME * energyX);
-	stats.currenergy = stats.maxenergy;
-	stats.reaction = (Enemy::STARTREAC * reactionX);
-	stats.swing = (Enemy::STARTS * swingX);
-	stats.resistance = (Enemy::STARTR * resistanceX);
-	
-	if (name == "Tank") stats.evasiveness = 0;
-	else stats.evasiveness = (Enemy::STARTE * evasivenessX); 
+	stats.set_MaxHealth(Enemy::STARTMH * healthX);
+	stats.set_CurrHealth(stats.get_MaxHealth());
+	stats.set_MaxEnergy(Enemy::STARTME * energyX);
+	stats.set_CurrEnergy(stats.get_MaxEnergy());
+	stats.set_Reaction(Enemy::STARTREAC * reactionX);
+	stats.set_Swing(Enemy::STARTS * swingX);
+	stats.set_Resistance(Enemy::STARTR * resistanceX);
+	stats.set_Evasiveness(Enemy::STARTE * evasivenessX); 
 	
 	showall_Stats();
 }
