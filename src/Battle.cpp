@@ -23,9 +23,10 @@ bool Battle::start_Battle()
 			cout << "Turn Number: " << turnnumber << endl;
 			combatDecision((*it).second);
 			
-			//battle is finished if no figments left in battle, or both tylor and liza are wiped out
+			//battle is finished if no figments left in battle, or both tylor and liza are wiped out, or players succesfully run
 			if (figmentlist.empty()) return true;
 			else if (p1->isAlive == false && p2->isAlive == false) return false;
+			else if (runsuccessful) return true;
 			turnnumber++;
 		}
 	}
@@ -264,7 +265,13 @@ void Battle::combatDecision(Character* c)
 				cout << c->get_Name() << " waits and catches " << c->pronoun << " breath, restoring " << energychange << " energy." << endl;
 				break;
 			 case Run:
-				cout << c->get_Name() << " and company use " << energychange << " energy in an attempt to run away!" << endl;
+				cout << c->get_Name() << " and company use " << abs(energychange) << " energy in an attempt to run away!" << endl;
+				if (Probability::chanceToOccur(Globals::RUNPROBABILITY))
+				{
+					cout << "Run was successful!" << endl;
+					runsuccessful = true;
+				}
+				else cout << "Running was not successful!" << endl;
 				break;
 			default:
 				badInput = true;

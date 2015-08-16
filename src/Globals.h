@@ -10,6 +10,8 @@ namespace Globals
 		const int STAT_CAP = 100;
 		//range of all swing attacks
 		const int RANGE = 5;
+		//probability to run
+		const float RUNPROBABILITY = 0.2;
 		
 		//level range - up tp lv 9
 		const int LEVELRANGE[20] = 

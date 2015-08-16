@@ -17,9 +17,9 @@ class Battle
 			p(p),
 			p1(p1),
 			p2(p2),
-			figmentlist(figmentlist) { }
+			figmentlist(figmentlist) { runsuccessful = false; }
 
-		//begin battle. return true if player wins
+		//begin battle. return true if player wins or escapes
 		bool start_Battle();
 		
 	private:
@@ -28,10 +28,15 @@ class Battle
 		//enum for target
 		enum Target {Enemy0, Enemy1, Enemy2, Enemy3, Enemy4, Enemy5, All};
 		
+		//set to true if player succesfully runs
+		bool runsuccessful;
+		
+		//player references
 		Player* p;		
 		Player* p1;
 		Player* p2;
 		
+		//list of all figments in battle
 		std::vector<Figment> figmentlist;		
 
 		//multimap of battlelog
