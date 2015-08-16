@@ -149,8 +149,7 @@ void Battle::chooseAction_State(int &state, int &lastaction)
 		switch(choice)
 		{
 			case Swing:
-				if (figmentlist.size() > 1) state = ChooseTarget_S;
-				else state = Prompt_S;
+				state = CheckEnergy_S;
 				lastaction = Swing;
 				break;
 			case Ability:
@@ -158,7 +157,7 @@ void Battle::chooseAction_State(int &state, int &lastaction)
 				lastaction = Ability;
 				break;
 			case Defend:
-				state = Prompt_S;
+				state = CheckEnergy_S;
 				lastaction = Defend;
 				break;
 			case Item:
@@ -166,11 +165,11 @@ void Battle::chooseAction_State(int &state, int &lastaction)
 				lastaction = Item;
 				break;
 			case Wait:
-				state = Prompt_S;
+				state = CheckEnergy_S;
 				lastaction = Wait;
 				break;
 			case Run:
-				state = Prompt_S;
+				state = CheckEnergy_S;
 				lastaction = Run;
 				break;
 			default:
@@ -182,11 +181,9 @@ void Battle::chooseAction_State(int &state, int &lastaction)
 }
 
 //choose target menu
-int Battle::chooseTarget_State(int &state, int &lastaction)
+void Battle::chooseTarget_State(int &state, int &lastaction, int &target)
 {
 		int choice;
-		//target of player/figment.
-		int target;
 		//prompt choose target
 		cout << "Choose target between 0 and " << figmentlist.size() - 1 << endl;
 		cin >> target;
@@ -194,11 +191,11 @@ int Battle::chooseTarget_State(int &state, int &lastaction)
 		{
 			cout << "Not a valid target, please enter again." << endl;
 			state = ChooseTarget_S;
+			//reset target to default
+			target = 0;
 		}
 		else state = Prompt_S;
 		lastaction = Swing;
-		
-		return target;
 }
 
 //choose ability menu
@@ -215,20 +212,30 @@ void Battle::chooseItem_State(int &state, int &lastaction)
 	state = Prompt_S;
 }
 
-//calculate outcome menu
-void Battle::prompt_State(int lastaction, int target, Character* c)
+//calculate energy, check if action is possible. if not, go back to choose action.
+void Battle::checkEnergy_State(int &state, int lastaction, int &energychange, Character *c)
 {
 	//get energy change
-	int energychange = c->get_EnergyDifference(lastaction);
+	energychange = c->get_EnergyDifference(lastaction);
 	//check if action is possible with current energy
 	if (c->stats.get_CurrEnergy() + energychange < 0)
 	{
 		cout << "You do not have enough energy to complete this action!" << endl;
+		state = ChooseAction_S;
+		//reset to default
+		energychange = 0;
 	}
-	
-	//do energy change
-	c->stats.set_CurrEnergy(c->stats.get_CurrEnergy() + energychange);
-	
+	else
+	{
+		//calculate energy addition/reduction for character
+		c->stats.set_CurrEnergy(c->stats.get_CurrEnergy() + energychange);
+		state = Prompt_S;
+	}
+}
+
+//outcome menu
+void Battle::prompt_State(int lastaction, int target, int energychange, Character* c)
+{
 	//based on last prompt, calculate action and display prompts
 	switch (lastaction)
 	{
@@ -309,7 +316,7 @@ void Battle::combatDecision(Character* c)
 	//default target;
 	int target = 0;
 	//change in energy for an action
-	int energychange;
+	int energychange = 0;
 	//whether turn is over  or not
 	bool nextturn = false;
 	//current state, set initial state
@@ -332,7 +339,7 @@ void Battle::combatDecision(Character* c)
 						chooseAction_State(state, lastaction);
 						break;
 					case ChooseTarget_S:
-						target = chooseTarget_State(state, lastaction);
+						chooseTarget_State(state, lastaction, target);
 						break;
 					case ChooseAbility_S:
 						chooseAbility_State(state, lastaction);
@@ -340,8 +347,11 @@ void Battle::combatDecision(Character* c)
 					case ChooseItem_S:
 						chooseItem_State(state, lastaction);
 						break;
+					case CheckEnergy_S:
+						checkEnergy_State(state, lastaction, energychange, c);
+						break;
 					case Prompt_S:
-						prompt_State(lastaction, target, c);
+						prompt_State(lastaction, target, energychange, c);
 						nextturn = true;
 						break;
 			}

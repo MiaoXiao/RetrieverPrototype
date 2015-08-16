@@ -27,7 +27,7 @@ class Battle
 		
 	private:
 		//enum for different battle menus
-		enum State {ChooseAction_S, ChooseTarget_S, ChooseAbility_S, ChooseItem_S, Prompt_S, Done_S};
+		enum State {ChooseAction_S, ChooseTarget_S, ChooseAbility_S, ChooseItem_S, CheckEnergy_S, Prompt_S, Done_S};
 		//enum for player decisions
 		enum PlayerChoice {Swing, Ability, Defend, Item, Wait, Run};
 		//enum for target
@@ -63,7 +63,7 @@ class Battle
 		void chooseAction_State(int &state, int &lastaction);
 		
 		//choose target menu
-		int chooseTarget_State(int &state, int &lastaction);
+		void chooseTarget_State(int &state, int &lastaction, int &target);
 		
 		//choose ability menu
 		void chooseAbility_State(int &state, int &lastaction);
@@ -71,8 +71,11 @@ class Battle
 		//choose item menu
 		void chooseItem_State(int &state, int &lastaction);
 		
+		//calculate energy, check if action is possible. if not, go back to choose action.
+		void checkEnergy_State(int &state, int lastaction, int &energychange, Character *c);
+		
 		//calculate outcome menu
-		void prompt_State(int lastaction, int target, Character* c);
+		void prompt_State(int lastaction, int target, int energychange, Character* c);
 		
 		//make decision in combat, based on current turn
 		void combatDecision(Character* c);
