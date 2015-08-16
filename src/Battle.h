@@ -17,7 +17,10 @@ class Battle
 			p(p),
 			p1(p1),
 			p2(p2),
-			figmentlist(figmentlist) { runsuccessful = false; }
+			figmentlist(figmentlist) 
+		{ 
+			runsuccessful = false;
+		}
 
 		//begin battle. return true if player wins or escapes
 		bool start_Battle();

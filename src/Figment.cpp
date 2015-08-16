@@ -7,101 +7,106 @@ using namespace std;
 //--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//
 
 //--------------------------------------------------------------------PRIVATE--------------------------------------------------------------------//
-//assign starting stats based on parameters
-void Figment::assign_Stats()
+//assign starting stats based on parameters and enemy type
+void Figment::assign_Stats(string filename)
 {
+	fstream f;
+	//info from stream
+	string info;
+	
+	//open file based on type
+	f.open(filename.c_str());
+	if (!f.is_open())
+	{
+		cout << "File could not be opened. Exiting." << endl;
+		exit(1);
+	}
+	
+	//get name of character
+	f >> info;
+	set_Name(info);
+	
+	f >> info;
+	if (info != "gender")
+	{
+		cout << "Must have gender category. Exiting." << endl;
+		exit(1);
+	}
+	f >> info;
+	//get gender
+	if (info == "m") pronoun = "his";
+	else if (info == "f") pronoun = "her";
+	else if (info == "i") pronoun = "its";
+	else 
+	{
+		cout << "Not a valid gender. (m, f, i). Exiting." << endl; 
+		exit(1);
+	}
+	
+	f >> info;
+	//cout << "looking at stat: " << info << endl;
+	//keep searching until end of file
+	while (!f.eof())
+	{
+		if (info == "healthX")
+		{
+			f >> info;
+			healthX = atoi(info.c_str());
+		}
+		else if (info == "energyX") 
+		{
+			f >> info;
+			energyX = atoi(info.c_str());
+		}
+		else if (info == "swingX")  
+		{
+			f >> info;
+			swingX = atoi(info.c_str());
+		}
+		else if (info == "reactionX") 
+		{
+			f >> info;
+			reactionX = atoi(info.c_str());
+		}
+		else if (info == "resistanceX") 
+		{
+			f >> info;
+			resistanceX = atoi(info.c_str());
+		}
+		else if (info == "evasivenessX") 
+		{
+			f >> info;
+			evasivenessX = atoi(info.c_str());
+		}
+		else 
+		{
+			cout << "Invalid stat. Exiting." << endl; 
+			exit(1);
+		}
+		//move onto next stat
+		f >> info;
+	}
+	f.close();
+	
 	//base values for level 1 figments
 	int startMh = 25;
 	int startMe = 10;
 	int startReac = 60;
 	int startS = 7;
 	int startR = 1;
-	int startE = 10;
-
+	int startE = 5;
+	
 	//FIX ME: levels currently have no effect
-	stats.maxhealth = startMh + (startMh * healthX);
+	stats.maxhealth = (startMh * healthX);
 	stats.currhealth = stats.maxhealth;
-	stats.maxenergy = startMe + (startMe * energyX);
+	stats.maxenergy = (startMe * energyX);
 	stats.currenergy = stats.maxenergy;
-	stats.reaction = startReac + (startReac * reactionX);
-	stats.swing = startS + (startS * swingX);
-	stats.resistance = startR + (startR * resistanceX);
+	stats.reaction = (startReac * reactionX);
+	stats.swing = (startS * swingX);
+	stats.resistance = (startR * resistanceX);
 	
 	if (name == "Tank") stats.evasiveness = 0;
-	else stats.evasiveness = startE + (startE * evasivenessX);
-}
-
-//HELPER FUNCTION: changes attribute multipliers of figment based on type. return figment type
-string Figment::chooseType(int t)
-{
-	switch (t)
-	{
-		//hatchlings
-		case 0:
-			healthX = -0.25;
-			energyX = 1.0;
-			swingX = -0.25;
-			reactionX = 1.0;
-			resistanceX = 1.0;
-			evasivenessX = 1.0;
-			return "Hatchling";
-			break;
-		//normals
-		case 1:
-			healthX = 50.0;
-			energyX = 1.0;
-			swingX = 1.0;
-			reactionX = 1.0;
-			resistanceX = 1.0;
-			evasivenessX = 1.0;
-			return "Normal";
-			break;
-		//tanks
-		case 2:
-			healthX = 2.0;
-			energyX = 1.0;
-			swingX = 1.0;
-			reactionX = 0.5;
-			resistanceX = 1.5;
-			evasivenessX = 1.0;
-			return "Tank";
-			break;
-		//swarms
-		case 3:
-			healthX = 1.0;
-			energyX = 1.0;
-			swingX = -0.25;
-			reactionX = 2.0;
-			resistanceX = 1.0;
-			evasivenessX = 2.0;
-			return "Swarm";
-			break;
-		//glassers
-		case 4:
-			healthX = -0.5;
-			energyX = 1.0;
-			swingX = 1.5;
-			reactionX = 1.0;
-			resistanceX = 1.0;
-			evasivenessX = 1.0;
-			return "Glasser";
-			break;
-		//buddies
-		case 5:
-			break;
-		//relics
-		case 6:
-			break;
-		//flamers
-		case 7:
-			break;
-		//fingers
-		case 8:
-			break;
-		//shifters
-		case 9:
-			break;
-		default:
-			break;
-	}
+	else stats.evasiveness = startE + (startE * evasivenessX); 
+	
+	showall_Stats();
 }

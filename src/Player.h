@@ -4,6 +4,7 @@
 #include "Character.h"
 
 #include <string>
+#include <fstream>
 
 //The Player is the instance that the game-player controls.
 class Player: public Character
@@ -15,15 +16,14 @@ class Player: public Character
 			fullParty(false) {}
 		
 		//CONSTRUCTOR: init instance of playable character and pronoun
-		Player(std::string n, std::string p):
+		Player(std::string fn):
 			digits(0),
 			fullParty(false)
 		{
-			pronoun = p;
 			isPlayer = true;
 			isAlive = true;
-			set_Name(n);
-			assign_Stats();
+			
+			assign_Stats(fn);
 		}
 		
 		//set current funds
@@ -45,7 +45,7 @@ class Player: public Character
 		bool fullParty;
 		
 		//assign starting stats
-		void assign_Stats();	
+		void assign_Stats(std::string filename);
 };
 
 #endif

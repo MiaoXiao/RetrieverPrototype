@@ -11,20 +11,21 @@ using namespace std;
 
 int main() 
 {
+	string statpath = "src/stats/";
 	srand(time(0));	
 
 	vector<Figment> figmentlist;
 
 	Player player;
-	Player tylor("Tylor", "his");
-	Player liza("Liza", "her");
+	Player tylor(statpath + "p0_stats");
+	Player liza(statpath + "p1_stats");
 
-	Figment f1(1, 1, 0, 0);
-	f1.showall_Stats();
+	Figment f1(statpath + "e1_stats", 1, 0, 0);
+	//f1.showall_Stats();
 	cout << endl;
 	
 	figmentlist.push_back(f1);	
 
 	Battle battle(&player, &tylor, &liza, figmentlist);
-	battle.start_Battle();
+	battle.start_Battle(); 
 }

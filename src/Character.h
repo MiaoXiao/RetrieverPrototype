@@ -4,6 +4,8 @@
 #include "Entity.h"
 #include "Globals.h"
 
+#include <iostream>
+#include <fstream>
 #include <string>
 #include <vector>
 
@@ -13,10 +15,10 @@ struct Stats
 	//PRIMARY STATS: stats you can level up throughout the game
 	//life force of an entity
 	unsigned int maxhealth = 0;
-	unsigned int currhealth = 0;
+	int currhealth = 0;
 	//energy is how often an entity can use abilities/attacks
 	unsigned int maxenergy = 0;
-	unsigned int currenergy = 0;
+	int currenergy = 0;
 	//how quickly the entity can attack. A smaller reaction stat means your character will have their turn faster
 	unsigned int reaction = 0;
 	//damage
@@ -62,7 +64,8 @@ struct Stats
 	//change current health, by adding v to curr health
 	void change_CurrHealth(const int v)
 	{
-		set_CurrHealth(v + currhealth);
+		if (v + currhealth < 0) currhealth = 0;
+		else set_CurrHealth(v + currhealth);
 	}
 
 	//get max energy
@@ -306,7 +309,7 @@ class Character: public Entity
 		
 	protected:
 		//assign starting stats for a character
-		virtual void assign_Stats() = 0;
+		virtual void assign_Stats(std::string filename) = 0;
 
 };
 

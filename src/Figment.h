@@ -11,26 +11,22 @@ class Figment: public Character
 {
 	public:	
 		//CONSTRUCTOR: creates figment based on type, level, area, number of perks
-		Figment(const int type, const unsigned int l, const unsigned int a, const unsigned int np):
+		Figment(std::string fn, const unsigned int l, const unsigned int a, const unsigned int np):
 			area(a),
 			numbPerks(np)
 		{
-			//set level
-			level.level = l;
 			//set player flag to false
 			isPlayer = false;
 			//character is alive at start
 			isAlive = true;
-			//set name
-			set_Name(chooseType(type));
+		
 			//assign starting stats
-			assign_Stats();
+			assign_Stats(fn);
 			
+			//set level
+			level.level = l;
 			//exp gained is level times 10
 			level.experience = l * 10;
-			
-			//set pronoun
-			pronoun = "its";
 		}
 
 	private:
@@ -55,10 +51,7 @@ class Figment: public Character
 		float evasivenessX;
 		
 		//assign starting stats
-		void assign_Stats();
-		
-		//change attribute based on type, return type name
-		std::string chooseType(int t);
+		void assign_Stats(std::string filename);
 };
 
 #endif

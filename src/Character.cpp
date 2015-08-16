@@ -1,6 +1,7 @@
 #include "Character.h"
 #include "Globals.h"
 
+#include <fstream>
 #include <iostream>
 #include <stdlib.h>
 
@@ -28,11 +29,11 @@ int Character::get_EnergyDifference(const unsigned int action)
 		case 0: //swing
 			return -5;
 		case 1: //ability
-			return 0;
+			return 2;
 		case 2: //defend
-			return 0;
+			return 2;
 		case 3: //item
-			return 0;
+			return 2;
 		case 4: //wait
 			return 10;
 		case 5: //run
@@ -53,9 +54,11 @@ int Character::inflict_Damage()
 //take damage from enemy
 void Character::take_Damage(const int damage)
 {
+	//cout << get_Name() << " took damage" << endl;
 	stats.change_CurrHealth(-damage);
 	//if currhealth is 0 or below, character is defeated
-	if (stats.get_CurrHealth() <= 0) isAlive = false;
+	if (stats.get_CurrHealth() == 0) isAlive = false;
+	//showall_Stats();
 }
 
 //if enemy is defending, apply percentage of damage done back to the attacker.
