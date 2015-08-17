@@ -227,7 +227,11 @@ void Battle::checkEnergy_State(int &state, int lastaction, int &energychange, Ch
 		//reset to default
 		energychange = 0;
 	}
-	else state = Prompt_S;
+	else if (figmentlist.size() > 1) //check if target needs to be specified
+	{
+		state = ChooseTarget_S;
+	}
+	else state = Prompt_S; //only one target
 }
 
 //outcome menu

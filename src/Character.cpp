@@ -29,7 +29,7 @@ int Character::get_EnergyDifference(const unsigned int action)
 		case 0: //swing
 			return -5;
 		case 1: //ability
-			return 2;
+			return 0;
 		case 2: //defend
 			return 2;
 		case 3: //item
