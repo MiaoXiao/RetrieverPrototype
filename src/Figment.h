@@ -20,14 +20,14 @@ class Figment: public Character
 			isPlayer = false;
 			//character is alive at start
 			isAlive = true;
-		
-			//assign starting stats
-			assign_StartInfo(fn);
 				
 			//set level
 			level.set_Level(l);
 			//exp gained is level times 10
 			level.set_Experience(l * 10);
+			
+			//assign starting stats
+			assign_StartInfo(fn);
 		}
 
 	private:

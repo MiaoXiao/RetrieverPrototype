@@ -183,9 +183,9 @@ void Battle::chooseAction_State(int &state, int &lastaction)
 //choose target menu
 void Battle::chooseTarget_State(int &state, int &lastaction, int &target)
 {
-		int choice;
 		//prompt choose target
-		cout << "Choose target between 0 and " << figmentlist.size() - 1 << endl;
+		cout << "Choose target between '0 and '" << figmentlist.size() - 1 << "'" << endl;
+		cout << "'9' to go back." << endl;
 		cin >> target;
 		if (target < 0 || target > figmentlist.size() - 1)
 		{
@@ -194,7 +194,9 @@ void Battle::chooseTarget_State(int &state, int &lastaction, int &target)
 			//reset target to default
 			target = 0;
 		}
+		else if (target == 9) state = ChooseAction_S;
 		else state = Prompt_S;
+		
 		lastaction = Swing;
 }
 

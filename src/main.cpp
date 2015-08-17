@@ -20,12 +20,14 @@ int main()
 	Player tylor(statpath + "p0_stats");
 	Player liza(statpath + "p1_stats");
 
-	Figment f1(statpath + "e2_stats", 1, 0, 0);
+	Figment f1(statpath + "e2_stats", 0, 0, 0);
+	Figment f2(statpath + "e1_stats", 0, 0, 0);
 	//f1.showall_Stats();
 	cout << endl;
 	
 	figmentlist.push_back(f1);	
-
+	figmentlist.push_back(f2);	
+	
 	Battle battle(&player, &tylor, &liza, figmentlist);
 	battle.start_Battle(); 
 }

@@ -89,15 +89,14 @@ void Figment::assign_StartInfo(string filename)
 	}
 	f.close();
 	
-	//FIX ME: levels currently have no effect
-	stats.set_MaxHealth(Enemy::STARTMH * healthX);
+	stats.set_MaxHealth(level.get_Level() + (Enemy::STARTMH * healthX));
 	stats.set_CurrHealth(stats.get_MaxHealth());
-	stats.set_MaxEnergy(Enemy::STARTME * energyX);
+	stats.set_MaxEnergy(level.get_Level() + (Enemy::STARTME * energyX));
 	stats.set_CurrEnergy(stats.get_MaxEnergy());
-	stats.set_Reaction(Enemy::STARTREAC + -(Enemy::STARTREAC * reactionX));
-	stats.set_Swing(Enemy::STARTS * swingX);
-	stats.set_Resistance(Enemy::STARTR * resistanceX);
-	stats.set_Evasiveness(Enemy::STARTE * evasivenessX); 
+	stats.set_Reaction(level.get_Level() + (Enemy::STARTREAC / reactionX));
+	stats.set_Swing(level.get_Level() + (Enemy::STARTS * swingX));
+	stats.set_Resistance(level.get_Level() + (Enemy::STARTR * resistanceX));
+	stats.set_Evasiveness(level.get_Level() + (Enemy::STARTE * evasivenessX)); 
 	
 	showall_Stats();
 }
