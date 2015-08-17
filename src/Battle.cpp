@@ -137,7 +137,7 @@ void Battle::assign_BattleLog()
 void Battle::chooseAction_State(int &state, int &lastaction)
 {
 	int choice;
-	cout << "0 to attack, 1 to use ability, 2 to defend, 3 to use item, 4 to wait, 5 to run" << endl;
+	cout << "'0' to attack, '1' to use ability, '2' to defend, '3' to use item, '4' to wait, '5' to run" << endl;
 	cin >> choice;
 	if (choice < 0 && choice > 5)
 	{
@@ -184,17 +184,17 @@ void Battle::chooseAction_State(int &state, int &lastaction)
 void Battle::chooseTarget_State(int &state, int &lastaction, int &target)
 {
 		//prompt choose target
-		cout << "Choose target between '0 and '" << figmentlist.size() - 1 << "'" << endl;
+		cout << "Choose target between '0' and '" << figmentlist.size() - 1 << "'" << endl;
 		cout << "'9' to go back." << endl;
 		cin >> target;
-		if (target < 0 || target > figmentlist.size() - 1)
+		if (target == 9) state = ChooseAction_S;
+		else if (target < 0 || target > figmentlist.size() - 1) //check if input is valid
 		{
 			cout << "Not a valid target, please enter again." << endl;
 			state = ChooseTarget_S;
 			//reset target to default
-			target = 0;
-		}
-		else if (target == 9) state = ChooseAction_S;
+			target = 0;		
+		} 
 		else state = Prompt_S;
 		
 		lastaction = Swing;
@@ -227,7 +227,7 @@ void Battle::checkEnergy_State(int &state, int lastaction, int &energychange, Ch
 		//reset to default
 		energychange = 0;
 	}
-	else if (figmentlist.size() > 1) //check if target needs to be specified
+	else if (figmentlist.size() > 1 && (lastaction == Swing || lastaction == Ability)) //check if target needs to be specified when swinging or using ability
 	{
 		state = ChooseTarget_S;
 	}
