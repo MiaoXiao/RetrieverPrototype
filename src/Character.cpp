@@ -47,13 +47,54 @@ int Character::inflict_Damage()
 	return Probability::generateRandomNumber(-Globals::RANGE, Globals::RANGE) + stats.get_Swing();
 }
 
-//take damage from enemy
-void Character::take_Damage(const int damage)
+//after calculating evasion, crit, and then defending, possibly take damage
+//parameters: target name, evade of target, defense of target, reflect percentage of target, character inflicting damage
+void Character::take_Damage(string targetname, const bool evade, const bool defend, float rp, Character *c)
 {
-	//cout << get_Name() << " took damage" << endl;
-	stats.change_CurrHealth(-damage);
-	//if currhealth is 0 or below, character is defeated
-	if (stats.get_CurrHealth() == 0) status.set_IsAlive(false);
+	//damage
+	int d = 0;
+	//EVASION check
+	if (evade) 
+	{
+		//PROMPT
+		cout << targetname << " evades the attack!" << endl;
+	}
+	else
+	{
+		//DAMAGE check
+		d = c->inflict_Damage();
+		
+		//CRITICAL check
+		if (c->check_Critical()) 
+		{
+			//CALCULATION
+			d *= c->stats.get_FocusMultiplier();
+			//PROMPT
+			cout << c->get_Name() << " lands a critical attack!" << endl;
+		}
+		
+		//DEFENSE check
+		if (defend)
+		{
+			c->take_Retaliation(d, rp);
+			
+			//damage done back to attacker
+			int rd = rp * d;
+			//damage done to defender
+			d *= (1 - rp);
+			
+			//PROMPT
+			cout << targetname << " defends against the attack, and returns " << rd 
+				<< " damage back to " << c->get_Name() << "!" << endl;
+		}
+		
+		//PROMPT
+		cout << targetname << " takes " << d << " damage!" << endl;
+		stats.change_CurrHealth(-d);
+		
+		//if currhealth is 0 or below, character is defeated
+		if (stats.get_CurrHealth() == 0) status.set_IsAlive(false);
+	}
 	//showall_Stats();
 }
 

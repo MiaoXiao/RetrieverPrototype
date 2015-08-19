@@ -18,6 +18,6 @@ int main()
 	//f1.showall_Stats();
 	cout << endl;
 	
-	Battle battle(&player, &tylor, &liza, 0, 3);
+	Battle battle(&player, &tylor, &liza, 0, 1);
 	battle.start_Battle(); 
 }

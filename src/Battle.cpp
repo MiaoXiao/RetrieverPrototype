@@ -245,62 +245,24 @@ void Battle::prompt_State(const int target, const int energychange, Character* c
 		case Swing:
 		{
 				cout << c->get_Name() << " uses " << abs(energychange) << " energy and swings at " << figmentlist[target].get_Name() << "!" << endl;
+				figmentlist[target].take_Damage(figmentlist[target].get_Name(), figmentlist[target].check_Evasion(), figmentlist[target].status.get_Defending(), figmentlist[target].stats.get_ReflectPercentage(), c);
 				
-				//check if attack is evaded
-				if (figmentlist[target].check_Evasion()) 
+				//remove target from battlelog and figmentlist if figment is destroyed
+				if (!figmentlist[target].status.get_IsAlive())
 				{
 					//PROMPT
-					cout << figmentlist[target].get_Name() << " evades the attack!" << endl;
+					cout << figmentlist[target].get_Name() << " is defeated!" << endl;
+					
+					//erase figment
+					figmentlist.erase(figmentlist.begin() + (target));
 				}
-				else
-				{
-					//CALCULATE damage
-					int d = c->inflict_Damage();
-					
-					//check critical
-					if (c->check_Critical()) 
-					{
-						//CALCULATION
-						d *= c->stats.get_FocusMultiplier();
-						//PROMPT
-						cout << c->get_Name() << " lands a critical attack!" << endl;
-					}
-					
-					//check if enemy was defending
-					if (figmentlist[target].status.get_Defense())
-					{
-						//CALCULATION
-						int rp = figmentlist[target].stats.get_ReflectPercentage();
-						c->take_Retaliation(d, rp);
-						//damage done back to attacker
-						int rd = rp * d;
-						//damage done to defender
-						d *= (1 - rp);
-						
-						//PROMPT
-						cout << figmentlist[target].get_Name() << " defends against the attack, and returns " << rd 
-							<< " damage back to " << c->get_Name() << "!" << endl;
-					}
-					
-					cout << figmentlist[target].get_Name() << " takes " << d << " damage!" << endl;
-					figmentlist[target].take_Damage(d);
-					
-					//remove target from battlelog and figmentlist if figment is destroyed
-					if (!figmentlist[target].status.get_IsAlive())
-					{
-						//PROMPT
-						cout << figmentlist[target].get_Name() << " is defeated!" << endl;
-						
-						//erase figment
-						figmentlist.erase(figmentlist.begin() + (target));
-					}
-				}
+				
 				break;
 		}
 		case Ability:
 			break;
 		case Defend:
-			c->status.set_Defense(true);
+			c->status.set_Defending(true);
 			cout << c->get_Name() << " forms a defensive stance." << endl;
 			break;
 		case Item:
@@ -335,11 +297,10 @@ void Battle::combatDecision(Character* c)
 	//whether turn is over  or not
 	bool nextturn = false;
 	
-	//decide if player or enemy turn
-	if (c->status.get_IsPlayer())
+	if (c->status.get_IsPlayer()) //PLAYER TURN
 	{
 		//reset back to neutral stance
-		c->status.set_Defense(false);
+		c->status.set_Defending(false);
 		
 		//used to transition between different menus during a battle
 		while (!nextturn)
@@ -368,19 +329,36 @@ void Battle::combatDecision(Character* c)
 			}
 		}
 	}
+	else // ENEMY TURN
+	{
+		int enemyAction = Probability::multipleChanceToOccur(0.5, 0.25, 0.25);
+		switch (enemyAction)
+		{
+			case Swing:
+				
+				break;
+			case Ability:
+				break;
+			case Defend:
+				break;
+			default:
+				cerr << "Invalid enemy action. Exiting." << endl;
+				exit(1);
+		}
+	}
 	//figmentlist[target].showall_Stats();
 }
 
-//add loot to player: exp to tylor, exp to liza, digits
-void Battle::add_Loot(const unsigned int expT, const unsigned int expL, const unsigned int digits)
+//add loot to player: exp and money
+void Battle::add_Loot(const unsigned int exp, const unsigned int digits)
 {
 	if (p1->status.get_IsAlive())
 	{
-		p1->level.change_Level(expT);
+		p1->level.change_Level(exp);
 	}
 	if (p2->status.get_IsAlive())
 	{
-		p2->level.change_Experience(expL);		
+		p2->level.change_Experience(exp);		
 	}
 	p->change_Digits(digits);
 }

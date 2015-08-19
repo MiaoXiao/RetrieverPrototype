@@ -38,7 +38,7 @@ class Battle
 				switch (area)
 				{
 					case Starting_A:
-						Figment f(Enemy::PATH + "e0_stats", count, 0, 0);
+						Figment f(Enemy::PATH + "e2_stats", count, 0, 0);
 						figmentlist.push_back(f);
 						break;
 				}
@@ -107,8 +107,8 @@ class Battle
 		//make decision in combat, based on current turn
 		void combatDecision(Character* c);
 
-		//add loot to player: exp to tylor, exp to liza, digits
-		void add_Loot(const unsigned int expT, const unsigned int expL, const unsigned int digits);
+		//add loot to player: exp and money
+		void add_Loot(const unsigned int exp, const unsigned int digits);
 		
 		//DEBUG: display complete turn order
 		void show_TurnOrder();

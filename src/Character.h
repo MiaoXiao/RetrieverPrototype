@@ -253,9 +253,9 @@ struct Status
 		
 	public:
 		//get defense
-		bool get_Defense() const {return defending;}
+		bool get_Defending() const {return defending;}
 		//set defense to v (true or false)
-		void set_Defense(const bool v) {defending = v;}
+		void set_Defending(const bool v) {defending = v;}
 
 		//get isAlive status
 		bool get_IsAlive() const {return isAlive;}
@@ -359,8 +359,9 @@ class Character: public Entity
 		//inflict damage
 		int inflict_Damage();
 
-		//take hostile damage
-		void take_Damage(const int damage);
+		//after calculating evasion, crit, and then defending, possibly take damage
+		//parameters: target name, evade of target, defense of target, reflect percentage of target, character inflicting damage
+		void take_Damage(std::string targetname, const bool evade, const bool defend, float rp, Character *c);
 		
 		//if enemy is defending, apply percentage of damage done back to the attacker.
 		void take_Retaliation(const int damage, const float enemyreflect);

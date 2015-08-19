@@ -44,7 +44,7 @@ class Figment: public Character
 		float reactionX;
 		//resistance multiplier
 		float resistanceX;
-		//Eevasiveness multiplier
+		//evasiveness multiplier
 		float evasivenessX;
 		
 		//assign starting stats and other information for a character
