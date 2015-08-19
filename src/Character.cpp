@@ -1,10 +1,6 @@
 #include "Character.h"
 #include "Globals.h"
 
-#include <fstream>
-#include <iostream>
-#include <stdlib.h>
-
 using namespace std;
 
 //--------------------------------------------------------------------PUBLIC--------------------------------------------------------------------//

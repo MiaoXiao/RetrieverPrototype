@@ -1,7 +1,4 @@
 #include "Figment.h"
-#include "Globals.h"
-
-#include <string>
 
 using namespace std;
 
@@ -32,28 +29,28 @@ void Figment::assign_StartInfo(string filename)
 	switch(id)
 	{
 		case 0:
-			id_string = "1";
+			id_string = "(A)";
 			break;
 		case 1:
-			id_string = "2";
+			id_string = "(B)";
 			break;
 		case 2:
-			id_string = "3";
+			id_string = "(C)";
 			break;
 		case 3:
-			id_string = "4";
+			id_string = "(D)";
 			break;
 		case 4:
-			id_string = "5";
+			id_string = "(E)";
 			break;
 		case 5:
-			id_string = "6";
+			id_string = "(F)";
 			break;
 		default:
 			cerr << "Invalid enemy id. Exiting." << endl;
 			exit(1);
 	}
-	set_Name(info + " " + id_string);
+	set_Name(info + id_string);
 	
 	
 	

@@ -2,6 +2,7 @@
 #define FIGMENT_H
 
 #include "Character.h"
+#include "Globals.h"
 
 #include <iostream>
 #include <map>

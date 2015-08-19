@@ -3,8 +3,10 @@
 
 #include "Character.h"
 
-#include <string>
+#include <iostream>
 #include <fstream>
+#include <string>
+#include <stdlib.h>
 
 //The Player is the instance that the game-player controls.
 class Player: public Character

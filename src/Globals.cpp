@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "Globals.h"
 
 //will return true given probability, given number between 0 - 1

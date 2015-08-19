@@ -7,6 +7,9 @@
 
 #include <map>
 #include <vector>
+#include <iostream>
+#include <string>
+#include <stdlib.h>
 
 //manages and directs character decisions. alters player objects at the end of the battle.
 //manages battle prompts

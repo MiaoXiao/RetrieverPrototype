@@ -1,8 +1,3 @@
-#include <iostream>
-#include <vector>
-#include <time.h>
-#include <stdlib.h>
-
 #include "Player.h"
 #include "Figment.h"
 #include "Battle.h"

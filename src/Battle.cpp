@@ -1,9 +1,4 @@
 #include "Battle.h"
-#include "Globals.h"
-
-#include <iostream>
-#include <string>
-#include <stdlib.h>
 
 using namespace std;
 

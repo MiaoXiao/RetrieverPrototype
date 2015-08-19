@@ -1,9 +1,5 @@
 #include "Player.h"
 
-#include <fstream>
-#include <iostream>
-#include <stdlib.h>
-
 using namespace std;
 
 //--------------------------------------------------------------------PUBLIC--------------------------------------------------------------------//
