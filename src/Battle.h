@@ -59,6 +59,11 @@ class Battle
 		//set to true if player succesfully runs
 		bool runsuccessful;
 		
+		//current state in battle menu
+		int state;
+		//last action player attempted to do
+		int lastaction;
+		
 		//player references
 		Player* p;		
 		Player* p1;
@@ -74,34 +79,27 @@ class Battle
 		std::multimap<float, Character*> battlelog;
 		
 		//get gcd of 2 numbers
-		int gcd(int a, int b);
-		
+		int gcd(unsigned int a, unsigned int b);
 		//get lcd of 2 numbers
-		int lcd(int a, int b);
-		
+		int lcd(unsigned int a, unsigned int b);
 		//get lcd of all possible units' reaction in battle
-		int getall_Lcd(int a, int b, int c, int d, int e, int f, int g, int h);
+		int getall_Lcd(unsigned int a, unsigned int b, unsigned int c, unsigned int d, unsigned int e, unsigned int f, unsigned int g, unsigned int h);
 		
 		//compare haste between players and figments. assign battlelog of turn order
 		void assign_BattleLog();
 		
 		//choose action menu
-		void chooseAction_State(int &state, int &lastaction);
-		
+		void chooseAction_State();
 		//choose target menu
-		void chooseTarget_State(int &state, int &lastaction, int &target);
-		
+		void chooseTarget_State(int &target);
 		//choose ability menu
-		void chooseAbility_State(int &state, int &lastaction);
-		
+		void chooseAbility_State();
 		//choose item menu
-		void chooseItem_State(int &state, int &lastaction);
-		
+		void chooseItem_State();
 		//calculate energy, check if action is possible. if not, go back to choose action.
-		void checkEnergy_State(int &state, int lastaction, int &energychange, Character *c);
-		
+		void checkEnergy_State(int &energychange, Character *c);
 		//calculate outcome menu
-		void prompt_State(int lastaction, int target, int energychange, Character* c);
+		void prompt_State(const int target, const int energychange, Character* c);
 		
 		//make decision in combat, based on current turn
 		void combatDecision(Character* c);

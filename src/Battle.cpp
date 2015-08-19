@@ -19,11 +19,10 @@ bool Battle::start_Battle()
 	{
 		for (multimap<float, Character*>::iterator it = battlelog.begin(); it != battlelog.end(); ++it)
 		{
-				show_ActiveFigments(true);
-				
-				//if character is allive, calculate their turn
+				//if character is alive, calculate their turn
 				if (((*it).second->status.get_IsAlive()))
 				{
+					show_ActiveFigments(true);
 					cout << "Turn Number: " << turnnumber << endl;
 					combatDecision((*it).second);
 					
@@ -41,13 +40,13 @@ bool Battle::start_Battle()
 
 //--------------------------------------------------------------------PRIVATE--------------------------------------------------------------------//
 //get gcd of 2 numbers
-int Battle::gcd(int a, int b) { return b == 0 ? a : gcd(b, a % b); }
+int Battle::gcd(unsigned int a, unsigned int b) { return b == 0 ? a : gcd(b, a % b); }
 
 //get lcd of 2 numbers
-int Battle::lcd(int a, int b) { return abs(a * b) / (gcd(a, b)); }
+int Battle::lcd(unsigned int a, unsigned int b) { return abs(a * b) / (gcd(a, b)); }
 
 //get lcd of all possible units' reaction in battle
-int Battle::getall_Lcd(int a, int b, int c, int d, int e, int f, int g, int h) 
+int Battle::getall_Lcd(unsigned int a, unsigned int b, unsigned int c, unsigned int d, unsigned int e, unsigned int f, unsigned int g, unsigned int h) 
 {
 		return lcd(a, lcd(b, lcd(c, lcd(d, lcd(e, lcd(f, lcd(g, h)))))));
 }
@@ -140,7 +139,7 @@ void Battle::assign_BattleLog()
 }
 
 //choose action menu
-void Battle::chooseAction_State(int &state, int &lastaction)
+void Battle::chooseAction_State()
 {
 	int choice;
 	cout << "'0' to attack, '1' to use ability, '2' to defend, '3' to use item, '4' to wait, '5' to run" << endl;
@@ -179,7 +178,7 @@ void Battle::chooseAction_State(int &state, int &lastaction)
 				lastaction = Run;
 				break;
 			default:
-				cout << "ChooseAction state error. Exiting" << endl;
+				cout << "ChooseAction state error. Exiting." << endl;
 				exit(1);
 				break;
 		}
@@ -187,7 +186,7 @@ void Battle::chooseAction_State(int &state, int &lastaction)
 }
 
 //choose target menu
-void Battle::chooseTarget_State(int &state, int &lastaction, int &target)
+void Battle::chooseTarget_State(int &target)
 {
 		//prompt choose target
 		cout << "Choose target between '0' and '" << figmentlist.size() - 1 << "'" << endl;
@@ -207,21 +206,21 @@ void Battle::chooseTarget_State(int &state, int &lastaction, int &target)
 }
 
 //choose ability menu
-void Battle::chooseAbility_State(int &state, int &lastaction)
+void Battle::chooseAbility_State()
 {
 	lastaction = Ability;
 	state = Prompt_S;
 }
 
 //choose item menu
-void Battle::chooseItem_State(int &state, int &lastaction)
+void Battle::chooseItem_State()
 {
 	lastaction = Item;
 	state = Prompt_S;
 }
 
 //calculate energy, check if action is possible. if not, go back to choose action.
-void Battle::checkEnergy_State(int &state, int lastaction, int &energychange, Character *c)
+void Battle::checkEnergy_State(int &energychange, Character *c)
 {
 	//get energy change
 	energychange = c->get_EnergyDifference(lastaction);
@@ -241,7 +240,7 @@ void Battle::checkEnergy_State(int &state, int lastaction, int &energychange, Ch
 }
 
 //outcome menu
-void Battle::prompt_State(int lastaction, int target, int energychange, Character* c)
+void Battle::prompt_State(const int target, const int energychange, Character* c)
 {
 	//calculate energy addition/reduction for character
 	c->stats.set_CurrEnergy(c->stats.get_CurrEnergy() + energychange);
@@ -328,7 +327,11 @@ void Battle::prompt_State(int lastaction, int target, int energychange, Characte
 //make decision in combat based on selected character's turn
 void Battle::combatDecision(Character* c)
 {	
+	//PROMPT
 	cout << "It is " << c->get_Name() << "'s turn" << endl;
+	
+	//reset initial state
+	state = ChooseAction_S;
 	
 	//default target;
 	int target = 0;
@@ -336,10 +339,6 @@ void Battle::combatDecision(Character* c)
 	int energychange = 0;
 	//whether turn is over  or not
 	bool nextturn = false;
-	//current state, set initial state
-	int state = ChooseAction_S;
-	//last action - used for determining what prompt to use
-	int lastaction;
 	
 	//decide if player or enemy turn
 	if (c->status.get_IsPlayer())
@@ -353,22 +352,22 @@ void Battle::combatDecision(Character* c)
 			switch (state)
 			{
 					case ChooseAction_S:
-						chooseAction_State(state, lastaction);
+						chooseAction_State();
 						break;
 					case ChooseTarget_S:
-						chooseTarget_State(state, lastaction, target);
+						chooseTarget_State(target);
 						break;
 					case ChooseAbility_S:
-						chooseAbility_State(state, lastaction);
+						chooseAbility_State();
 						break;
 					case ChooseItem_S:
-						chooseItem_State(state, lastaction);
+						chooseItem_State();
 						break;
 					case CheckEnergy_S:
-						checkEnergy_State(state, lastaction, energychange, c);
+						checkEnergy_State(energychange, c);
 						break;
 					case Prompt_S:
-						prompt_State(lastaction, target, energychange, c);
+						prompt_State(target, energychange, c);
 						nextturn = true;
 						break;
 			}
