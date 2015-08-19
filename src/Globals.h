@@ -27,6 +27,9 @@ namespace Enemy
 	const int STARTS = 7;
 	const int STARTR = 1;
 	const int STARTE = 5;
+	
+	//path to find enemy stats
+	const std::string PATH = "src/stats/";
 }
 
 namespace Probability

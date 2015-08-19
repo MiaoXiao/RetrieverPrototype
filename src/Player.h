@@ -20,8 +20,7 @@ class Player: public Character
 			digits(0),
 			fullParty(false)
 		{
-			isPlayer = true;
-			isAlive = true;
+			status.set_IsPlayer(true);
 			
 			assign_StartInfo(fn);
 		}

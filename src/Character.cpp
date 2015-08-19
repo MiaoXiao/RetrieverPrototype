@@ -57,7 +57,7 @@ void Character::take_Damage(const int damage)
 	//cout << get_Name() << " took damage" << endl;
 	stats.change_CurrHealth(-damage);
 	//if currhealth is 0 or below, character is defeated
-	if (stats.get_CurrHealth() == 0) isAlive = false;
+	if (stats.get_CurrHealth() == 0) status.set_IsAlive(false);
 	//showall_Stats();
 }
 
@@ -66,7 +66,7 @@ void Character::take_Retaliation(const int damage, const float enemyreflect)
 {
 	if (enemyreflect < 0 || enemyreflect > 1)
 	{
-		cout << "Reflect percentage not between 0 and 1. Exiting." << endl;
+		cerr << "Reflect percentage not between 0 and 1. Exiting." << endl;
 		exit(1);
 	}
 	

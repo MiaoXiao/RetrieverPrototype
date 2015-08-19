@@ -19,14 +19,20 @@ bool Battle::start_Battle()
 	{
 		for (multimap<float, Character*>::iterator it = battlelog.begin(); it != battlelog.end(); ++it)
 		{
-			cout << "Turn Number: " << turnnumber << endl;
-			combatDecision((*it).second);
-			
-			//battle is finished if no figments left in battle, or both tylor and liza are wiped out, or players succesfully run
-			if (figmentlist.empty()) return true;
-			else if (p1->isAlive == false && p2->isAlive == false) return false;
-			else if (runsuccessful) return true;
-			turnnumber++;
+				show_ActiveFigments(true);
+				
+				//if character is allive, calculate their turn
+				if (((*it).second->status.get_IsAlive()))
+				{
+					cout << "Turn Number: " << turnnumber << endl;
+					combatDecision((*it).second);
+					
+					//battle is finished if no figments left in battle, or both tylor and liza are wiped out, or players succesfully run
+					if (figmentlist.empty()) return true;
+					else if (!(p1->status.get_IsAlive()) && !(p2->status.get_IsAlive())) return false;
+					else if (runsuccessful) return true;
+					turnnumber++;
+				}
 		}
 	}
 }
@@ -222,10 +228,10 @@ void Battle::checkEnergy_State(int &state, int lastaction, int &energychange, Ch
 	//check if action is possible with current energy
 	if (c->stats.get_CurrEnergy() + energychange < 0)
 	{
-		cout << "You do not have enough energy to complete this action!" << endl;
-		state = ChooseAction_S;
 		//reset to default
 		energychange = 0;
+		cout << "You do not have enough energy to complete this action!" << endl;
+		state = ChooseAction_S;
 	}
 	else if (figmentlist.size() > 1 && (lastaction == Swing || lastaction == Ability)) //check if target needs to be specified when swinging or using ability
 	{
@@ -245,33 +251,39 @@ void Battle::prompt_State(int lastaction, int target, int energychange, Characte
 		case Swing:
 		{
 				cout << c->get_Name() << " uses " << abs(energychange) << " energy and swings at " << figmentlist[target].get_Name() << "!" << endl;
+				
 				//check if attack is evaded
-				if (figmentlist[target].check_Evasion())
+				if (figmentlist[target].check_Evasion()) 
 				{
+					//PROMPT
 					cout << figmentlist[target].get_Name() << " evades the attack!" << endl;
 				}
 				else
 				{
-					//calculate damage
+					//CALCULATE damage
 					int d = c->inflict_Damage();
 					
 					//check critical
 					if (c->check_Critical()) 
 					{
+						//CALCULATION
 						d *= c->stats.get_FocusMultiplier();
+						//PROMPT
 						cout << c->get_Name() << " lands a critical attack!" << endl;
 					}
 					
 					//check if enemy was defending
 					if (figmentlist[target].status.get_Defense())
 					{
+						//CALCULATION
 						int rp = figmentlist[target].stats.get_ReflectPercentage();
 						c->take_Retaliation(d, rp);
-						
 						//damage done back to attacker
 						int rd = rp * d;
 						//damage done to defender
 						d *= (1 - rp);
+						
+						//PROMPT
 						cout << figmentlist[target].get_Name() << " defends against the attack, and returns " << rd 
 							<< " damage back to " << c->get_Name() << "!" << endl;
 					}
@@ -279,12 +291,14 @@ void Battle::prompt_State(int lastaction, int target, int energychange, Characte
 					cout << figmentlist[target].get_Name() << " takes " << d << " damage!" << endl;
 					figmentlist[target].take_Damage(d);
 					
-					//remove target from battlelog and figmentlist if destroyed
-					if (!figmentlist[target].isAlive)
+					//remove target from battlelog and figmentlist if figment is destroyed
+					if (!figmentlist[target].status.get_IsAlive())
 					{
-						battlelog.erase(target);
+						//PROMPT
 						cout << figmentlist[target].get_Name() << " is defeated!" << endl;
-						figmentlist.erase(figmentlist.begin()+target);
+						
+						//erase figment
+						figmentlist.erase(figmentlist.begin() + (target));
 					}
 				}
 				break;
@@ -328,7 +342,7 @@ void Battle::combatDecision(Character* c)
 	int lastaction;
 	
 	//decide if player or enemy turn
-	if (c->isPlayer)
+	if (c->status.get_IsPlayer())
 	{
 		//reset back to neutral stance
 		c->status.set_Defense(false);
@@ -360,21 +374,17 @@ void Battle::combatDecision(Character* c)
 			}
 		}
 	}
-	
-	c->showall_Stats();
 	//figmentlist[target].showall_Stats();
-		
 }
 
-//add loot to player
-//exp to tylor, exp to liza, digits
+//add loot to player: exp to tylor, exp to liza, digits
 void Battle::add_Loot(const unsigned int expT, const unsigned int expL, const unsigned int digits)
 {
-	if (p1->isAlive)
+	if (p1->status.get_IsAlive())
 	{
 		p1->level.change_Level(expT);
 	}
-	if (p2->isAlive)
+	if (p2->status.get_IsAlive())
 	{
 		p2->level.change_Experience(expL);		
 	}
@@ -392,4 +402,18 @@ void Battle::show_TurnOrder()
 		++i;
 	}
 	cout << endl;
+}
+
+//DEBUG: show active figment vector, set to true if showing all stats
+void Battle::show_ActiveFigments(const bool allstats) const
+{
+	for (unsigned int i = 0; i < figmentlist.size(); ++i)
+	{
+		if (allstats) figmentlist[i].showall_Stats();
+		else
+		{
+			cout << i << ": " << figmentlist[i].get_Name() << endl;
+			cout << "size: " << figmentlist.size() << endl;
+		}
+	}
 }

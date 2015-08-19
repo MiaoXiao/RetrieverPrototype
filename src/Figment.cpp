@@ -1,6 +1,8 @@
 #include "Figment.h"
 #include "Globals.h"
 
+#include <string>
+
 using namespace std;
 
 //--------------------------------------------------------------------PUBLIC--------------------------------------------------------------------//
@@ -25,7 +27,35 @@ void Figment::assign_StartInfo(string filename)
 	
 	//get name of character
 	f >> info;
-	set_Name(info);
+	//convert int to string
+	string id_string;
+	switch(id)
+	{
+		case 0:
+			id_string = "1";
+			break;
+		case 1:
+			id_string = "2";
+			break;
+		case 2:
+			id_string = "3";
+			break;
+		case 3:
+			id_string = "4";
+			break;
+		case 4:
+			id_string = "5";
+			break;
+		case 5:
+			id_string = "6";
+			break;
+		default:
+			cerr << "Invalid enemy id. Exiting." << endl;
+			exit(1);
+	}
+	set_Name(info + " " + id_string);
+	
+	
 	
 	f >> info;
 	if (info != "gender")
@@ -98,5 +128,5 @@ void Figment::assign_StartInfo(string filename)
 	stats.set_Resistance(level.get_Level() + (Enemy::STARTR * resistanceX));
 	stats.set_Evasiveness(level.get_Level() + (Enemy::STARTE * evasivenessX)); 
 	
-	showall_Stats();
+	//showall_Stats();
 }

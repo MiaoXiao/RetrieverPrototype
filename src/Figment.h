@@ -11,15 +11,13 @@
 class Figment: public Character
 {
 	public:	
-		//CONSTRUCTOR: creates figment based on type, level, area, number of perks
-		Figment(std::string fn, const unsigned int l, const unsigned int a, const unsigned int np):
-			area(a),
+		//CONSTRUCTOR: creates figment based on type, figment id, level, number of perks
+		Figment(std::string fn, const unsigned number, const unsigned int l, const unsigned int np):
+			id(number),
 			numbPerks(np)
 		{
 			//set player flag to false
-			isPlayer = false;
-			//character is alive at start
-			isAlive = true;
+			status.set_IsPlayer(false);
 				
 			//set level
 			level.set_Level(l);
@@ -31,8 +29,8 @@ class Figment: public Character
 		}
 
 	private:
-		//area value where figment is
-		unsigned int area;
+		//id for this figment type
+		unsigned int id;
 		//numb of perks
 		unsigned int numbPerks;
 		//number of abilities

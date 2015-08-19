@@ -207,6 +207,12 @@ struct Status
 		//between -10 and 10 inclusive
 		int mood = 0;
 		
+		//set to false if this character is wiped out, destroyed
+		bool isAlive = true;
+		
+		//set to true if player, set to false if enemy
+		bool isPlayer;
+		
 		//whether unit is defending or not
 		bool defending = false;
 		
@@ -230,7 +236,17 @@ struct Status
 		bool get_Defense() const {return defending;}
 		//set defense to v (true or false)
 		void set_Defense(const bool v) {defending = v;}
-	
+
+		//get isAlive status
+		bool get_IsAlive() const {return isAlive;}
+		//set isAlive to v (true or false)
+		void set_IsAlive(const bool v) {isAlive = v;}
+		
+		//get isPlayer status
+		bool get_IsPlayer() const {return isPlayer;}
+		//set isPlayer to v (true or false)
+		void set_IsPlayer(const bool v) {isPlayer = v;}
+		
 		//after every battle reset most statuses; unless characters are wiped out, then reset all
 		void resetStatus()
 		{
@@ -287,13 +303,7 @@ struct Level
 //Any entity with skills, abilities, and stats
 class Character: public Entity
 {
-	public:		
-		//set to true if player, set to false if enemy
-		bool isPlayer;
-		
-		//set to false if this character is wiped out, destroyed
-		bool isAlive;
-		
+	public:				
 		//pronoun for prompts
 		std::string pronoun;
 		
