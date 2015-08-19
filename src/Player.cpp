@@ -30,7 +30,7 @@ void Player::change_Eps(const int v)
 //--------------------------------------------------------------------PRIVATE--------------------------------------------------------------------//
 
 //assign starting stats and other information for a character
-void Player::assign_StartInfo(string filename)
+void Player::assign_StartInfo(string filename, const unsigned int number)
 {
 	fstream f;
 	//info from stream
@@ -40,10 +40,13 @@ void Player::assign_StartInfo(string filename)
 	f.open(filename.c_str());
 	if (!f.is_open())
 	{
-		cout << "File could not be opened. Exiting." << endl;
+		cerr << "File could not be opened. Exiting." << endl;
 		exit(1);
 	}
 	//cout << "File opened." << endl;
+	
+	//assign id; check second character of file
+	id = "p" + filename[1];
 	
 	//get name of character
 	f >> info;
@@ -52,7 +55,7 @@ void Player::assign_StartInfo(string filename)
 	f >> info;
 	if (info != "gender")
 	{
-		cout << "Must have gender category. Exiting" << endl;
+		cerr << "Must have gender category. Exiting." << endl;
 		exit(1);
 	}
 	f >> info;

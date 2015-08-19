@@ -24,7 +24,7 @@ class Player: public Character
 		{
 			status.set_IsPlayer(true);
 			
-			assign_StartInfo(fn);
+			assign_StartInfo(fn, NULL);
 		}
 		
 		//get current funds
@@ -50,7 +50,7 @@ class Player: public Character
 		bool fullParty;
 		
 		//assign starting stats and other information for a character
-		void assign_StartInfo(std::string filename);
+		void assign_StartInfo(std::string filename, const unsigned int number);
 };
 
 #endif

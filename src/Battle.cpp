@@ -401,13 +401,10 @@ void Battle::show_TurnOrder()
 //DEBUG: show active figment vector, set to true if showing all stats
 void Battle::show_ActiveFigments(const bool allstats) const
 {
+	
 	for (unsigned int i = 0; i < figmentlist.size(); ++i)
 	{
-		if (allstats) figmentlist[i].showall_Stats();
-		else
-		{
-			cout << i << ": " << figmentlist[i].get_Name() << endl;
-			cout << "size: " << figmentlist.size() << endl;
-		}
+		cout << i << ": " << figmentlist[i].get_Name() << endl;
+		if (allstats) figmentlist[i].stats.show_Stats();
 	}
 }

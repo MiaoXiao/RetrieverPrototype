@@ -8,7 +8,7 @@ using namespace std;
 
 //--------------------------------------------------------------------PRIVATE--------------------------------------------------------------------//
 //assign starting stats and other information for a character
-void Figment::assign_StartInfo(string filename)
+void Figment::assign_StartInfo(string filename, const unsigned int number)
 {
 	fstream f;
 	//info from stream
@@ -22,11 +22,14 @@ void Figment::assign_StartInfo(string filename)
 		exit(1);
 	}
 	
+	//get id by checking second character of filename
+	id = "e" + filename[1];
+	
 	//get name of character
 	f >> info;
 	//convert int to string
 	string id_string;
-	switch(id)
+	switch(number)
 	{
 		case 0:
 			id_string = "(A)";
@@ -52,12 +55,10 @@ void Figment::assign_StartInfo(string filename)
 	}
 	set_Name(info + id_string);
 	
-	
-	
 	f >> info;
 	if (info != "gender")
 	{
-		cout << "Must have gender category. Exiting." << endl;
+		cerr << "Must have gender category. Exiting." << endl;
 		exit(1);
 	}
 	f >> info;
@@ -67,7 +68,7 @@ void Figment::assign_StartInfo(string filename)
 	else if (info == "i") pronoun = "its";
 	else 
 	{
-		cout << "Not a valid gender. (m, f, i). Exiting." << endl; 
+		cerr << "Not a valid gender. (m, f, i). Exiting." << endl; 
 		exit(1);
 	}
 	

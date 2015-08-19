@@ -14,7 +14,6 @@ class Figment: public Character
 	public:	
 		//CONSTRUCTOR: creates figment based on type, figment id, level, number of perks
 		Figment(std::string fn, const unsigned number, const unsigned int l, const unsigned int np):
-			id(number),
 			numbPerks(np)
 		{
 			//set player flag to false
@@ -26,12 +25,10 @@ class Figment: public Character
 			level.set_Experience(l * 10);
 			
 			//assign starting stats
-			assign_StartInfo(fn);
+			assign_StartInfo(fn, number);
 		}
 
 	private:
-		//id for this figment type
-		unsigned int id;
 		//numb of perks
 		unsigned int numbPerks;
 		//number of abilities
@@ -51,7 +48,7 @@ class Figment: public Character
 		float evasivenessX;
 		
 		//assign starting stats and other information for a character
-		void assign_StartInfo(std::string filename);
+		void assign_StartInfo(std::string filename, const unsigned int id);
 };
 
 #endif

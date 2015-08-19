@@ -188,6 +188,25 @@ struct Stats
 			if (v + reflectpercentage < 0) reflectpercentage = 0;
 			else set_ReflectPercentage(v + reflectpercentage);
 		}
+		
+		//DEBUG: show all stats
+		void show_Stats() const
+		{
+			std::cout << "Max Health: " << maxhealth << std::endl;
+			std::cout << "Current Health: " << currhealth << std::endl;
+			std::cout << "Max Energy: " << maxenergy << std::endl;
+			std::cout << "Current Energy: " << currenergy << std::endl;
+			std::cout << "Reaction: " << reaction << std::endl;
+			std::cout << "Swing: " << swing << std::endl;
+			std::cout << "Resistance: " << resistance << std::endl;
+			std::cout << "Evasiveness: " << evasiveness << std::endl;
+			//unique stats
+			std::cout << "Intelligence: " << intelligence << std::endl;
+			std::cout << "Focus: " << focus << std::endl;
+			std::cout << "FocusMultiplier: " << focusmultiplier << std::endl;
+			std::cout << "ReflectPercentage: " << reflectpercentage << std::endl << std::endl;
+			//FIX ME: does not show intelligence yet
+		}
 };
 
 //manages abilities of a character
@@ -261,6 +280,12 @@ struct Status
 		}
 };
 
+struct Message
+{
+		private:
+		public:
+};
+
 //manages leveling
 struct Level
 {
@@ -308,6 +333,9 @@ class Character: public Entity
 		//pronoun for prompts
 		std::string pronoun;
 		
+		//id for which player/figment type
+		std::string id;
+		
 		//combat stats
 		Stats stats;
 		//combat abilities
@@ -316,6 +344,8 @@ class Character: public Entity
 		Status status;
 		//current level
 		Level level;
+		//messages specific to that character
+		Message message;
 		
 		//check if an attack is critical
 		bool check_Critical() const;
@@ -338,12 +368,9 @@ class Character: public Entity
 		//inflict ability on target
 		void inflict_Ability();	
 		
-		//DEBUG: show all stats currently
-		void showall_Stats() const;
-		
 	protected:
 		//assign starting stats and other information for a character
-		virtual void assign_StartInfo(std::string filename) = 0;
+		virtual void assign_StartInfo(std::string filename, const unsigned int number) = 0;
 
 };
 
