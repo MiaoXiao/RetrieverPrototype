@@ -14,6 +14,7 @@ bool Character::check_Critical() const
 bool Character::check_Evasion() const
 {
 	//cout << "dodge: " << stats.get_Evasiveness() * 0.01 << endl;
+	if (status.get_Defending()) return 0;
 	return Probability::chanceToOccur(stats.get_Evasiveness() * 0.01);
 }
 
