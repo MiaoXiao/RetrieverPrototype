@@ -6,3 +6,7 @@ swingX 0.75
 reactionX 1.0
 resistanceX 1.0
 evasivenessX 1.0
+intelligence 0
+focus 1
+focusmultiplier 3
+reflectpercentage 0.3

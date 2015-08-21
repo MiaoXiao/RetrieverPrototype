@@ -5,4 +5,8 @@ energyX 1.0
 swingX 1.0
 reactionX 0.5
 resistanceX 1.5
-evasivenessX 0.0
+evasivenessX 0.01
+intelligence 0
+focus 1
+focusmultiplier 3
+reflectpercentage 0.5

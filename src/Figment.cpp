@@ -77,6 +77,7 @@ void Figment::assign_StartInfo(string filename, const unsigned int number)
 	//keep searching until end of file
 	while (!f.eof())
 	{
+		//cout << info << endl;
 		if (info == "healthX")
 		{
 			f >> info;
@@ -107,9 +108,29 @@ void Figment::assign_StartInfo(string filename, const unsigned int number)
 			f >> info;
 			evasivenessX = atof(info.c_str());
 		}
+		else if (info == "intelligence")
+		{
+			f >> info;
+			stats.set_Intelligence(atoi(info.c_str()));
+		}
+		else if (info == "focus")
+		{
+			f >> info;
+			stats.set_Focus(atoi(info.c_str()));
+		}
+		else if (info == "focusmultiplier")
+		{
+			f >> info;
+			stats.set_FocusMultiplier(atoi(info.c_str()));
+		}
+		else if (info == "reflectpercentage")
+		{
+			f >> info;
+			stats.set_ReflectPercentage(atof(info.c_str()));
+		}
 		else 
 		{
-			cout << "Invalid stat. Exiting." << endl; 
+			cout << "Invalid Figment stat. Exiting." << endl; 
 			exit(1);
 		}
 		//move onto next stat

@@ -129,9 +129,14 @@ void Player::assign_StartInfo(string filename, const unsigned int number)
 			f >> info;
 			stats.set_FocusMultiplier(atoi(info.c_str()));
 		}
+		else if (info == "reflectpercentage")  
+		{
+			f >> info;
+			stats.set_ReflectPercentage(atof(info.c_str()));
+		}
 		else 
 		{
-			cout << "Invalid stat. Exiting." << endl; 
+			cerr << "Invalid Player stat. Exiting." << endl; 
 			exit(1);
 		}
 		//move onto next stat

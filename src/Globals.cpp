@@ -17,16 +17,19 @@ bool Probability::chanceToOccur(const float p)
 	return p >= givePercentage();
 }
 
-//based on multiple probabilities, returns 0, 1, or 2 based on those probabilities
-int Probability::multipleChanceToOccur(const float p0, const float p1, const float p2)
+//based on multiple probabilities, returns 0, 1, 2, or 4 based on those probabilities
+//neturn values return to CharacterChoice enum
+int Probability::multipleChanceToOccur(const float prob0, const float prob1, const float prob2, const float prob3)
 {
 	float randnum = givePercentage();
 	
-	if (randnum <= p0) return 0;
-    randnum -= p0;
-    if (randnum <=p1) return 1;
-    randnum -= p1;
-    if (randnum <=p2) return 2;
+	if (randnum <= prob0) return 0;
+    randnum -= prob0;
+    if (randnum <=prob1) return 1;
+    randnum -= prob1;
+    if (randnum <=prob2) return 2;
+    randnum -= prob2;
+    if (randnum <=prob3) return 4;
     
     cerr << "Could not finalize multipleChanceToOccur. Exiting." << endl;
     exit(1);

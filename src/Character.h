@@ -39,7 +39,21 @@ struct Stats
 		unsigned int focusmultiplier = 0;
 		//reflect percentage. percentage of damage reflected back to an attacker, when this character defends
 		float reflectpercentage = 0;
-	
+		
+		//HIDDEN STATS: stats that are not shown to the player
+		//energy needed/gained for a swing attack
+		int swingEnergy = -5;
+		//extra energy needed/gained for using an ability (applies to all abilities)
+		int abilityEnergy = 0;
+		//energy needed/gained for defending
+		int defendEnergy = 2;
+		//energy needed/gained for using an item
+		int itemEnergy = 2;
+		//energy needed/gained for waiting
+		int waitEnergy = 10;
+		//energy needed/gained for running
+		int runEnergy = -10;
+		
 	public:
 		//get max health
 		int get_MaxHealth() const {return maxhealth;}
@@ -189,6 +203,72 @@ struct Stats
 			else set_ReflectPercentage(v + reflectpercentage);
 		}
 		
+		//get swingEnergy
+		int get_SwingEnergy() const {return swingEnergy;}
+		//set swingEnergy
+		void set_SwingEnergy(const unsigned int v) {swingEnergy = v;}
+		//change swingEnergy, by adding v to swingEnergy
+		void change_SwingEnergy(const int v)
+		{
+			if (v + swingEnergy < 0) swingEnergy = 0;
+			else set_SwingEnergy(v + swingEnergy);
+		}
+		
+		//get abilityEnergy
+		int get_AbilityEnergy() const {return abilityEnergy;}
+		//set abilityEnergy
+		void set_AbilityEnergy(const unsigned int v) {abilityEnergy = v;}
+		//change abilityEnergy, by adding v to abilityEnergy
+		void change_AbilityEnergy(const int v)
+		{
+			if (v + abilityEnergy < 0) abilityEnergy = 0;
+			else set_AbilityEnergy(v + abilityEnergy);
+		}
+		
+		//get defendEnergy
+		int get_DefendEnergy() const {return defendEnergy;}
+		//set defendEnergy
+		void set_DefendEnergy(const unsigned int v) {defendEnergy = v;}
+		//change defendEnergy, by adding v to defendEnergy
+		void change_DefendEnergy(const int v)
+		{
+			if (v + defendEnergy < 0) defendEnergy = 0;
+			else set_DefendEnergy(v + defendEnergy);
+		}
+		
+		//get itemEnergy
+		int get_ItemEnergy() const {return itemEnergy;}
+		//set defendEnergy
+		void set_ItemEnergy(const unsigned int v) {itemEnergy = v;}
+		//change defendEnergy, by adding v to defendEnergy
+		void change_ItemEnergy(const int v)
+		{
+			if (v + itemEnergy < 0) itemEnergy = 0;
+			else set_ItemEnergy(v + itemEnergy);
+		}
+		
+		//get waitEnergy
+		int get_WaitEnergy() const {return waitEnergy;}
+		//set waitEnergy
+		void set_WaitEnergy(const unsigned int v) {waitEnergy = v;}
+		//change waitEnergy, by adding v to waitEnergy
+		void change_WaitEnergy(const int v)
+		{
+			if (v + waitEnergy < 0) waitEnergy = 0;
+			else set_WaitEnergy(v + waitEnergy);
+		}
+		
+		//get runEnergy
+		int get_RunEnergy() const {return runEnergy;}
+		//set runEnergy
+		void set_RunEnergy(const unsigned int v) {runEnergy = v;}
+		//change runEnergy, by adding v to runEnergy
+		void change_RunEnergy(const int v)
+		{
+			if (v + runEnergy < 0) runEnergy = 0;
+			else set_RunEnergy(v + runEnergy);
+		}
+		
 		//DEBUG: show all stats
 		void show_Stats() const
 		{
@@ -205,7 +285,8 @@ struct Stats
 			std::cout << "Focus: " << focus << std::endl;
 			std::cout << "FocusMultiplier: " << focusmultiplier << std::endl;
 			std::cout << "ReflectPercentage: " << reflectpercentage << std::endl << std::endl;
-			//FIX ME: does not show intelligence yet
+			//hidden stats
+			
 		}
 };
 
@@ -280,6 +361,7 @@ struct Status
 		}
 };
 
+//handles message prompts specific to that character
 struct Message
 {
 		private:
@@ -344,8 +426,11 @@ class Character: public Entity
 		Status status;
 		//current level
 		Level level;
-		//messages specific to that character
+		//messages specific to this character
 		Message message;
+		
+		//get energy change, given an action
+		int get_EnergyDifference(const unsigned int action);
 		
 		//check if an attack is critical
 		bool check_Critical() const;
@@ -353,21 +438,30 @@ class Character: public Entity
 		//returns true if attack is dodged, based on character evasion stat
 		bool check_Evasion() const;
 		
-		//get energy change, given an action
-		int get_EnergyDifference(const unsigned int action);
-		
-		//inflict damage
-		int inflict_Damage();
+		//return this character's calculated damage
+		int calculate_Damage();
 
-		//after calculating evasion, crit, and then defending, possibly take damage
-		//parameters: target name, evade of target, defense of target, reflect percentage of target, character inflicting damage
-		void take_Damage(std::string targetname, const bool evade, const bool defend, float rp, Character *c);
+		//calculate swing damage from enemy to this character
+		//calculate evasion chance, crit chance, defense
+		void take_SwingDamage(Character *enemy);
 		
-		//if enemy is defending, apply percentage of damage done back to the attacker.
-		void take_Retaliation(const int damage, const float enemyreflect);
+		//take regular damage
+		void take_NormalDamage(const int damage);
 		
 		//inflict ability on target
 		void inflict_Ability();	
+		
+		//character defend and display prompt
+		void defend();
+		
+		//apply retaliation damage to this character and reduced damage to the defender, based on defender retaliation
+		void take_Retaliation(const int damage, Character *defender);
+		
+		//character waits and restores energy
+		void wait();
+		
+		//character attempts to run. return success or failure
+		bool run();
 		
 	protected:
 		//assign starting stats and other information for a character

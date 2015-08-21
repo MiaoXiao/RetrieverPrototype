@@ -17,7 +17,15 @@ bool Battle::start_Battle()
 				//if character is alive, calculate their turn
 				if (((*it).second->status.get_IsAlive()))
 				{
+					cout << p1->get_Name() << endl;
+					p1->stats.show_Stats();
+					cout << p2->get_Name() << endl;
+					p2->stats.show_Stats();
 					show_ActiveFigments(true);
+					
+					//at the start of turn, always set defending to false
+					(*it).second->status.set_Defending(false);
+					
 					cout << "Turn Number: " << turnnumber << endl;
 					combatDecision((*it).second);
 					
@@ -215,12 +223,12 @@ void Battle::chooseItem_State()
 }
 
 //calculate energy, check if action is possible. if not, go back to choose action.
-void Battle::checkEnergy_State(int &energychange, Character *c)
+void Battle::checkEnergy_State(int &energychange, Character *player)
 {
 	//get energy change
-	energychange = c->get_EnergyDifference(lastaction);
+	energychange = player->get_EnergyDifference(lastaction);
 	//check if action is possible with current energy
-	if (c->stats.get_CurrEnergy() + energychange < 0)
+	if (player->stats.get_CurrEnergy() + energychange < 0)
 	{
 		//reset to default
 		energychange = 0;
@@ -235,17 +243,16 @@ void Battle::checkEnergy_State(int &energychange, Character *c)
 }
 
 //outcome menu
-void Battle::prompt_State(const int target, const int energychange, Character* c)
+void Battle::prompt_State(const int target, const int energychange, Character* player)
 {
 	//calculate energy addition/reduction for character
-	c->stats.set_CurrEnergy(c->stats.get_CurrEnergy() + energychange);
+	//c->stats.set_CurrEnergy(c->stats.get_CurrEnergy() + energychange);
 	//based on last prompt, calculate action and display prompts
 	switch (lastaction)
 	{
 		case Swing:
 		{
-				cout << c->get_Name() << " uses " << abs(energychange) << " energy and swings at " << figmentlist[target].get_Name() << "!" << endl;
-				figmentlist[target].take_Damage(figmentlist[target].get_Name(), figmentlist[target].check_Evasion(), figmentlist[target].status.get_Defending(), figmentlist[target].stats.get_ReflectPercentage(), c);
+				figmentlist[target].take_SwingDamage(player);
 				
 				//remove target from battlelog and figmentlist if figment is destroyed
 				if (!figmentlist[target].status.get_IsAlive())
@@ -260,23 +267,18 @@ void Battle::prompt_State(const int target, const int energychange, Character* c
 				break;
 		}
 		case Ability:
+			player->inflict_Ability();
 			break;
 		case Defend:
-			c->status.set_Defending(true);
-			cout << c->get_Name() << " forms a defensive stance." << endl;
+			player->defend();
 			break;
 		case Item:
+			break;
 		case Wait:
-			cout << c->get_Name() << " waits and catches " << c->pronoun << " breath, restoring " << energychange << " energy." << endl;
+			player->wait();
 			break;
 		case Run:
-			cout << c->get_Name() << " and company use " << abs(energychange) << " energy in an attempt to run away!" << endl;
-			if (Probability::chanceToOccur(Globals::RUNPROBABILITY))
-			{
-				cout << "Run was successful!" << endl;
-				runsuccessful = true;
-			}
-			else cout << "Running was not successful!" << endl;
+			runsuccessful = player->run();
 			break;
 	}
 }
@@ -299,9 +301,6 @@ void Battle::combatDecision(Character* c)
 	
 	if (c->status.get_IsPlayer()) //PLAYER TURN
 	{
-		//reset back to neutral stance
-		c->status.set_Defending(false);
-		
 		//used to transition between different menus during a battle
 		while (!nextturn)
 		{
@@ -331,21 +330,63 @@ void Battle::combatDecision(Character* c)
 	}
 	else // ENEMY TURN
 	{
-		int enemyAction = Probability::multipleChanceToOccur(0.5, 0.25, 0.25);
+		float swingChance = 0.5;
+		float abilityChance = 0.15;
+		float defendChance = 0.15;
+		float waitChance = 0.20;
+		
+		int enemyAction = Probability::multipleChanceToOccur(swingChance, abilityChance, defendChance, waitChance);
+		//int enemyAction = Probability::multipleChanceToOccur(1, 0, 0, 0);
+				
+		//calculate energy and see if there is a better option.
 		switch (enemyAction)
 		{
-			case Swing:
-				
+			case Swing: //if not enough energy for swing, wait
+				if (c->stats.get_SwingEnergy() > c->stats.get_CurrEnergy()) enemyAction = Wait;
 				break;
 			case Ability:
 				break;
+			case Wait: //if energy is full, choose either swing or ability
+				if (c->stats.get_CurrEnergy() == c->stats.get_MaxEnergy())
+				{
+					if (Probability::chanceToOccur(0.5)) enemyAction = Swing;
+					else enemyAction = Ability;
+				}
+			default:
+				break;
+		}
+		
+		//action
+		switch (enemyAction)
+		{
+			case Swing:
+			{
+				Player *target;
+				
+				//choose which player to attack, first check if any players are wiped out
+				if (!p1->status.get_IsAlive()) target = p2;
+				else if (!p2->status.get_IsAlive()) target = p1;
+				else if (Probability::chanceToOccur(0.5)) target = p1;
+				else target = p2;
+				
+				target->take_SwingDamage(c);
+				break;
+			}
+			case Ability:
+				c->inflict_Ability();
+				break;
 			case Defend:
+				c->defend();
+				break;
+			case Wait:
+				c->wait();
 				break;
 			default:
 				cerr << "Invalid enemy action. Exiting." << endl;
 				exit(1);
 		}
 	}
+	cout << endl;
 	//figmentlist[target].showall_Stats();
 }
 

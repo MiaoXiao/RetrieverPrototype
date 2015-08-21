@@ -4,6 +4,29 @@
 using namespace std;
 
 //--------------------------------------------------------------------PUBLIC--------------------------------------------------------------------//
+//get energy change, given an action
+int Character::get_EnergyDifference(const unsigned int action)
+{
+	switch (action)
+	{
+		case 0: //swing
+			return stats.get_SwingEnergy();
+		case 1: //ability
+			return stats.get_AbilityEnergy();
+		case 2: //defend
+			return stats.get_DefendEnergy();
+		case 3: //item
+			return stats.get_ItemEnergy();
+		case 4: //wait
+			return stats.get_WaitEnergy();
+		case 5: //run
+			return stats.get_RunEnergy();
+		default:
+			cerr << "Not a valid action. Exiting." << endl;
+			exit(1);
+	}
+}
+
 //check if an attack is critical
 bool Character::check_Critical() const
 {
@@ -14,108 +37,127 @@ bool Character::check_Critical() const
 bool Character::check_Evasion() const
 {
 	//cout << "dodge: " << stats.get_Evasiveness() * 0.01 << endl;
-	if (status.get_Defending()) return 0;
+	if (status.get_Defending()) return false;
 	return Probability::chanceToOccur(stats.get_Evasiveness() * 0.01);
 }
 
-//get energy change, given an action
-int Character::get_EnergyDifference(const unsigned int action)
-{
-	switch (action)
-	{
-		case 0: //swing
-			return -5;
-		case 1: //ability
-			return 0;
-		case 2: //defend
-			return 2;
-		case 3: //item
-			return 2;
-		case 4: //wait
-			return 10;
-		case 5: //run
-			return -10;
-		default:
-			cerr << "Not a valid action. Exciting" << endl;
-			exit(1);
-	}
-}
-
-//inflict swing damage on target. damage is within range of swing
-int Character::inflict_Damage()
+//return this character's calculated damage
+int Character::calculate_Damage()
 {
 	//cout << "inflict swing" << endl;
 	return Probability::generateRandomNumber(-Globals::RANGE, Globals::RANGE) + stats.get_Swing();
 }
 
-//after calculating evasion, crit, and then defending, possibly take damage
-//parameters: target name, evade of target, defense of target, reflect percentage of target, character inflicting damage
-void Character::take_Damage(string targetname, const bool evade, const bool defend, float rp, Character *c)
+//calculate swing damage from enemy to this character
+//calculate evasion chance, crit chance, defense
+void Character::take_SwingDamage(Character *enemy)
 {
-	//damage
-	int d = 0;
+	//PROMPT
+	cout << enemy->get_Name() << " uses " << abs(enemy->stats.get_SwingEnergy()) << " energy and swings at " << get_Name() << "!" << endl;
+	
+	//reduce energy
+	enemy->stats.change_CurrEnergy(enemy->stats.get_SwingEnergy());
+	
+	//damage (pos value)
+	unsigned int damage = 0;
 	//EVASION check
-	if (evade) 
+	if (check_Evasion()) 
 	{
 		//PROMPT
-		cout << targetname << " evades the attack!" << endl;
+		cout << get_Name() << " evades the attack!" << endl;
 	}
 	else
 	{
-		//DAMAGE check
-		d = c->inflict_Damage();
+		//DAMAGE calculation
+		damage = enemy->calculate_Damage();
+		
+		cout << "Total Damage: " << damage << endl;
 		
 		//CRITICAL check
-		if (c->check_Critical()) 
+		if (enemy->check_Critical()) 
 		{
 			//CALCULATION
-			d *= c->stats.get_FocusMultiplier();
+			damage *= enemy->stats.get_FocusMultiplier();
 			//PROMPT
-			cout << c->get_Name() << " lands a critical attack!" << endl;
+			cout << enemy->get_Name() << " lands a critical attack!" << endl;
 		}
 		
 		//DEFENSE check
-		if (defend)
+		if (status.get_Defending()) //calculate damage against defender
 		{
-			c->take_Retaliation(d, rp);
-			
-			//damage done back to attacker
-			int rd = rp * d;
-			//damage done to defender
-			d *= (1 - rp);
-			
-			//PROMPT
-			cout << targetname << " defends against the attack, and returns " << rd 
-				<< " damage back to " << c->get_Name() << "!" << endl;
+			enemy->take_Retaliation(damage, this);
 		}
-		
-		//PROMPT
-		cout << targetname << " takes " << d << " damage!" << endl;
-		stats.change_CurrHealth(-d);
-		
-		//if currhealth is 0 or below, character is defeated
-		if (stats.get_CurrHealth() == 0) status.set_IsAlive(false);
+		else //calculate damage as normal
+		{
+			take_NormalDamage(damage);
+		}
 	}
 	//showall_Stats();
 }
 
-//if enemy is defending, apply percentage of damage done back to the attacker.
-void Character::take_Retaliation(const int damage, const float enemyreflect)
+//take regular damage
+void Character::take_NormalDamage(const int damage)
 {
-	if (enemyreflect < 0 || enemyreflect > 1)
-	{
-		cerr << "Reflect percentage not between 0 and 1. Exiting." << endl;
-		exit(1);
-	}
+	stats.change_CurrHealth(-damage);
 	
-	//sets current health
-	stats.change_CurrHealth(-(damage * enemyreflect));
+	//if currhealth is 0 or below, character is defeated
+	if (stats.get_CurrHealth() == 0) status.set_IsAlive(false);
+	
+	//PROMPT
+	cout << get_Name() << " takes " << damage << " damage!" << endl;
 }
 
 //inflict ability 
 void Character::inflict_Ability()
 {
-	cout << "inflict ability";
+	cout << get_Name() + " uses an ability!" << endl;
+}
+
+//character defend and display prompt
+void Character::defend()
+{
+	status.set_Defending(true);
+	stats.change_CurrEnergy(stats.get_DefendEnergy());
+	cout << get_Name() << " forms a defensive stance and restores " <<  stats.get_DefendEnergy() << " energy." << endl;
+}
+
+//apply retaliation damage to this character and reduced damage to the defender, based on defender retaliation
+void Character::take_Retaliation(const int damage, Character *defender)
+{
+	int damageToDefender = damage * (1.0 - defender->stats.get_ReflectPercentage());
+	int damageToAttacker = damage * defender->stats.get_ReflectPercentage();
+	
+	//at least 1 damage must be reflected
+	if (damageToAttacker == 0) damageToAttacker = 1;
+	
+	//PROMPT
+	cout << defender->get_Name() << " defends against the attack and returns some damage back to " << get_Name() << "!" << endl;
+	
+	//damage defender
+	defender->take_NormalDamage(damageToDefender);
+	//damage attacker
+	take_NormalDamage(damageToAttacker);
+}
+
+//character waits and restores energy
+void Character::wait()
+{
+	stats.change_CurrEnergy(stats.get_WaitEnergy());
+	cout << get_Name() <<  " catches " << pronoun << " breath and restores " << abs(stats.get_WaitEnergy()) << " energy." << endl;
+}
+
+//character attempts to run. return success or failure
+bool Character::run()
+{
+	cout << get_Name() << " and company use " << abs(stats.get_RunEnergy()) << " energy in an attempt to run away!" << endl;
+	stats.change_CurrEnergy(stats.get_RunEnergy());
+	if (Probability::chanceToOccur(Globals::RUNPROBABILITY))
+	{
+		cout << "Run was successful!" << endl;
+		return true;
+	}
+	cout << "Running was not successful!" << endl;
+	return false;
 }
 
 //--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//

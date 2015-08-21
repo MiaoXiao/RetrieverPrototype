@@ -37,8 +37,9 @@ namespace Probability
 	//will return true given probability, given number between 0 - 1
 	bool chanceToOccur(const float p);
 	
-	//based on multiple probabilities, returns 0, 1, or 2 based on those probabilities
-	int multipleChanceToOccur(const float p0, const float p1, const float p2);
+	//based on multiple probabilities, returns 0, 1, 2, or 4 based on those probabilities
+	//neturn values return to CharacterChoice enum
+	int multipleChanceToOccur(const float prob0, const float prob1, const float prob2, const float prob3);
 	
 	//return random number between lower bound and higher bound exclusive
 	int generateRandomNumber(const int lb, const int hb);

@@ -38,7 +38,7 @@ class Battle
 				switch (area)
 				{
 					case Starting_A:
-						Figment f(Enemy::PATH + "e2_stats", count, 0, 0);
+						Figment f(Enemy::PATH + "e1_stats", count, 0, 0);
 						figmentlist.push_back(f);
 						break;
 				}
@@ -52,8 +52,8 @@ class Battle
 	private:
 		//enum for different battle menus
 		enum MenuState {ChooseAction_S, ChooseTarget_S, ChooseAbility_S, ChooseItem_S, CheckEnergy_S, Prompt_S, Done_S};
-		//enum for player decisions
-		enum PlayerChoice {Swing, Ability, Defend, Item, Wait, Run};
+		//enum for character decisions
+		enum CharacterChoice {Swing, Ability, Defend, Item, Wait, Run};
 		//enum for target
 		enum Target {Enemy0, Enemy1, Enemy2, Enemy3, Enemy4, Enemy5, All};
 		//enum for areas
@@ -100,9 +100,9 @@ class Battle
 		//choose item menu
 		void chooseItem_State();
 		//calculate energy, check if action is possible. if not, go back to choose action.
-		void checkEnergy_State(int &energychange, Character *c);
+		void checkEnergy_State(int &energychange, Character *player);
 		//calculate outcome menu
-		void prompt_State(const int target, const int energychange, Character* c);
+		void prompt_State(const int target, const int energychange, Character* player);
 		
 		//make decision in combat, based on current turn
 		void combatDecision(Character* c);
@@ -112,7 +112,6 @@ class Battle
 		
 		//DEBUG: display complete turn order
 		void show_TurnOrder();
-		
 		//DEBUG: show active figment vector, set to true if showing all stats
 		void show_ActiveFigments(const bool allstats) const;
 };
