@@ -10,11 +10,19 @@ class Entity
 		//change name
 		std::string get_Name() const;
 		//set name
-		void set_Name(const std::string n);
+		void set_Name(const std::string v);
+		
+		//change description
+		std::string get_Description() const;
+		//set description
+		void set_Description(const std::string v);
 		
 	protected:
 		//name of entity
 		std::string name;
+		
+		//description of entity
+		std::string description;
 };
 
 #endif
