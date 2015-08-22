@@ -30,8 +30,6 @@ class Ability: public Entity
 		//change energy usage, by adding v to swing
 		void change_EnergyUsage(const int v);
 		
-		//initalize ability information based on type
-		virtual void init_AbilityInfo() = 0;
 		//use an ability
 		virtual void use_Ability(Character *attacker, Character *target) = 0;
 };
