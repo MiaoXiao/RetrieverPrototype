@@ -17,8 +17,7 @@ class Battle
 {
 	public:
 		//CONSTRUCTOR: construct battle using both players and vector of figments
-		Battle(Player* p, Player* p1, Player* p2, const int area, const unsigned int initialfigments):
-			p(p),
+		Battle(Player* p1, Player* p2, const int area, const unsigned int initialfigments):
 			p1(p1),
 			p2(p2),
 			area(area)
@@ -67,8 +66,7 @@ class Battle
 		//last action player attempted to do
 		int lastaction;
 		
-		//player references
-		Player* p;		
+		//player references	
 		Player* p1;
 		Player* p2;
 		

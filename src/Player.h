@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include "Character.h"
+#include "Ability.h"
 
 #include <iostream>
 #include <fstream>
@@ -12,18 +13,12 @@
 class Player: public Character
 {
 	public:
-		//CONSTRUCTOR: ini#FFFFFFt instance of player and starting funds
-		Player():
-			digits(0),
-			fullParty(false) {}
-		
 		//CONSTRUCTOR: init instance of playable character and pronoun
-		Player(std::string fn):
+		Player(std::string fn, std::vector< std::vector< std::vector<Ability*> > > p1Abilities):
 			digits(0),
 			fullParty(false)
 		{
 			status.set_IsPlayer(true);
-			
 			assign_StartInfo(fn, NULL);
 		}
 		

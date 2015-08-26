@@ -395,13 +395,15 @@ void Battle::add_Loot(const unsigned int exp, const unsigned int digits)
 {
 	if (p1->status.get_IsAlive())
 	{
-		p1->level.change_Level(exp);
+		p1->level.change_Experience(exp);
+		p1->change_Digits(digits);
 	}
 	if (p2->status.get_IsAlive())
 	{
-		p2->level.change_Experience(exp);		
+		p2->level.change_Experience(exp);
+		p2->change_Digits(digits);		
 	}
-	p->change_Digits(digits);
+	
 }
 
 //DEBUG: display complete turn order for one cycle

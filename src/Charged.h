@@ -8,13 +8,15 @@
 class Charged: public Ability
 {
 	public:
-		Charged(std::string n, std::string description, const unsigned int energy, const float swingmodifier, const unsigned int turns):
+		Charged(std::string n, std::string description, const unsigned int energy, const float swingmodifier, std::vector<std::string> usage_v, const unsigned int turns):
 		turns(turns)
 		{
 			set_Name(name);
 			set_Description(description);
 			set_EnergyUsage(energy);
 			set_SwingModifier(swingmodifier);
+			
+			usage = usage;
 			
 			category = Attack;
 			

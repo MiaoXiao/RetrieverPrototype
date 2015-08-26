@@ -2,8 +2,15 @@
 
 using namespace std;
 
+//manage ability types of all ability categories
+enum AttackAbilityType {Charged_T, Pierce_T, Area_T, Rapid_T};
+enum SupportAbilityType {StatBuff_T};
+enum DebuffAbilityType {StatDebuff_T};
+
+enum AbilityCategory {Attack_C, Support_C, Debuff_C};
+
 //loads all possible abilities
-vector<Ability*> load_Abilities()
+void Load::load_Abilities()
 {
 	//stream
 	fstream f;
@@ -11,12 +18,33 @@ vector<Ability*> load_Abilities()
 	string info;
 	
 	//name of file
-	string filename = "charged0";
+	string filename;
 	
-	//type of ability
-	string abilityType;
+	//all possible ability types in string form
+	vector<string> abilityTypes;
+	//attack
+	abilityTypes.push_back("charged");
+	abilityTypes.push_back("pierce");
+	abilityTypes.push_back("area");
+	abilityTypes.push_back("rapid");
+	//support
+	abilityTypes.push_back("statbuff");
+	//defense
+	abilityTypes.push_back("statdebuff");
+	
+	//stores id for each ability for a specific type in string form
+	//at most 5 abilities per type
+	vector<string> abilityIds;
+	abilityIds.push_back("0");
+	abilityIds.push_back("1");
+	abilityIds.push_back("2");
+	abilityIds.push_back("3");
+	abilityIds.push_back("4");
+	
+	//category of ability
+	unsigned int abilityCategory;
 	//energy needed for ability
-	int energyRequired;
+	unsigned int energyRequired;
 	//name of ability
 	string abilityName;
 	//extra damage that ability can do, based off swing damage
@@ -29,70 +57,99 @@ vector<Ability*> load_Abilities()
 	//turns needed
 	int turns;
 	
-	//ability id
-	int aID = 0;
-	//number of abilities
-	int numbAbilities = 1;
-	
-	while (aID < numbAbilities)
+	//check all possible ability type and ability ids
+	for (unsigned int i = 0; i < abilityTypes.size(); ++i)
 	{
-		//open file based on type
-		f.open(filename.c_str());
-		if (!f.is_open())
+		for (unsigned int j = 0; j < abilityIds.size(); ++j)
 		{
-			cout << "File could not be opened. Exiting." << endl;
-			exit(1);
-		}
-		
-		while (!f.eof())
-		{
-			f >> info;
-			if (info == "Name:")
+			//get filename
+			filename = abilityTypes[i] + abilityIds[j];
+			
+			//open file based on type
+			f.open(("src/abilities/" + filename).c_str());
+			if (f.is_open())
 			{
-				f >> info;
-				abilityName = info;
-			}
-			else if (info == "Energy:")
-			{
-				f >> info;
-				energyRequired = atoi(info.c_str());
-			}
-			else if (info == "Turns:")
-			{
-				f >> info;
-				turns = atoi(info.c_str());
-			}
-			else if (info == "SwingModifier:")
-			{
-				f >> info;
-				swingModifier = atof(info.c_str());
-			}
-			else if (info == "Usage:")
-			{
-				f >> info;
-				do
+				cerr << filename << " being read..." << endl;
+				//go through list of information in text file
+				while (!f.eof())
 				{
-					usage.push_back(info);
 					f >> info;
-				} while(info != "done");
-			}
-			else if (info == "Description:") //description should be the last field in the text file
-			{
-				while (f >> info)
-				{
-					abilityDescription += info;
+					if (info == "Category:")
+					{
+						f >> info;
+						abilityCategory = atoi(info.c_str());
+					}
+					else if (info == "Name:")
+					{
+						f >> info;
+						abilityName = info;
+					}
+					else if (info == "Energy:")
+					{
+						f >> info;
+						energyRequired = atoi(info.c_str());
+					}
+					else if (info == "Turns:")
+					{
+						f >> info;
+						turns = atoi(info.c_str());
+					}
+					else if (info == "SwingModifier:")
+					{
+						f >> info;
+						swingModifier = atof(info.c_str());
+					}
+					else if (info == "Usage:")
+					{
+						f >> info;
+						do
+						{
+							usage.push_back(info);
+							f >> info;
+						} while(info != "done");
+					}
+					else if (info == "Description:") //description should be the last field in the text file
+					{
+						while (f >> info)
+						{
+							abilityDescription += info + " ";
+						}
+					}
+					else
+					{
+						cerr << "Invalid category: " << info << ", in " << filename << ". Exiting." << endl;
+						exit(1);
+					}
 				}
-			}
-			else
-			{
-				cerr << "Invalid category for ability. Exiting." << endl;
-				exit(1);
+				
+				if (usage.size() == 0)
+				{
+					cerr << "Need to specify Usage in " << filename << ". Exiting." << endl;
+					exit(1);
+				}
+				
+				//based on ability category, assign ability to correct type
+				if (abilityTypes[i] == "charged")
+				{
+					cout << "Description: " << abilityDescription << endl;
+					//create the ability depending on the ability type
+					Charged a(abilityName, abilityDescription, energyRequired, swingModifier, usage, turns);
+					chargedAbilities.push_back(a);
+				}
+				else
+				{
+					cerr << "Invalid ability type in " << filename << ". Exiting." << endl;
+					exit(1);
+				}
+				
+				f.close();
 			}
 		}
-		
-		Charged a(abilityName, abilityDescription, energyRequired, swingModifier, turns);
-		aID++;
 	}
-	
-	f.close();
 }
+
+//get all abilities for p1
+std::vector< std::vector< std::vector<Ability*> > > Load::get_P1Abilities() const { return p1Abilities;}
+
+//get all abilities for p2
+std::vector< std::vector< std::vector<Ability*> > > Load::get_P2Abilities() const { return p2Abilities; }

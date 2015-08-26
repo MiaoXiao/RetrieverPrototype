@@ -3,6 +3,7 @@
 
 #include "Character.h"
 #include "Globals.h"
+#include "Ability.h"
 
 #include <iostream>
 #include <map>

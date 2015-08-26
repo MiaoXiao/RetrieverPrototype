@@ -10,18 +10,18 @@ using namespace std;
 
 int main() 
 {
+	Load abilityInfo;
+	abilityInfo.load_Abilities();
+	
 	string statpath = "src/stats/";
 	srand(time(0));	
 
 	vector<Figment> figmentlist;
 
-	Player player;
-	Player tylor(statpath + "p0_stats");
-	Player liza(statpath + "p1_stats");
-
-	//f1.showall_Stats();
+	Player tylor(statpath + "p0_stats", abilityInfo.get_P1Abilities());
+	Player liza(statpath + "p1_stats", abilityInfo.get_P2Abilities());
 	cout << endl;
 	
-	Battle battle(&player, &tylor, &liza, 0, 1);
+	Battle battle(&tylor, &liza, 0, 1);
 	battle.start_Battle(); 
 }

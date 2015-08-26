@@ -17,7 +17,10 @@ class Ability: public Entity
 		//ability category
 		unsigned int category;
 		
-		//swing damage modieifer
+		//determines which characters can use this ability
+		std::vector <std::string> usage;
+		
+		//swing damage modifier
 		float swingmodifier;
 		//get swing modifier
 		float get_SwingModifier() const;
