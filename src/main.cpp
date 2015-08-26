@@ -1,8 +1,26 @@
+#include "Ability.h"
+#include "Charged.h"
+
 #include "Player.h"
 #include "Figment.h"
 #include "Battle.h"
 
 using namespace std;
+
+//loads all possible abilities
+vector<Ability*> load_Abilities()
+{
+	//type of ability
+	string abilityType;
+	//name of ability
+	string abilityName;
+	//extra damage that ability can do, based off swing damage
+	string damageModifier;
+	//description of ability
+	string description;
+	//which character can use the ability
+	vector<string> usage;
+}
 
 int main() 
 {
