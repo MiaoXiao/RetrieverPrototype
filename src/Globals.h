@@ -2,6 +2,7 @@
 #define GLOBALS_H
 
 #include <iostream>
+#include <vector>
 #include <stdlib.h>
 
 namespace Globals

@@ -3,11 +3,13 @@
 
 #include "Character.h"
 
+//FORWARD DECLARATION
+class Character;
+
 //Abstract Base Class for various affects on the stats of a character
 class Ability: public Entity
 {
 	public:
-		
 		
 	protected:
 		//determines which character can use the ability

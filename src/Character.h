@@ -10,6 +10,9 @@
 #include <stdlib.h>
 #include <vector>
 
+//FORWARD DECLARATION
+class Ability;
+
 //manages basic combat skills
 struct Stats
 {
@@ -290,16 +293,19 @@ struct Stats
 		}
 };
 
+/*
 //manages abilities of a character
 struct Abilities
 {
+	
 	//stores all attack abilities
-	std::vector<std::string> attack;
+	std::vector<Ability> attack;
 	//stores all defense abilities
-	std::vector<std::string> defense;
+	std::vector<Ability> defense;
 	//stores all support abilities
-	std::vector<std::string> support;
+	std::vector<Ability> support;
 };
+*/
 
 //manages status effects of a character
 struct Status
@@ -421,7 +427,7 @@ class Character: public Entity
 		//combat stats
 		Stats stats;
 		//combat abilities
-		Abilities abilities;
+		//Abilities abilities;
 		//current status
 		Status status;
 		//current level

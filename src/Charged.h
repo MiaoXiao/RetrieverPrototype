@@ -2,6 +2,7 @@
 #define CHARGED_H
 
 #include "Ability.h"
+#include "Character.h"
 
 //Ability: Charged Swings
 class Charged: public Ability
