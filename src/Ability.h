@@ -12,16 +12,19 @@ class Ability: public Entity
 	public:
 		
 	protected:
-		//determines which character can use the ability
-		enum CharacterTag {P1, P2};
-		
 		//category chooser
 		enum Category {Attack, Debuff, Support};
 		//ability category
 		unsigned int category;
 		
 		//swing damage modieifer
-		int swingmodifier;
+		float swingmodifier;
+		//get swing modifier
+		float get_SwingModifier() const;
+		//set swing modifier
+		void set_SwingModifier(const unsigned int v);
+		//change swing modifier, by adding v to swing modifier
+		void change_SwingModifier(const int v);
 		
 		//energy consumption
 		unsigned int energyusage;
