@@ -43,7 +43,7 @@ class Battle
 				switch (area)
 				{
 					case Starting_A:
-						Figment f(Enemy::PATH + "e1_stats", count, 0, 0);
+						Figment f(Enemy::PATH + "e0_stats", count, 5, 0);
 						figmentlist.push_back(f);
 						break;
 				}
@@ -57,7 +57,7 @@ class Battle
 
 		//begin battle. return true if player wins or escapes
 		bool start_Battle();
-		//end battle
+		//end battle, reset status, check for level up
 		void end_Battle();
 		
 	private:
@@ -72,8 +72,6 @@ class Battle
 		
 		//holds all abilities
 		Load abilityInfo;
-		
-		
 		
 		//set to true if player succesfully runs
 		bool runsuccessful;
@@ -121,8 +119,8 @@ class Battle
 		//add loot to player: exp and money
 		void add_Loot(const unsigned int exp, const unsigned int digits);
 		
-		//check to see if specified player leveled up
-		void checkLevelUp(Player* player);
+		//level up 1 player
+		void levelUp(Player* player);
 		
 		//DEBUG: display complete turn order
 		void show_TurnOrder();

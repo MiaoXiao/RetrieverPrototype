@@ -17,6 +17,7 @@ bool Battle::start_Battle()
 				//if character is alive, calculate their turn
 				if (((*it).second->status.get_IsAlive()))
 				{
+					//cout << p1->level.get_Experience();
 					cout << p1->get_Name() << endl;
 					p1->stats.show_Stats();
 					cout << p2->get_Name() << endl;
@@ -30,25 +31,31 @@ bool Battle::start_Battle()
 					combatDecision((*it).second);
 					
 					//battle is finished if no figments left in battle, or both tylor and liza are wiped out, or players succesfully run
-					if (figmentlist.empty()) return true;
-					else if (!(p1->status.get_IsAlive()) && !(p2->status.get_IsAlive())) return false;
-					else if (runsuccessful) return true;
+					if (figmentlist.empty() || runsuccessful)
+					{
+						end_Battle();
+						return true;
+					}
+					else if (!(p1->status.get_IsAlive()) && !(p2->status.get_IsAlive())) 
+					{
+						return false;
+					}
 					turnnumber++;
 				}
 		}
 	}
 }
 
-//end battle
+//end battle, reset status, check for level up
 void Battle::end_Battle()
 {
 	p1->status.reset_Status();
 	p1->abilities.reset_AbilityInfo();
-	checkLevelUp(p1);
+	if (p1->level.checkLevelUp()) levelUp(p1);
 	
 	p2->status.reset_Status();
 	p2->abilities.reset_AbilityInfo();
-	checkLevelUp(p2);
+	if (p2->level.checkLevelUp()) levelUp(p2);
 }
 
 //--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//
@@ -275,8 +282,6 @@ void Battle::checkEnergy_State(int &energychange, Character *player)
 //outcome menu
 void Battle::prompt_State(const int target, const int energychange, Character* player)
 {
-	//calculate energy addition/reduction for character
-	//c->stats.set_CurrEnergy(c->stats.get_CurrEnergy() + energychange);
 	//based on last prompt, calculate action and display prompts
 	switch (lastaction)
 	{
@@ -289,6 +294,9 @@ void Battle::prompt_State(const int target, const int energychange, Character* p
 				{
 					//PROMPT
 					cout << figmentlist[target].get_Name() << " is defeated!" << endl;
+					
+					//add appropriate experience, digits, and items
+					add_Loot(figmentlist[target].level.get_Experience(), figmentlist[target].get_RandomDigits());
 					
 					//erase figment
 					figmentlist.erase(figmentlist.begin() + (target));
@@ -433,16 +441,15 @@ void Battle::add_Loot(const unsigned int exp, const unsigned int digits)
 		p2->level.change_Experience(exp);
 		p2->change_Digits(digits);		
 	}
-	
 }
 
-//check to see if specified player leveled up
-void Battle::checkLevelUp(Player* player)
+//level up player
+void Battle::levelUp(Player* player)
 {
 	unsigned int levelsGained = 0;
 	
-	//check number of times p1 leveled
-	while (!(p1->level.get_Experience() >= Globals::LEVELRANGE[p1->level.get_Level()]))
+	//level change checker
+	while (player->level.checkLevelUp())
 	{
 		levelsGained++;
 		player->level.change_Level(1);
@@ -451,11 +458,9 @@ void Battle::checkLevelUp(Player* player)
 	//if any levels are gained, allow player to level up their stats and abilities
 	if (levelsGained > 0)
 	{
-		cout << player->get_Name() << " gained " << levelsGained << " levels!" << endl;
+		cout << player->get_Name() << " gained " << levelsGained << " level(s)!" << endl;
 		player->stats.levelUpStats(levelsGained);
 	}
-	
-	
 }
 
 //DEBUG: display complete turn order for one cycle

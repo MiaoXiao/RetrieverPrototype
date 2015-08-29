@@ -57,9 +57,11 @@ struct Stats
 		
 	public:
 		
+		//allow player to allocate points to stats and abilities
 		void levelUpStats(unsigned int points)
 		{
 			unsigned int abilityPoints = points;
+			unsigned int statPoints = points * 4;
 			
 			//temp changes
 			unsigned int mhChange = 0;
@@ -69,22 +71,24 @@ struct Stats
 			unsigned int rChange = 0;
 			unsigned int eChange = 0;
 			
-			std::cout << points * 4 << " stat points to allocate." << std::endl;
+			std::cout << statPoints << " stat points to allocate." << std::endl;
+			std::cout << abilityPoints << " ability points to spend." << std::endl << std::endl;
 			
 			bool done = false;
 			int choice;
 			
 			while (!done)
 			{
+				std::cout << "Choose which stats to improve. " << std::endl;
+				std::cout << statPoints << " points left." << std::endl;
+				
 				std::cout << "0: MaxHealth " << get_MaxHealth() + mhChange << std::endl;
 				std::cout << "1: MaxEnergy " << get_MaxEnergy() + meChange << std::endl;
-				std::cout << "2: Reaction " << get_MaxHealth() + reacChange << std::endl;
-				std::cout << "3: Swing " << get_MaxHealth() + sChange << std::endl;
-				std::cout << "4: Resistance " << get_MaxHealth() + rChange << std::endl;
-				std::cout << "5: Evasiveness " << get_MaxHealth() + eChange << std::endl << std::endl;
+				std::cout << "2: Reaction " << get_Reaction() + reacChange << std::endl;
+				std::cout << "3: Swing " << get_Swing() + sChange << std::endl;
+				std::cout << "4: Resistance " << get_Resistance() + rChange << std::endl;
+				std::cout << "5: Evasiveness " << get_Evasiveness() + eChange << std::endl << std::endl;
 				
-				std::cout << "Choose which stats to improve. " << std::endl;
-				std::cout << points << " points left." << std::endl;
 				std::cin >> choice;
 				std::cout << std::endl;
 				
@@ -94,7 +98,7 @@ struct Stats
 				}
 				else
 				{
-					points--;
+					statPoints--;
 					switch (choice)
 					{
 						case 0: mhChange++;
@@ -113,7 +117,7 @@ struct Stats
 				}
 				
 				//check if all points allocated
-				if (points == 0)
+				if (statPoints == 0)
 				{
 					std::cout << "Press '0' to confirm changes, or anything else to reallocate points." << std::endl;
 					
@@ -144,12 +148,13 @@ struct Stats
 						reacChange = 0;
 						sChange = 0;
 						rChange = 0;
-						eChange = 0;			
+						eChange = 0;
+						statPoints = points * 4;			
 					}
 				}
 			}
 			
-			std::cout << abilityPoints << " ability points to spend." << std::endl << std::endl;
+			
 		}
 		
 		//get max health
@@ -551,9 +556,13 @@ struct Level
 	private:
 		//current combat level
 		int level = 0;
-		//amount of exp gained upon death, or current amount of exp
+		//current amount of exp if player
+		//amount of exp awarded upon character death if figment
 		int experience = 0;
-	
+		
+		//experience needed to reach the next level
+		int levelRange[50] = {50, 100, 200, 400, 800, 1600, 2400, 4800};
+		
 	public:
 		//get level
 		int get_Level() const {return level;}
@@ -578,9 +587,9 @@ struct Level
 		}
 		
 		//returns true if leveled up, given exp
-		bool checkLevelUp(int e)
+		bool checkLevelUp() const
 		{
-			if (e + experience >= Globals::LEVELRANGE[level]) return true;
+			if (get_Experience() >= levelRange[get_Level()]) return true;
 			return false;
 		}
 };

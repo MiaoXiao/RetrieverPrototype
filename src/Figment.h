@@ -28,8 +28,12 @@ class Figment: public Character
 			//assign starting stats
 			assign_StartInfo(fn, number);
 		}
-
+		
+		//distribution of digits earned from killing this figment
+		int get_RandomDigits() const;
+		
 	private:
+		
 		//numb of perks
 		unsigned int numbPerks;
 		//number of abilities
