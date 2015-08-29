@@ -3,6 +3,11 @@
 using namespace std;
 
 //--------------------------------------------------------------------PUBLIC--------------------------------------------------------------------//
+//return single target status
+bool Ability::get_SingleTarget() {return singletarget;}
+
+//return vector of characters which can use this ability
+std::vector<std::string> Ability::get_Usage() {return usage;}
 
 //--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//
 //get swingmodifier

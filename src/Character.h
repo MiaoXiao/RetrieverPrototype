@@ -3,16 +3,13 @@
 
 #include "Entity.h"
 #include "Globals.h"
-#include "Ability.h"
 
 #include <iostream>
+#include <algorithm> 
 #include <fstream>
 #include <string>
 #include <stdlib.h>
 #include <vector>
-
-//FORWARD DECLARATION
-class Ability;
 
 //manages basic combat skills
 struct Stats
@@ -59,6 +56,102 @@ struct Stats
 		int runEnergy = -10;
 		
 	public:
+		
+		void levelUpStats(unsigned int points)
+		{
+			unsigned int abilityPoints = points;
+			
+			//temp changes
+			unsigned int mhChange = 0;
+			unsigned int meChange = 0;
+			unsigned int reacChange = 0;
+			unsigned int sChange = 0;
+			unsigned int rChange = 0;
+			unsigned int eChange = 0;
+			
+			std::cout << points * 4 << " stat points to allocate." << std::endl;
+			
+			bool done = false;
+			int choice;
+			
+			while (!done)
+			{
+				std::cout << "0: MaxHealth " << get_MaxHealth() + mhChange << std::endl;
+				std::cout << "1: MaxEnergy " << get_MaxEnergy() + meChange << std::endl;
+				std::cout << "2: Reaction " << get_MaxHealth() + reacChange << std::endl;
+				std::cout << "3: Swing " << get_MaxHealth() + sChange << std::endl;
+				std::cout << "4: Resistance " << get_MaxHealth() + rChange << std::endl;
+				std::cout << "5: Evasiveness " << get_MaxHealth() + eChange << std::endl << std::endl;
+				
+				std::cout << "Choose which stats to improve. " << std::endl;
+				std::cout << points << " points left." << std::endl;
+				std::cin >> choice;
+				std::cout << std::endl;
+				
+				if (choice < 0 || choice > 5)
+				{
+					std::cout << "Not a valid stat, try again." << std::endl;
+				}
+				else
+				{
+					points--;
+					switch (choice)
+					{
+						case 0: mhChange++;
+							break;
+						case 1: meChange++;
+							break;
+						case 2: reacChange++;
+							break;
+						case 3: sChange++;
+							break;
+						case 4: rChange++;
+							break;
+						case 5: eChange++;
+							break;
+					}
+				}
+				
+				//check if all points allocated
+				if (points == 0)
+				{
+					std::cout << "Press '0' to confirm changes, or anything else to reallocate points." << std::endl;
+					
+					std::cout << "0: MaxHealth " << get_MaxHealth() << " -> " << get_MaxHealth() + mhChange << std::endl;
+					std::cout << "1: MaxEnergy " << get_MaxEnergy() << " -> " << get_MaxEnergy() + meChange << std::endl;
+					std::cout << "2: Reaction " << get_Reaction() << " -> " << get_Reaction() + reacChange << std::endl;
+					std::cout << "3: Swing " << get_Swing() << " -> " << get_Swing() + sChange << std::endl;
+					std::cout << "4: Resistance " << get_Resistance() << " -> " << get_Resistance() + rChange << std::endl;
+					std::cout << "5: Evasiveness " << get_Evasiveness() << " -> " << get_Evasiveness() + eChange << std::endl << std::endl;
+					
+					std::cin >> choice;
+					std::cout << std::endl;
+					
+					if (choice == 0)
+					{
+						done = true;
+						change_MaxHealth(mhChange);
+						change_MaxEnergy(meChange);
+						change_Reaction(-reacChange);
+						change_Swing(-sChange);
+						change_Resistance(rChange);
+						change_Evasiveness(eChange);
+					}
+					else
+					{
+						mhChange = 0;
+						meChange = 0;
+						reacChange = 0;
+						sChange = 0;
+						rChange = 0;
+						eChange = 0;			
+					}
+				}
+			}
+			
+			std::cout << abilityPoints << " ability points to spend." << std::endl << std::endl;
+		}
+		
 		//get max health
 		int get_MaxHealth() const {return maxhealth;}
 		//set max health to v.
@@ -297,12 +390,91 @@ struct Stats
 //manages abilities of a character
 struct Abilities
 {
-	//stores all attack abilities
-	std::vector<Ability*> attack;
-	//stores all defense abilities
-	std::vector<Ability*> defense;
-	//stores all support abilities
-	std::vector<Ability*> support;
+	private:
+
+		//3d array of abilities that this character has; sorted by category, type, then id
+		std::vector<std::vector<std::vector<int> > > abilityList;
+		
+		//if charging an attack, how many turns are left until the charged attack goes off
+		unsigned int charges = 0;
+		
+	public:
+		//add a new ability to this character
+		void add_Ability(unsigned int category, unsigned int type, unsigned int id)
+		{
+			abilityList[category][type].push_back(id);
+			std::sort(abilityList.begin(), abilityList.end());
+		}
+		
+		//get numb charges
+		int get_Charges() const {return charges;}
+		//set numb charges
+		void set_Charges(const unsigned int v) {charges = v;}
+		//change numb charges, by adding v to numb charges
+		void change_Charges(const int v)
+		{
+			if (v + charges < 0) charges = 0;
+			else set_Charges(v + charges);
+		}
+
+		//get numb of abilities
+		int get_NumbAbilities() const 
+		{
+			int n;
+			for (unsigned int i = 0; i < abilityList.size(); ++i)
+			{
+				for (unsigned int j = 0; j < abilityList[i].size(); ++j)
+				{
+					for (unsigned int k = 0; k < abilityList[i][j].size(); ++k)
+					{
+						n++;
+					}
+				}
+			}
+		}
+		
+		/*
+		//find the appropriate ability, and return if single target or not.
+		//also assign active ability
+		bool find_Ability(unsigned int abilityId)
+		{
+			//check which ability category the ability id is from
+			if (abilityId <= attack.size() - 1)
+			{
+				activeAbility = attack[abilityId];
+				return activeAbility->get_SingleTarget();
+			}
+			else
+			{
+				abilityId -= attack.size();
+			}
+			if (abilityId <= support.size() - 1)
+			{
+				activeAbility = support[abilityId];
+				return activeAbility->get_SingleTarget();
+			}
+			else
+			{
+				abilityId -= support.size();
+			}
+			if (abilityId <= debuff.size() - 1)
+			{
+				activeAbility = debuff[abilityId];
+				return activeAbility->get_SingleTarget();
+			}
+			else
+			{
+				std::cerr << "Invalid ability Id, cannot find correct ability. Exiting." << std::endl;
+				exit(1);
+			}
+			return false;
+		} */
+		
+		//reset all ability info after each battle
+		void reset_AbilityInfo()
+		{
+			set_Charges(0);
+		}
 };
 
 
@@ -354,7 +526,7 @@ struct Status
 		void set_IsPlayer(const bool v) {isPlayer = v;}
 		
 		//after every battle reset most statuses; unless characters are wiped out, then reset all
-		void resetStatus()
+		void reset_Status()
 		{
 			bool defending = false;
 			bool stunned = false;
@@ -436,29 +608,25 @@ class Character: public Entity
 		
 		//get energy change, given an action
 		int get_EnergyDifference(const unsigned int action);
-		
 		//check if an attack is critical
 		bool check_Critical() const;
-		
 		//returns true if attack is dodged, based on character evasion stat
 		bool check_Evasion() const;
 		
 		//return this character's calculated damage
-		int calculate_Damage();
-
+		int calculate_Damage(const float swingModifier);
 		//calculate swing damage from enemy to this character
-		//calculate evasion chance, crit chance, defense
-		void take_SwingDamage(Character *enemy);
-		
+		//calculate evasion chance, crit chance, defense, and swing multiplier which is defaulted to 1
+		//useEnergy determines if this attack should use energy
+		void take_SwingDamage(Character *attacker, const float swingMultiplier, const bool useEnergy);
 		//take regular damage
 		void take_NormalDamage(const int damage);
 		
 		//inflict ability on target
-		void inflict_Ability();	
+		//void inflict_Ability();	
 		
 		//character defend and display prompt
 		void defend();
-		
 		//apply retaliation damage to this character and reduced damage to the defender, based on defender retaliation
 		void take_Retaliation(const int damage, Character *defender);
 		

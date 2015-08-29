@@ -29,6 +29,14 @@ class Load
 		std::vector< std::vector< std::vector<Ability*> > > get_P2Abilities() const;
 		
 	private:
+		//manage ability types of all ability categories
+		enum AttackAbilityType {Charged_T, Pierce_T, Area_T, Rapid_T};
+		enum SupportAbilityType {StatBuff_T};
+		enum DebuffAbilityType {StatDebuff_T};
+
+		enum AbilityCategory {Attack_C, Support_C, Debuff_C};
+	
+		//store charged attacks for all characters
 		std::vector<Charged> chargedAbilities;
 	
 		std::vector< std::vector< std::vector<Ability*> > > p1Abilities;

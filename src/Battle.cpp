@@ -39,6 +39,18 @@ bool Battle::start_Battle()
 	}
 }
 
+//end battle
+void Battle::end_Battle()
+{
+	p1->status.reset_Status();
+	p1->abilities.reset_AbilityInfo();
+	checkLevelUp(p1);
+	
+	p2->status.reset_Status();
+	p2->abilities.reset_AbilityInfo();
+	checkLevelUp(p2);
+}
+
 //--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//
 
 //--------------------------------------------------------------------PRIVATE--------------------------------------------------------------------//
@@ -188,14 +200,15 @@ void Battle::chooseAction_State()
 	}
 }
 
-//choose target menu
+//choose target menu, for swing attack or ability
 void Battle::chooseTarget_State(int &target)
 {
 		//prompt choose target
 		cout << "Choose target between '0' and '" << figmentlist.size() - 1 << "'" << endl;
 		cout << "'9' to go back." << endl;
 		cin >> target;
-		if (target == 9) state = ChooseAction_S;
+		if (target == 9 && lastaction == Ability) state = ChooseAbility_S;
+		else if (target == 9) state = ChooseAction_S;
 		else if (target < 0 || target > figmentlist.size() - 1) //check if input is valid
 		{
 			cout << "Not a valid target, please enter again." << endl;
@@ -204,15 +217,32 @@ void Battle::chooseTarget_State(int &target)
 			target = 0;		
 		} 
 		else state = Prompt_S;
-		
-		lastaction = Swing;
 }
 
 //choose ability menu
-void Battle::chooseAbility_State()
+void Battle::chooseAbility_State(Character* player)
 {
 	lastaction = Ability;
-	state = Prompt_S;
+	
+	int choice;
+	//prompt choose target
+	cout << player->get_Name() << " has " << player->abilities.get_NumbAbilities() << " to choose from." << endl;
+	cout << "Select an ability.";
+	cout << "'9' to go back." << endl << endl;
+	
+	cin >> choice;
+	if (choice == 9) state = ChooseAction_S;
+	else if (choice < 0 || choice > player->abilities.get_NumbAbilities() - 1)
+	{
+		cout << "Not a valid ability, try again." << endl;
+		state = ChooseAbility_S;
+	}
+	else
+	{
+		//if (player->abilities.find_Ability()) state = ChooseTarget_S;
+		//else state = Prompt_S;
+	}
+	
 }
 
 //choose item menu
@@ -252,7 +282,7 @@ void Battle::prompt_State(const int target, const int energychange, Character* p
 	{
 		case Swing:
 		{
-				figmentlist[target].take_SwingDamage(player);
+				figmentlist[target].take_SwingDamage(player, 1.0, true);
 				
 				//remove target from battlelog and figmentlist if figment is destroyed
 				if (!figmentlist[target].status.get_IsAlive())
@@ -263,11 +293,10 @@ void Battle::prompt_State(const int target, const int energychange, Character* p
 					//erase figment
 					figmentlist.erase(figmentlist.begin() + (target));
 				}
-				
 				break;
 		}
 		case Ability:
-			player->inflict_Ability();
+			//player->abilities.get_ActiveAbility()->use_Ability(player, figmentlist[target]);
 			break;
 		case Defend:
 			player->defend();
@@ -313,7 +342,7 @@ void Battle::combatDecision(Character* c)
 						chooseTarget_State(target);
 						break;
 					case ChooseAbility_S:
-						chooseAbility_State();
+						chooseAbility_State(c);
 						break;
 					case ChooseItem_S:
 						chooseItem_State();
@@ -330,6 +359,7 @@ void Battle::combatDecision(Character* c)
 	}
 	else // ENEMY TURN
 	{
+		//enemy probability for certain actions
 		float swingChance = 0.5;
 		float abilityChance = 0.15;
 		float defendChance = 0.15;
@@ -369,11 +399,11 @@ void Battle::combatDecision(Character* c)
 				else if (Probability::chanceToOccur(0.5)) target = p1;
 				else target = p2;
 				
-				target->take_SwingDamage(c);
+				target->take_SwingDamage(c, 1.0, true);
 				break;
 			}
 			case Ability:
-				c->inflict_Ability();
+				//c->inflict_Ability();
 				break;
 			case Defend:
 				c->defend();
@@ -403,6 +433,28 @@ void Battle::add_Loot(const unsigned int exp, const unsigned int digits)
 		p2->level.change_Experience(exp);
 		p2->change_Digits(digits);		
 	}
+	
+}
+
+//check to see if specified player leveled up
+void Battle::checkLevelUp(Player* player)
+{
+	unsigned int levelsGained = 0;
+	
+	//check number of times p1 leveled
+	while (!(p1->level.get_Experience() >= Globals::LEVELRANGE[p1->level.get_Level()]))
+	{
+		levelsGained++;
+		player->level.change_Level(1);
+	}
+	
+	//if any levels are gained, allow player to level up their stats and abilities
+	if (levelsGained > 0)
+	{
+		cout << player->get_Name() << " gained " << levelsGained << " levels!" << endl;
+		player->stats.levelUpStats(levelsGained);
+	}
+	
 	
 }
 

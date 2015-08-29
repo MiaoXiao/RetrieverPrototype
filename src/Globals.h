@@ -15,7 +15,7 @@ namespace Globals
 		const float RUNPROBABILITY = 0.2;
 		
 		//level range - up tp lv 9
-		const int LEVELRANGE[20] = 
+		const int LEVELRANGE[50] = 
 		{0, 50, 100, 200, 400, 800, 1600, 2400, 4800};
 }
 

@@ -2,13 +2,6 @@
 
 using namespace std;
 
-//manage ability types of all ability categories
-enum AttackAbilityType {Charged_T, Pierce_T, Area_T, Rapid_T};
-enum SupportAbilityType {StatBuff_T};
-enum DebuffAbilityType {StatDebuff_T};
-
-enum AbilityCategory {Attack_C, Support_C, Debuff_C};
-
 //loads all possible abilities
 void Load::load_Abilities()
 {
@@ -69,7 +62,7 @@ void Load::load_Abilities()
 			f.open(("src/abilities/" + filename).c_str());
 			if (f.is_open())
 			{
-				cerr << filename << " being read..." << endl;
+				//cerr << filename << " being read..." << endl;
 				//go through list of information in text file
 				while (!f.eof())
 				{
@@ -131,7 +124,7 @@ void Load::load_Abilities()
 				//based on ability category, assign ability to correct type
 				if (abilityTypes[i] == "charged")
 				{
-					cout << "Description: " << abilityDescription << endl;
+					//cout << "Description: " << abilityDescription << endl;
 					//create the ability depending on the ability type
 					Charged a(abilityName, abilityDescription, energyRequired, swingModifier, usage, turns);
 					chargedAbilities.push_back(a);
@@ -141,11 +134,24 @@ void Load::load_Abilities()
 					cerr << "Invalid ability type in " << filename << ". Exiting." << endl;
 					exit(1);
 				}
-				
+			
 				f.close();
 			}
 		}
 	}
+	
+	//based on ability usage, assign abilities in correct character vector
+	//charged attack
+	for (unsigned int i = 0; i < chargedAbilities.size(); ++i)
+	{
+		vector<string> temp = chargedAbilities[i].get_Usage();
+		for (unsigned int j = 0; j < temp.size(); ++j)
+		{
+			if (temp[j] == "P1") p1Abilities[abilityCategory][Charged_T].push_back(&chargedAbilities[i]);
+			else if (temp[j] == "P2") p2Abilities[abilityCategory][Charged_T].push_back(&chargedAbilities[i]);
+		}
+	}
+	
 }
 
 //get all abilities for p1

@@ -3,22 +3,26 @@
 
 #include "Character.h"
 
-//FORWARD DECLARATION
-class Character;
-
 //Abstract Base Class for various affects on the stats of a character
 class Ability: public Entity
 {
 	public:
+		//return single target status
+		bool get_SingleTarget();
+		//return vector of characters which can use this ability
+		std::vector<std::string> get_Usage();
 		
 	protected:
 		//category chooser
-		enum Category {Attack, Debuff, Support};
+		enum Category {Attack, Support, Debuff};
 		//ability category
 		unsigned int category;
 		
 		//determines which characters can use this ability
-		std::vector <std::string> usage;
+		std::vector<std::string> usage;
+		
+		//is this a single target ability or a multi target?
+		bool singletarget;
 		
 		//swing damage modifier
 		float swingmodifier;

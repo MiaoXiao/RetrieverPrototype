@@ -6,23 +6,23 @@ using namespace std;
 //use an ability
 void Charged::use_Ability(Character *attacker, Character *target)
 {
-	active = true;
-	cout << attacker->get_Name() << " uses " << get_EnergyUsage() << " and begins charging a swing attack!" << endl;
-}
-
-//returns true when this attack goes off
-bool Charged::countTurns(Character *attacker)
-{
-	//only count if this move is currently active
-	if (active)
+	//check if currently charging
+	if (attacker->abilities.get_Charges() != 0)
 	{
-		chargedturns++;
-		if (chargedturns + 1 == turns) cout << attacker->get_Name() << "'s charged attack will go off on " << attacker->pronoun << " next turn." << endl;
-		else if (chargedturns == turns) active = false;
-		
-		return true;
+		attacker->abilities.change_Charges(-1);
+		if (attacker->abilities.get_Charges() - 1 == 0) cout << attacker->get_Name() << "'s charged attack will go off on " << attacker->pronoun << " next turn." << endl;
+		else if (attacker->abilities.get_Charges() == 0)
+		{
+			cout << attacker->get_Name() << "releases the charged attack!";
+			target->take_SwingDamage(attacker, get_SwingModifier(), false);
+		}
 	}
-	return false;
+	else
+	{
+		//begin charging
+		attacker->abilities.set_Charges(chargedturns);
+		cout << attacker->get_Name() << " uses " << get_EnergyUsage() << " and begins charging a swing attack!" << endl;
+	}
 }
 		
 //--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//

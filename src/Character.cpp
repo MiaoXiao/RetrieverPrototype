@@ -42,21 +42,23 @@ bool Character::check_Evasion() const
 }
 
 //return this character's calculated damage
-int Character::calculate_Damage()
+//parameter for any damage multiplier. 1 is default
+int Character::calculate_Damage(const float swingMultiplier)
 {
 	//cout << "inflict swing" << endl;
-	return Probability::generateRandomNumber(-Globals::RANGE, Globals::RANGE) + stats.get_Swing();
+	return Probability::generateRandomNumber(-Globals::RANGE, Globals::RANGE) + stats.get_Swing() * swingMultiplier;
 }
 
 //calculate swing damage from enemy to this character
-//calculate evasion chance, crit chance, defense
-void Character::take_SwingDamage(Character *enemy)
+//calculate evasion chance, crit chance, defense, and swing multiplier which is defaulted to 1
+//useEnergy determines if this attack should use energy
+void Character::take_SwingDamage(Character *attacker, const float swingMultiplier, const bool useEnergy)
 {
 	//PROMPT
-	cout << enemy->get_Name() << " uses " << abs(enemy->stats.get_SwingEnergy()) << " energy and swings at " << get_Name() << "!" << endl;
-	
+	if (useEnergy) cout << attacker->get_Name() << " uses " << abs(attacker->stats.get_SwingEnergy()) << " energy and swings at " << get_Name() << "!" << endl;
+
 	//reduce energy
-	enemy->stats.change_CurrEnergy(enemy->stats.get_SwingEnergy());
+	attacker->stats.change_CurrEnergy(attacker->stats.get_SwingEnergy());
 	
 	//damage (pos value)
 	unsigned int damage = 0;
@@ -69,23 +71,23 @@ void Character::take_SwingDamage(Character *enemy)
 	else
 	{
 		//DAMAGE calculation
-		damage = enemy->calculate_Damage();
+		damage = attacker->calculate_Damage(swingMultiplier);
 		
-		cout << "Total Damage: " << damage << endl;
+		cout << "DEBUG: Total Damage: " << damage << endl;
 		
 		//CRITICAL check
-		if (enemy->check_Critical()) 
+		if (attacker->check_Critical()) 
 		{
 			//CALCULATION
-			damage *= enemy->stats.get_FocusMultiplier();
+			damage *= attacker->stats.get_FocusMultiplier();
 			//PROMPT
-			cout << enemy->get_Name() << " lands a critical attack!" << endl;
+			cout << attacker->get_Name() << " lands a critical attack!" << endl;
 		}
 		
 		//DEFENSE check
 		if (status.get_Defending()) //calculate damage against defender
 		{
-			enemy->take_Retaliation(damage, this);
+			attacker->take_Retaliation(damage, this);
 		}
 		else //calculate damage as normal
 		{
@@ -107,11 +109,12 @@ void Character::take_NormalDamage(const int damage)
 	cout << get_Name() << " takes " << damage << " damage!" << endl;
 }
 
-//inflict ability 
+//inflict ability
+/*
 void Character::inflict_Ability()
 {
 	cout << get_Name() + " uses an ability!" << endl;
-}
+}*/
 
 //character defend and display prompt
 void Character::defend()
