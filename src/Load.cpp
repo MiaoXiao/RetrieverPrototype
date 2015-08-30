@@ -147,15 +147,15 @@ void Load::load_Abilities()
 		vector<string> temp = chargedAbilities[i].get_Usage();
 		for (unsigned int j = 0; j < temp.size(); ++j)
 		{
-			if (temp[j] == "P1") p1Abilities[abilityCategory][Charged_T].push_back(&chargedAbilities[i]);
-			else if (temp[j] == "P2") p2Abilities[abilityCategory][Charged_T].push_back(&chargedAbilities[i]);
+			if (temp[j] == "P1") p1Abilities[abilityCategory][Charged_T].push_back(chargedAbilities[i]);
+			else if (temp[j] == "P2") p2Abilities[abilityCategory][Charged_T].push_back(chargedAbilities[i]);
 		}
 	}
 	
 }
 
 //get all abilities for p1
-std::vector< std::vector< std::vector<Ability*> > > Load::get_P1Abilities() const { return p1Abilities;}
+std::vector< std::vector< std::vector<Ability> > > Load::get_P1Abilities() const { return p1Abilities;}
 
 //get all abilities for p2
-std::vector< std::vector< std::vector<Ability*> > > Load::get_P2Abilities() const { return p2Abilities; }
+std::vector< std::vector< std::vector<Ability> > > Load::get_P2Abilities() const { return p2Abilities; }

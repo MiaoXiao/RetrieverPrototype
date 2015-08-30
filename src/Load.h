@@ -24,9 +24,9 @@ class Load
 		void load_Abilities();
 		
 		//get all abilities for p1
-		std::vector< std::vector< std::vector<Ability*> > > get_P1Abilities() const;
+		std::vector< std::vector< std::vector<Ability> > > get_P1Abilities() const;
 		//get all abilities for p2
-		std::vector< std::vector< std::vector<Ability*> > > get_P2Abilities() const;
+		std::vector< std::vector< std::vector<Ability> > > get_P2Abilities() const;
 		
 	private:
 		//manage ability types of all ability categories
@@ -39,8 +39,8 @@ class Load
 		//store charged attacks for all characters
 		std::vector<Charged> chargedAbilities;
 	
-		std::vector< std::vector< std::vector<Ability*> > > p1Abilities;
-		std::vector< std::vector< std::vector<Ability*> > > p2Abilities;
+		std::vector< std::vector< std::vector<Ability> > > p1Abilities;
+		std::vector< std::vector< std::vector<Ability> > > p2Abilities;
 
 };
 #endif

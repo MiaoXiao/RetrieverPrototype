@@ -15,6 +15,7 @@ namespace Globals
 		const float RUNPROBABILITY = 0.2;
 }
 
+/*
 namespace Enemy
 {
 	//base values for level 1 figments
@@ -27,7 +28,7 @@ namespace Enemy
 	
 	//path to find enemy stats
 	const std::string PATH = "src/stats/";
-}
+}*/
 
 namespace Probability
 {

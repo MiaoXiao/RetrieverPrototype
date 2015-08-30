@@ -144,14 +144,14 @@ void Figment::assign_StartInfo(string filename, const unsigned int number)
 	}
 	f.close();
 	
-	stats.set_MaxHealth(level.get_Level() + (Enemy::STARTMH * healthX));
+	stats.set_MaxHealth(level.get_Level() + (STARTMH * healthX));
 	stats.set_CurrHealth(stats.get_MaxHealth());
-	stats.set_MaxEnergy(level.get_Level() + (Enemy::STARTME * energyX));
+	stats.set_MaxEnergy(level.get_Level() + (STARTME * energyX));
 	stats.set_CurrEnergy(stats.get_MaxEnergy());
-	stats.set_Reaction(level.get_Level() + (Enemy::STARTREAC / reactionX));
-	stats.set_Swing(level.get_Level() + (Enemy::STARTS * swingX));
-	stats.set_Resistance(level.get_Level() + (Enemy::STARTR * resistanceX));
-	stats.set_Evasiveness(level.get_Level() + (Enemy::STARTE * evasivenessX)); 
+	stats.set_Reaction(level.get_Level() + (STARTREAC / reactionX));
+	stats.set_Swing(level.get_Level() + (STARTS * swingX));
+	stats.set_Resistance(level.get_Level() + (STARTR * resistanceX));
+	stats.set_Evasiveness(level.get_Level() + (STARTE * evasivenessX)); 
 	
 	//showall_Stats();
 }

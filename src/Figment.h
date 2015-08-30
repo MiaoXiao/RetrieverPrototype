@@ -9,6 +9,14 @@
 #include <map>
 #include <string>
 
+//base values for level 1 figments
+#define STARTMH 25
+#define STARTME 10
+#define STARTREAC 60
+#define STARTS 7
+#define STARTR 1
+#define STARTE 5
+
 //every enemy in game
 class Figment: public Character
 {

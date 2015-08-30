@@ -3,12 +3,13 @@
 
 #include "Character.h"
 
-//Abstract Base Class for various affects on the stats of a character
+//ability rank cap
+#define RANKCAP 3
+
+//abilities that can have various effects on the stats of a player or enemy
 class Ability: public Entity
 {
 	public:
-		//return single target status
-		bool get_SingleTarget();
 		//return vector of characters which can use this ability
 		std::vector<std::string> get_Usage();
 		
@@ -17,6 +18,12 @@ class Ability: public Entity
 		enum Category {Attack, Support, Debuff};
 		//ability category
 		unsigned int category;
+		
+		//rank of ability
+		unsigned int rank;
+		
+		//return single target status
+		bool get_SingleTarget();
 		
 		//determines which characters can use this ability
 		std::vector<std::string> usage;
@@ -43,7 +50,7 @@ class Ability: public Entity
 		void change_EnergyUsage(const int v);
 		
 		//use an ability
-		virtual void use_Ability(Character *attacker, Character *target) = 0;
+		virtual void use_Ability(Character *attacker, Character *target) {return;}
 };
 
 #endif

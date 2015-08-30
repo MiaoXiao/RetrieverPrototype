@@ -16,6 +16,9 @@
 //maximum number of figments the player can fight at once
 #define MAXFIGMENTS 6
 
+//path for figment stats
+#define ENEMYPATH std::string("src/stats/")
+
 //manages and directs character decisions. alters player objects at the end of the battle.
 //manages battle prompts
 class Battle
@@ -43,7 +46,7 @@ class Battle
 				switch (area)
 				{
 					case Starting_A:
-						Figment f(Enemy::PATH + "e0_stats", count, 5, 0);
+						Figment f(ENEMYPATH + "e0_stats", count, 5, 0);
 						figmentlist.push_back(f);
 						break;
 				}
