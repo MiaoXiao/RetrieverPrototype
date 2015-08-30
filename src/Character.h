@@ -84,7 +84,7 @@ struct Stats
 				
 				std::cout << "0: MaxHealth " << get_MaxHealth() + mhChange << std::endl;
 				std::cout << "1: MaxEnergy " << get_MaxEnergy() + meChange << std::endl;
-				std::cout << "2: Reaction " << get_Reaction() + reacChange << std::endl;
+				std::cout << "2: Reaction " << get_Reaction() - reacChange << std::endl;
 				std::cout << "3: Swing " << get_Swing() + sChange << std::endl;
 				std::cout << "4: Resistance " << get_Resistance() + rChange << std::endl;
 				std::cout << "5: Evasiveness " << get_Evasiveness() + eChange << std::endl << std::endl;
@@ -123,7 +123,7 @@ struct Stats
 					
 					std::cout << "0: MaxHealth " << get_MaxHealth() << " -> " << get_MaxHealth() + mhChange << std::endl;
 					std::cout << "1: MaxEnergy " << get_MaxEnergy() << " -> " << get_MaxEnergy() + meChange << std::endl;
-					std::cout << "2: Reaction " << get_Reaction() << " -> " << get_Reaction() + reacChange << std::endl;
+					std::cout << "2: Reaction " << get_Reaction() << " -> " << get_Reaction() - reacChange << std::endl;
 					std::cout << "3: Swing " << get_Swing() << " -> " << get_Swing() + sChange << std::endl;
 					std::cout << "4: Resistance " << get_Resistance() << " -> " << get_Resistance() + rChange << std::endl;
 					std::cout << "5: Evasiveness " << get_Evasiveness() << " -> " << get_Evasiveness() + eChange << std::endl << std::endl;
