@@ -2,6 +2,7 @@
 
 using namespace std;
 
+//--------------------------------------------------------------------PUBLIC--------------------------------------------------------------------//
 //loads all possible abilities
 void Load::load_Abilities()
 {
@@ -62,7 +63,7 @@ void Load::load_Abilities()
 			f.open(("src/abilities/" + filename).c_str());
 			if (f.is_open())
 			{
-				//cerr << filename << " being read..." << endl;
+				cerr << filename << " being read..." << endl;
 				//go through list of information in text file
 				while (!f.eof())
 				{
@@ -121,13 +122,24 @@ void Load::load_Abilities()
 					exit(1);
 				}
 				
-				//based on ability category, assign ability to correct type
+				//based on ability category, assign ability to correct player
 				if (abilityTypes[i] == "charged")
 				{
-					//cout << "Description: " << abilityDescription << endl;
 					//create the ability depending on the ability type
 					Charged a(abilityName, abilityDescription, energyRequired, swingModifier, usage, turns);
-					chargedAbilities.push_back(a);
+					assign_ToAbilityPool(a, usage, Attack_C, Charged_T);
+				}
+				else if (abilityTypes[i] == "pierce")
+				{
+					
+				}
+				else if (abilityTypes[i] == "area")
+				{
+					
+				}
+				else if (abilityTypes[i] == "rapid")
+				{
+					
 				}
 				else
 				{
@@ -139,23 +151,44 @@ void Load::load_Abilities()
 			}
 		}
 	}
-	
-	//based on ability usage, assign abilities in correct character vector
-	//charged attack
-	for (unsigned int i = 0; i < chargedAbilities.size(); ++i)
+}
+
+//assign ability to correct character pool
+void Load::assign_ToAbilityPool(Ability a, vector<string> usage, unsigned int category, unsigned int type)
+{
+	//assign ability to ability pool for all valid character
+	for (unsigned int i = 0; i < usage.size(); ++i)
 	{
-		vector<string> temp = chargedAbilities[i].get_Usage();
-		for (unsigned int j = 0; j < temp.size(); ++j)
+		if (usage[i] == "P1")
 		{
-			if (temp[j] == "P1") p1Abilities[abilityCategory][Charged_T].push_back(chargedAbilities[i]);
-			else if (temp[j] == "P2") p2Abilities[abilityCategory][Charged_T].push_back(chargedAbilities[i]);
+			p1AbilityPool[category][type].push_back(a);
+		}
+		else if (usage[i] == "P2")
+		{
+			p2AbilityPool[category][type].push_back(a);
+		}
+		else
+		{
+			cerr << "Invalid character in usage. Exiting." << endl;
+			exit(1);
 		}
 	}
-	
+
 }
 
 //get all abilities for p1
-std::vector< std::vector< std::vector<Ability> > > Load::get_P1Abilities() const { return p1Abilities;}
-
+std::vector< std::vector< std::vector<Ability> > > Load::get_P1AbilityPool() const {return p1AbilityPool;}
 //get all abilities for p2
-std::vector< std::vector< std::vector<Ability> > > Load::get_P2Abilities() const { return p2Abilities; }
+std::vector< std::vector< std::vector<Ability> > > Load::get_P2AbilityPool() const {return p2AbilityPool;}
+//get all abilities for e0
+std::vector< std::vector< std::vector<Ability> > > Load::get_E0AbilityPool() const {return e0AbilityPool;}
+//get all abilities for e1
+std::vector< std::vector< std::vector<Ability> > > Load::get_E1AbilityPool() const {return e1AbilityPool;}
+//get all abilities for e2
+std::vector< std::vector< std::vector<Ability> > > Load::get_E2AbilityPool() const {return e2AbilityPool;}
+//get all abilities for e3
+std::vector< std::vector< std::vector<Ability> > > Load::get_E3AbilityPool() const {return e3AbilityPool;}
+
+//--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//
+
+//--------------------------------------------------------------------PRIVATE--------------------------------------------------------------------//
