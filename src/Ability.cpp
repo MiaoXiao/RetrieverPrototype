@@ -6,8 +6,24 @@ using namespace std;
 //return single target status
 bool Ability::get_SingleTarget() {return singletarget;}
 
-//return vector of characters which can use this ability
-std::vector<std::string> Ability::get_Usage() {return usage;}
+//return if ability is active
+bool Ability::get_IsActive() const {return isActive;}
+
+//get rank
+unsigned int Ability::get_Rank() const {return rank;}
+//set rank
+void Ability::set_Rank(const unsigned int v) 
+{
+	if (v > RANKCAP) rank = RANKCAP;
+	rank = v;
+}
+//change rank, by adding v to rank
+void Ability::change_Rank(const int v)
+{
+	if (v + rank < 1) rank = 1;
+	else if (v + rank > RANKCAP) rank = RANKCAP;
+	else set_Rank(v + rank);
+}
 
 //--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//
 //get swingmodifier

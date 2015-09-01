@@ -19,6 +19,9 @@
 //path for figment stats
 #define ENEMYPATH std::string("src/stats/")
 
+//ability points given for each level
+#define ABILITYPOINTS 1
+
 //manages and directs character decisions. alters player objects at the end of the battle.
 //manages battle prompts
 class Battle
@@ -124,6 +127,8 @@ class Battle
 		
 		//level up 1 player
 		void levelUp(Player* player);
+		//level up an ability
+		void abilityLevelUp(Player *player, unsigned int points);
 		
 		//DEBUG: display complete turn order
 		void show_TurnOrder();

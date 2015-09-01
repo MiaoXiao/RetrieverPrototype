@@ -11,6 +11,9 @@
 #include <stdlib.h>
 #include <vector>
 
+//stat points given for each level
+#define STATPOINTS 4
+
 //manages basic combat skills
 struct Stats
 {
@@ -60,8 +63,7 @@ struct Stats
 		//allow player to allocate points to stats and abilities
 		void levelUpStats(unsigned int points)
 		{
-			unsigned int abilityPoints = points;
-			unsigned int statPoints = points * 4;
+			unsigned int statPoints = points * STATPOINTS;
 			
 			//temp changes
 			unsigned int mhChange = 0;
@@ -72,7 +74,6 @@ struct Stats
 			unsigned int eChange = 0;
 			
 			std::cout << statPoints << " stat points to allocate." << std::endl;
-			std::cout << abilityPoints << " ability points to spend." << std::endl << std::endl;
 			
 			bool done = false;
 			int choice;
@@ -149,12 +150,10 @@ struct Stats
 						sChange = 0;
 						rChange = 0;
 						eChange = 0;
-						statPoints = points * 4;			
+						statPoints = points * STATPOINTS;			
 					}
 				}
 			}
-			
-			
 		}
 		
 		//get max health
@@ -400,26 +399,21 @@ struct Abilities
 		//3d array of abilities that this character has; sorted by category, type, then id
 		std::vector<std::vector<std::vector<int> > > abilityList;
 		
-		//if charging an attack, how many turns are left until the charged attack goes off
-		unsigned int charges = 0;
+		//return if charge attack is active or not
+		bool chargeActive = false;
 		
 	public:
+		//return if charge attack is active or not
+		bool get_ChargeActive() const
+		{
+			return chargeActive;
+		}
+		
 		//add a new ability to this character
 		void add_Ability(unsigned int category, unsigned int type, unsigned int id)
 		{
 			abilityList[category][type].push_back(id);
 			std::sort(abilityList.begin(), abilityList.end());
-		}
-		
-		//get numb charges
-		int get_Charges() const {return charges;}
-		//set numb charges
-		void set_Charges(const unsigned int v) {charges = v;}
-		//change numb charges, by adding v to numb charges
-		void change_Charges(const int v)
-		{
-			if (v + charges < 0) charges = 0;
-			else set_Charges(v + charges);
 		}
 
 		//get numb of abilities
@@ -474,12 +468,6 @@ struct Abilities
 			}
 			return false;
 		} */
-		
-		//reset all ability info after each battle
-		void reset_AbilityInfo()
-		{
-			set_Charges(0);
-		}
 };
 
 

@@ -16,6 +16,30 @@
 //max number of ability types per category
 #define TYPECAP 5
 
+//info about one ability
+struct Node
+{
+	//category 0 - 2, type is 0 - 6, id is the position of this node in the graph
+	unsigned int category, type, id;
+	std::vector<Node*> adjlist;
+	
+	void assign(unsigned int c, unsigned int t, unsigned int i)
+	{
+			category = c;
+			type = t;
+			id = i;
+	}
+};
+
+//Tree of  abilities, controls which abilities can be obtained first
+struct Tree
+{
+	//holds all abilities
+	std::vector <Node> tree;
+	//the next abilities that can be leveled up
+	std::vector <Node*> nextAbilities;
+};
+
 class Load
 {
 	public:
@@ -58,6 +82,10 @@ class Load
 		enum AttackAbilityType {Charged_T, Pierce_T, Area_T, Rapid_T};
 		enum SupportAbilityType {StatBuff_T};
 		enum DebuffAbilityType {StatDebuff_T};
+		
+		//controls which abilities can be obtained first
+		Tree p1AbilityTree;
+		Tree p2AbilityTree;
 		
 		//player pools
 		std::vector< std::vector< std::vector<Ability> > > p1AbilityPool;

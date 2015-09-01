@@ -7,20 +7,25 @@ using namespace std;
 void Charged::use_Ability(Character *attacker, Character *target)
 {
 	//check if currently charging
-	if (attacker->abilities.get_Charges() != 0)
+	if (currentcharge != 0)
 	{
-		attacker->abilities.change_Charges(-1);
-		if (attacker->abilities.get_Charges() - 1 == 0) cout << attacker->get_Name() << "'s charged attack will go off on " << attacker->pronoun << " next turn." << endl;
-		else if (attacker->abilities.get_Charges() == 0)
+		if(currentcharge == maxcharge)
 		{
+			isActive = false;
 			cout << attacker->get_Name() << "releases the charged attack!";
 			target->take_SwingDamage(attacker, get_SwingModifier(), false);
+			currentcharge = 0;
+		}
+		else if (currentcharge + 1 == maxcharge) 
+		{
+			cout << attacker->get_Name() << "'s charged attack will go off on " << attacker->pronoun << " next turn." << endl;
 		}
 	}
 	else
 	{
+		isActive = true;
 		//begin charging
-		attacker->abilities.set_Charges(chargedturns);
+		currentcharge++;
 		cout << attacker->get_Name() << " uses " << get_EnergyUsage() << " and begins charging a swing attack!" << endl;
 	}
 }

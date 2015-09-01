@@ -10,8 +10,19 @@
 class Ability: public Entity
 {
 	public:
-		//return vector of characters which can use this ability
-		std::vector<std::string> get_Usage();
+		//return single target status
+		bool get_SingleTarget();
+		
+		//return if ability is active
+		bool get_IsActive() const;
+		
+		//get rank
+		unsigned int get_Rank() const;
+		//set rank
+		void set_Rank(const unsigned int v);
+		//change rank, by adding v to rank
+		void change_Rank(const int v);
+		
 		
 	protected:
 		//category chooser
@@ -19,17 +30,17 @@ class Ability: public Entity
 		//ability category
 		unsigned int category;
 		
+		//whether this ability is active or not
+		bool isActive;
+		
 		//rank of ability
 		unsigned int rank;
 		
-		//return single target status
-		bool get_SingleTarget();
+		//is this a single target ability or a multi target?
+		bool singletarget;
 		
 		//determines which characters can use this ability
 		std::vector<std::string> usage;
-		
-		//is this a single target ability or a multi target?
-		bool singletarget;
 		
 		//swing damage modifier
 		float swingmodifier;

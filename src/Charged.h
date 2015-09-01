@@ -9,7 +9,7 @@ class Charged: public Ability
 {
 	public:
 		Charged(std::string n, std::string description, const unsigned int energy, const float swingmodifier, std::vector<std::string> usage_v, const unsigned int turns):
-		chargedturns(turns)
+		maxcharge(turns)
 		{
 			set_Name(name);
 			set_Description(description);
@@ -22,6 +22,9 @@ class Charged: public Ability
 			
 			//set category
 			category = Attack;
+			
+			currentcharge = 0;
+			set_Rank(1);
 		}
 		
 		//use an ability
@@ -29,7 +32,9 @@ class Charged: public Ability
 		
 	private:
 		//number of turns before this attack goes off
-		unsigned int chargedturns;
+		unsigned int maxcharge;
+		//how long character has charged for
+		unsigned int currentcharge;
 
 };
 

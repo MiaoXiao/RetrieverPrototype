@@ -50,12 +50,16 @@ bool Battle::start_Battle()
 void Battle::end_Battle()
 {
 	p1->status.reset_Status();
-	p1->abilities.reset_AbilityInfo();
-	if (p1->level.checkLevelUp()) levelUp(p1);
+	if (p1->level.checkLevelUp()) 
+	{
+		levelUp(p1);
+	}
 	
 	p2->status.reset_Status();
-	p2->abilities.reset_AbilityInfo();
-	if (p2->level.checkLevelUp()) levelUp(p2);
+	if (p2->level.checkLevelUp()) 
+	{
+		levelUp(p2);
+	}
 }
 
 //--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//
@@ -460,6 +464,25 @@ void Battle::levelUp(Player* player)
 	{
 		cout << player->get_Name() << " gained " << levelsGained << " level(s)!" << endl;
 		player->stats.levelUpStats(levelsGained);
+		abilityLevelUp(player, levelsGained);
+	}
+}
+
+//level up an ability
+void Battle::abilityLevelUp(Player *player, unsigned int points)
+{
+
+	unsigned int abilityPoints = points * ABILITYPOINTS;
+	bool done = false;
+	std::cout << abilityPoints << " ability points to spend." << std::endl << std::endl;
+	while(!done)
+	{
+		std::cout << "Choose an ability to learn, or improve an existing ability." << std::endl;
+		std::cout << "Can learn: " << std::endl;
+		//if (player->get_Name == "Tylor") abilityInfo.get_P1AbilityPool()[0][0][0]
+		//else 
+		
+		std::cout << "Can improve: " << std::endl;
 	}
 }
 
