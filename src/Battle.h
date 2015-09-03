@@ -2,7 +2,7 @@
 #define BATTLE_H
 
 #include "Globals.h"
-#include "Load.h"
+#include "AbilityManager.h"
 #include "Player.h"
 #include "Figment.h"
 
@@ -28,7 +28,7 @@ class Battle
 {
 	public:
 		//CONSTRUCTOR: construct battle using both players and vector of figments
-		Battle(Player* p1, Player* p2, const int area, const unsigned int initialfigments, Load abilityInfo):
+		Battle(Player* p1, Player* p2, const int area, const unsigned int initialfigments, AbilityManager abilityInfo):
 			p1(p1),
 			p2(p2),
 			area(area),
@@ -77,7 +77,7 @@ class Battle
 		int area;
 		
 		//holds all abilities
-		Load abilityInfo;
+		AbilityManager abilityInfo;
 		
 		//set to true if player succesfully runs
 		bool runsuccessful;
@@ -127,8 +127,6 @@ class Battle
 		
 		//level up 1 player
 		void levelUp(Player* player);
-		//level up an ability
-		void abilityLevelUp(Player *player, unsigned int points);
 		
 		//DEBUG: display complete turn order
 		void show_TurnOrder();

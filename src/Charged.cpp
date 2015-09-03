@@ -11,7 +11,8 @@ void Charged::use_Ability(Character *attacker, Character *target)
 	{
 		if(currentcharge == maxcharge)
 		{
-			isActive = false;
+			attacker->status.set_IsCharging(false);
+			
 			cout << attacker->get_Name() << "releases the charged attack!";
 			target->take_SwingDamage(attacker, get_SwingModifier(), false);
 			currentcharge = 0;
@@ -23,7 +24,8 @@ void Charged::use_Ability(Character *attacker, Character *target)
 	}
 	else
 	{
-		isActive = true;
+		attacker->status.set_IsCharging(true);
+		
 		//begin charging
 		currentcharge++;
 		cout << attacker->get_Name() << " uses " << get_EnergyUsage() << " and begins charging a swing attack!" << endl;

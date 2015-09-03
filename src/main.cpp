@@ -1,5 +1,4 @@
-#include "Load.h"
-#include "Ability.h"
+#include "AbilityManager.h"
 
 #include "Player.h"
 #include "Figment.h"
@@ -12,8 +11,7 @@ int main()
 	//file path for stats
 	string statpath = "src/stats/";
 	
-	Load abilityInfo;
-	abilityInfo.load_Abilities();
+	AbilityManager am;
 
 	srand(time(0));	
 
@@ -23,6 +21,6 @@ int main()
 	Player liza(statpath + "p1_stats");
 	cout << endl;
 	
-	Battle battle(&tylor, &liza, 0, 1, abilityInfo);
+	Battle battle(&tylor, &liza, 0, 1, am);
 	battle.start_Battle(); 
 }

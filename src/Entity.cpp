@@ -10,16 +10,10 @@ string Entity::get_Name() const {return name;}
 void Entity::set_Name(const std::string v) {name = v;}
 
 //change description
-std::string Entity::get_Description() const
-{
-	
-}
+std::string Entity::get_Description() const {return description;}
 
 //set description
-void Entity::set_Description(const std::string v)
-{
-	
-}
+void Entity::set_Description(const std::string v) {description = v;}
 
 //--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//
 

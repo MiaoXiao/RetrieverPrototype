@@ -3,6 +3,6 @@ Name: ChargedSwing
 Energy: 10
 Turns: 1
 SwingModifier: 1.15
-Usage: P1 P2 done
+Usage: Player done
 Description:
-After charging for one player turn, inflict a swing attack on one target which does 15% extra swing damage. Charging starts on the player's next turn after using this ability. While charging, the player can still complete other actions. 
+After charging for one player turn, inflict a swing attack on one target which does 15% extra swing damage. Charging starts on the player's next turn after using this ability. While charging, the player can still complete other actions. *

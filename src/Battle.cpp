@@ -250,8 +250,7 @@ void Battle::chooseAbility_State(Character* player)
 	}
 	else
 	{
-		//if (player->abilities.find_Ability()) state = ChooseTarget_S;
-		//else state = Prompt_S;
+		//check if ability is single target or multi target
 	}
 	
 }
@@ -464,25 +463,20 @@ void Battle::levelUp(Player* player)
 	{
 		cout << player->get_Name() << " gained " << levelsGained << " level(s)!" << endl;
 		player->stats.levelUpStats(levelsGained);
-		abilityLevelUp(player, levelsGained);
-	}
-}
-
-//level up an ability
-void Battle::abilityLevelUp(Player *player, unsigned int points)
-{
-
-	unsigned int abilityPoints = points * ABILITYPOINTS;
-	bool done = false;
-	std::cout << abilityPoints << " ability points to spend." << std::endl << std::endl;
-	while(!done)
-	{
-		std::cout << "Choose an ability to learn, or improve an existing ability." << std::endl;
-		std::cout << "Can learn: " << std::endl;
-		//if (player->get_Name == "Tylor") abilityInfo.get_P1AbilityPool()[0][0][0]
-		//else 
+		if (player == p1) 
+		{
+			player->abilities.set_AbilityList(abilityInfo.p1AbilityTree.learn_Ability(levelsGained, player->abilities.get_AbilityList()));
+		}
+		else if (player == p2)
+		{
+			player->abilities.set_AbilityList(abilityInfo.p2AbilityTree.learn_Ability(levelsGained, player->abilities.get_AbilityList()));
+		}
+		else
+		{
+			cout << "Invalid player while leveling up. Exiting." << endl;
+			exit(1);
+		}
 		
-		std::cout << "Can improve: " << std::endl;
 	}
 }
 

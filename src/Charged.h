@@ -8,20 +8,24 @@
 class Charged: public Ability
 {
 	public:
-		Charged(std::string n, std::string description, const unsigned int energy, const float swingmodifier, std::vector<std::string> usage_v, const unsigned int turns):
+		Charged(std::string n, std::string description, unsigned int category, unsigned int type, unsigned int id, 
+						const unsigned int energy, const float swingmodifier, const unsigned int turns):
 		maxcharge(turns)
 		{
-			set_Name(name);
+			//name and description
+			set_Name(n);
 			set_Description(description);
+			
+			//vector positions
+			set_Category(category);
+			set_Type(type);
+			set_Id(id);
+			
 			set_EnergyUsage(energy);
 			set_SwingModifier(swingmodifier);
-			usage = usage;
 			
 			//set target size
 			singletarget = true;
-			
-			//set category
-			category = Attack;
 			
 			currentcharge = 0;
 			set_Rank(1);

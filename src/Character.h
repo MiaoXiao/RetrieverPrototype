@@ -395,27 +395,15 @@ struct Stats
 struct Abilities
 {
 	private:
-
 		//3d array of abilities that this character has; sorted by category, type, then id
-		std::vector<std::vector<std::vector<int> > > abilityList;
-		
-		//return if charge attack is active or not
-		bool chargeActive = false;
+		std::vector<std::vector<std::vector<unsigned int> > > abilityList;
 		
 	public:
-		//return if charge attack is active or not
-		bool get_ChargeActive() const
-		{
-			return chargeActive;
-		}
+		//get ability list
+		std::vector<std::vector<std::vector<unsigned int> > > get_AbilityList() const {return abilityList;}
+		//set ability list to v
+		void set_AbilityList(const std::vector<std::vector<std::vector<unsigned int> > > v) {abilityList = v;}
 		
-		//add a new ability to this character
-		void add_Ability(unsigned int category, unsigned int type, unsigned int id)
-		{
-			abilityList[category][type].push_back(id);
-			std::sort(abilityList.begin(), abilityList.end());
-		}
-
 		//get numb of abilities
 		int get_NumbAbilities() const 
 		{
@@ -424,50 +412,11 @@ struct Abilities
 			{
 				for (unsigned int j = 0; j < abilityList[i].size(); ++j)
 				{
-					for (unsigned int k = 0; k < abilityList[i][j].size(); ++k)
-					{
-						n++;
-					}
+					n += abilityList[i][j].size();
 				}
 			}
+			return n;
 		}
-		
-		/*
-		//find the appropriate ability, and return if single target or not.
-		//also assign active ability
-		bool find_Ability(unsigned int abilityId)
-		{
-			//check which ability category the ability id is from
-			if (abilityId <= attack.size() - 1)
-			{
-				activeAbility = attack[abilityId];
-				return activeAbility->get_SingleTarget();
-			}
-			else
-			{
-				abilityId -= attack.size();
-			}
-			if (abilityId <= support.size() - 1)
-			{
-				activeAbility = support[abilityId];
-				return activeAbility->get_SingleTarget();
-			}
-			else
-			{
-				abilityId -= support.size();
-			}
-			if (abilityId <= debuff.size() - 1)
-			{
-				activeAbility = debuff[abilityId];
-				return activeAbility->get_SingleTarget();
-			}
-			else
-			{
-				std::cerr << "Invalid ability Id, cannot find correct ability. Exiting." << std::endl;
-				exit(1);
-			}
-			return false;
-		} */
 };
 
 
@@ -480,6 +429,9 @@ struct Status
 		
 		//set to false if this character is wiped out, destroyed
 		bool isAlive = true;
+		
+		//whether player is charging an attack
+		bool isCharging = false;
 		
 		//set to true if player, set to false if enemy
 		bool isPlayer;
@@ -513,6 +465,11 @@ struct Status
 		//set isAlive to v (true or false)
 		void set_IsAlive(const bool v) {isAlive = v;}
 		
+		//get isAlive status
+		bool get_IsCharging() const {return isCharging;}
+		//set isAlive to v (true or false)
+		void set_IsCharging(const bool v) {isCharging = v;}
+		
 		//get isPlayer status
 		bool get_IsPlayer() const {return isPlayer;}
 		//set isPlayer to v (true or false)
@@ -521,13 +478,14 @@ struct Status
 		//after every battle reset most statuses; unless characters are wiped out, then reset all
 		void reset_Status()
 		{
-			bool defending = false;
-			bool stunned = false;
-			bool silenced = false;
-			bool swingsilenced = false;
-			bool uncertain = false;
-			bool broken = false;
-			bool lethargy = false;
+			defending = false;
+			stunned = false;
+			silenced = false;
+			swingsilenced = false;
+			uncertain = false;
+			broken = false;
+			lethargy = false;
+			isCharging = false;
 		}
 };
 
@@ -585,7 +543,7 @@ struct Level
 //Any entity with skills, abilities, and stats
 class Character: public Entity
 {
-	public:				
+	public:	
 		//pronoun for prompts
 		std::string pronoun;
 		
@@ -618,9 +576,6 @@ class Character: public Entity
 		void take_SwingDamage(Character *attacker, const float swingMultiplier, const bool useEnergy);
 		//take regular damage
 		void take_NormalDamage(const int damage);
-		
-		//inflict ability on target
-		//void inflict_Ability();	
 		
 		//character defend and display prompt
 		void defend();

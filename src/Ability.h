@@ -3,18 +3,19 @@
 
 #include "Character.h"
 
-//ability rank cap
-#define RANKCAP 3
-
 //abilities that can have various effects on the stats of a player or enemy
 class Ability: public Entity
 {
-	public:
+	public:		
+		//return ability type
+		int get_Category() const;
+		//return ability type
+		int get_Type() const;
+		//return ability id
+		int get_Id() const;
+		
 		//return single target status
 		bool get_SingleTarget();
-		
-		//return if ability is active
-		bool get_IsActive() const;
 		
 		//get rank
 		unsigned int get_Rank() const;
@@ -23,24 +24,26 @@ class Ability: public Entity
 		//change rank, by adding v to rank
 		void change_Rank(const int v);
 		
-		
-	protected:
-		//category chooser
-		enum Category {Attack, Support, Debuff};
+	protected:	
 		//ability category
 		unsigned int category;
-		
-		//whether this ability is active or not
-		bool isActive;
+		//ability type
+		unsigned int type;
+		//unique id given to every ability
+		unsigned int id;
 		
 		//rank of ability
 		unsigned int rank;
 		
 		//is this a single target ability or a multi target?
 		bool singletarget;
-		
-		//determines which characters can use this ability
-		std::vector<std::string> usage;
+
+		//set ability category to v
+		void set_Category(const unsigned int v);
+		//set ability type to v
+		void set_Type(const unsigned int v);
+		//set ability id to v
+		void set_Id(const unsigned int v);
 		
 		//swing damage modifier
 		float swingmodifier;
