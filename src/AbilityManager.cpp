@@ -259,7 +259,6 @@ void AbilityManager::load_Trees()
 						}
 						else if (treeFiles[i] == "p2tree") //player 2
 						{
-							//cout << "p2" << endl;
 							p2AbilityTree.list.push_back(n);
 							p2AbilityTree.newAbilities.push_back(&p2AbilityTree.list[currentId]); 
 						}

@@ -395,28 +395,17 @@ struct Stats
 struct Abilities
 {
 	private:
-		//3d array of abilities that this character has; sorted by category, type, then id
-		std::vector<std::vector<std::vector<unsigned int> > > abilityList;
+		//array of abilities that this character has
+		std::vector<unsigned int> abilityList;
 		
 	public:
 		//get ability list
-		std::vector<std::vector<std::vector<unsigned int> > > get_AbilityList() const {return abilityList;}
+		std::vector<unsigned int> get_AbilityList() const {return abilityList;}
 		//set ability list to v
-		void set_AbilityList(const std::vector<std::vector<std::vector<unsigned int> > > v) {abilityList = v;}
+		void set_AbilityList(const std::vector<unsigned int> v) {abilityList = v;}
 		
-		//get numb of abilities
-		int get_NumbAbilities() const 
-		{
-			int n;
-			for (unsigned int i = 0; i < abilityList.size(); ++i)
-			{
-				for (unsigned int j = 0; j < abilityList[i].size(); ++j)
-				{
-					n += abilityList[i][j].size();
-				}
-			}
-			return n;
-		}
+		//return number abilities character has
+		unsigned int get_Size() const {return abilityList.size();}
 };
 
 

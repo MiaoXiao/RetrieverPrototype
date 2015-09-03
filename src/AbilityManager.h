@@ -47,28 +47,9 @@ struct SkillTree
 	std::vector <Node*> rankAbilities;
 	
 	//learn a new ability
-	std::vector<std::vector<std::vector<unsigned int> > > learn_Ability(const unsigned int abilityPoints, std::vector<std::vector<std::vector<unsigned int> > > al)
-	{
-		//copy vector
-		std::vector<std::vector<std::vector<unsigned int> > > abilityList = al;
-		
-		//if vector is empty, init vector
-		if (abilityList.size() == 0)
-		{
-			std::vector< std::vector<unsigned int> > c;
-			std::vector<unsigned int> t;
-			
-			//init category vectors
-			for (unsigned int i = 0; i < CATEGORYCAP; ++i)
-			{
-				abilityList.push_back(c);
-				//init type vectors
-				for (unsigned int j = 0; j < TYPECAP; ++j)
-				{
-					abilityList[i].push_back(t);
-				}
-			}
-		}
+	std::vector<unsigned int> learn_Ability(const unsigned int abilityPoints, std::vector<unsigned int> al)
+	{	
+		std::vector<unsigned int> abilityList = al;
 		
 		int choice;
 		bool done = false;
@@ -122,16 +103,11 @@ struct SkillTree
 			}
 			else
 			{
-				//track category, type, and id
-				unsigned int c = list[choice].ability->get_Category();				
-				unsigned int t = list[choice].ability->get_Type();			
-				unsigned int i = list[choice].ability->get_Id();
-				
 				//learn ability
 				if (choice < lrange)
 				{	
 					std::cout << "Learned " << newAbilities[choice]->ability->get_Name() << "!" << std::endl;
-					abilityList[c][t].push_back(i);
+					abilityList.push_back(newAbilities[choice]->ability->get_Id());
 					newAbilities.erase(find(newAbilities.begin(), newAbilities.end(), newAbilities[choice]));
 					rankAbilities.push_back(&list[choice]);
 				}
@@ -143,13 +119,13 @@ struct SkillTree
 					if (list[choice - lrange].ability->get_Rank() == RANKCAP) rankAbilities.erase(find(rankAbilities.begin(), rankAbilities.end(), rankAbilities[choice - lrange]));
 				}
 				
+				std::cout << std::endl;
 				//keep track of how many points are left
 				pointsLeft--;
 				if (pointsLeft == 0) done = true;
 				
 			}
 		}
-		
 		return abilityList;
 	}
 	

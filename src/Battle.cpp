@@ -237,13 +237,13 @@ void Battle::chooseAbility_State(Character* player)
 	
 	int choice;
 	//prompt choose target
-	cout << player->get_Name() << " has " << player->abilities.get_NumbAbilities() << " to choose from." << endl;
+	cout << player->get_Name() << " has " << player->abilities.get_Size() << " to choose from." << endl;
 	cout << "Select an ability.";
 	cout << "'9' to go back." << endl << endl;
 	
 	cin >> choice;
 	if (choice == 9) state = ChooseAction_S;
-	else if (choice < 0 || choice > player->abilities.get_NumbAbilities() - 1)
+	else if (choice < 0 || choice > player->abilities.get_Size() - 1)
 	{
 		cout << "Not a valid ability, try again." << endl;
 		state = ChooseAbility_S;
@@ -251,6 +251,7 @@ void Battle::chooseAbility_State(Character* player)
 	else
 	{
 		//check if ability is single target or multi target
+		
 	}
 	
 }
