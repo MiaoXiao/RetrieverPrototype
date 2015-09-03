@@ -21,6 +21,9 @@ int main()
 	Player liza(statpath + "p1_stats");
 	cout << endl;
 	
-	Battle battle(&tylor, &liza, 0, 1, am);
-	battle.start_Battle(); 
+	Battle battle1(&tylor, &liza, 0, 1, am);
+	Battle battle2(&tylor, &liza, 0, 1, am);
+	
+	battle1.start_Battle();
+	battle2.start_Battle();
 }

@@ -24,6 +24,12 @@ class Ability: public Entity
 		//change rank, by adding v to rank
 		void change_Rank(const int v);
 		
+		//get energy usage
+		int get_EnergyUsage();
+		
+		//use an ability
+		virtual void use_Ability(Character *attacker, Character *target) {return;}
+		
 	protected:	
 		//ability category
 		unsigned int category;
@@ -56,15 +62,11 @@ class Ability: public Entity
 		
 		//energy consumption
 		unsigned int energyusage;
-		//get energy usage
-		int get_EnergyUsage() const;
 		//set energy usage
 		void set_EnergyUsage(const unsigned int v);
 		//change energy usage, by adding v to swing
 		void change_EnergyUsage(const int v);
 		
-		//use an ability
-		virtual void use_Ability(Character *attacker, Character *target) {return;}
 };
 
 #endif

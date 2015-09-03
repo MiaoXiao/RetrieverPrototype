@@ -231,29 +231,67 @@ void Battle::chooseTarget_State(int &target)
 }
 
 //choose ability menu
-void Battle::chooseAbility_State(Character* player)
+void Battle::chooseAbility_State(int &energychange, Character* player)
 {
-	lastaction = Ability;
+	//shortcut for numb abilities
+	int numbAbilities = player->abilities.get_Size();
+	//shortcut for name
+	string playerName = player->get_Name();
 	
-	int choice;
-	//prompt choose target
-	cout << player->get_Name() << " has " << player->abilities.get_Size() << " to choose from." << endl;
-	cout << "Select an ability.";
-	cout << "'9' to go back." << endl << endl;
-	
-	cin >> choice;
-	if (choice == 9) state = ChooseAction_S;
-	else if (choice < 0 || choice > player->abilities.get_Size() - 1)
+	if (numbAbilities == 0)
 	{
-		cout << "Not a valid ability, try again." << endl;
-		state = ChooseAbility_S;
+		cout << playerName << " has no abilities to choose from." << endl;
+		state = ChooseAction_S;
 	}
 	else
 	{
-		//check if ability is single target or multi target
+		lastaction = Ability;
+		int choice;
 		
+		//prompt choose target
+		if (numbAbilities == 1) cout << playerName << " has 1 ability to choose from." << endl;
+		else cout << playerName << " has " << numbAbilities << " abilities to choose from." << endl;
+		
+		cout << "Select an ability.";
+		cout << "'9' to go back." << endl << endl;
+		
+		//display ability information
+		for (int i = 0; i < numbAbilities; ++i)
+		{
+			//index pos
+			unsigned int pos = player->abilities.get_AbilityList()[i];
+			
+			cout << i << ": " << abilityInfo.p1AbilityTree.list[pos].ability->get_Name() << endl;
+			cout << abilityInfo.p1AbilityTree.list[pos].ability->get_Description() << endl << endl;
+		}
+		
+		cin >> choice;
+		if (choice == 9) state = ChooseAction_S;
+		else if (choice < 0 || choice > numbAbilities - 1)
+		{
+			cout << "Not a valid ability, try again." << endl;
+			state = ChooseAbility_S;
+		}
+		else
+		{
+			//set ability id
+			abilityId = player->abilities.get_AbilityList()[choice];
+			
+			//get energy change for that ability, decide if you need to choose target for ability
+			if (player == p1)
+			{
+				energychange = abilityInfo.p1AbilityTree.list[abilityId].ability->get_EnergyUsage();
+				abilityChooseTarget = abilityInfo.p1AbilityTree.list[abilityId].ability->get_SingleTarget();
+			}
+			else if (player == p2)
+			{
+				energychange = abilityInfo.p2AbilityTree.list[abilityId].ability->get_EnergyUsage();
+				abilityChooseTarget = abilityInfo.p2AbilityTree.list[abilityId].ability->get_SingleTarget();
+			}
+			
+			state = CheckEnergy_S;
+		}
 	}
-	
 }
 
 //choose item menu
@@ -267,7 +305,7 @@ void Battle::chooseItem_State()
 void Battle::checkEnergy_State(int &energychange, Character *player)
 {
 	//get energy change
-	energychange = player->get_EnergyDifference(lastaction);
+	energychange += player->get_EnergyDifference(lastaction);
 	//check if action is possible with current energy
 	if (player->stats.get_CurrEnergy() + energychange < 0)
 	{
@@ -276,7 +314,7 @@ void Battle::checkEnergy_State(int &energychange, Character *player)
 		cout << "You do not have enough energy to complete this action!" << endl;
 		state = ChooseAction_S;
 	}
-	else if (figmentlist.size() > 1 && (lastaction == Swing || lastaction == Ability)) //check if target needs to be specified when swinging or using ability
+	else if (figmentlist.size() > 1 && (lastaction == Swing || abilityChooseTarget)) //check if target needs to be specified when swinging or using ability that is multitarget
 	{
 		state = ChooseTarget_S;
 	}
@@ -290,25 +328,13 @@ void Battle::prompt_State(const int target, const int energychange, Character* p
 	switch (lastaction)
 	{
 		case Swing:
-		{
-				figmentlist[target].take_SwingDamage(player, 1.0, true);
-				
-				//remove target from battlelog and figmentlist if figment is destroyed
-				if (!figmentlist[target].status.get_IsAlive())
-				{
-					//PROMPT
-					cout << figmentlist[target].get_Name() << " is defeated!" << endl;
-					
-					//add appropriate experience, digits, and items
-					add_Loot(figmentlist[target].level.get_Experience(), figmentlist[target].get_RandomDigits());
-					
-					//erase figment
-					figmentlist.erase(figmentlist.begin() + (target));
-				}
-				break;
-		}
+			figmentlist[target].take_SwingDamage(player, 1.0, true);
+			check_Enemy(target);
+			break;
 		case Ability:
-			//player->abilities.get_ActiveAbility()->use_Ability(player, figmentlist[target]);
+			if (player == p1) abilityInfo.p1AbilityTree.list[abilityId].ability->use_Ability(player, &figmentlist[target]);
+			else if (player == p2) abilityInfo.p2AbilityTree.list[abilityId].ability->use_Ability(player, &figmentlist[target]);
+			check_Enemy(target);
 			break;
 		case Defend:
 			player->defend();
@@ -321,6 +347,23 @@ void Battle::prompt_State(const int target, const int energychange, Character* p
 		case Run:
 			runsuccessful = player->run();
 			break;
+	}
+}
+
+//check if enemy is defeated
+void Battle::check_Enemy(const unsigned int target)
+{
+	//remove target from battlelog and figmentlist if figment is destroyed
+	if (!figmentlist[target].status.get_IsAlive())
+	{
+		//PROMPT
+		cout << figmentlist[target].get_Name() << " is defeated!" << endl;
+		
+		//add appropriate experience, digits, and items
+		add_Loot(figmentlist[target].level.get_Experience(), figmentlist[target].get_RandomDigits());
+		
+		//erase figment
+		figmentlist.erase(figmentlist.begin() + (target));
 	}
 }
 
@@ -354,7 +397,7 @@ void Battle::combatDecision(Character* c)
 						chooseTarget_State(target);
 						break;
 					case ChooseAbility_S:
-						chooseAbility_State(c);
+						chooseAbility_State(energychange, c);
 						break;
 					case ChooseItem_S:
 						chooseItem_State();

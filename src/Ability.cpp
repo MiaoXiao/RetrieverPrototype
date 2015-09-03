@@ -24,6 +24,9 @@ void Ability::change_Rank(const int v)
 	else set_Rank(v + rank);
 }
 
+//get energy usage
+int Ability::get_EnergyUsage() {return energyusage;}
+
 //--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//
 //set ability category to v
 void Ability::set_Category(const unsigned int v) {category = v;}
@@ -43,8 +46,6 @@ void Ability::change_SwingModifier(const int v)
 	else set_SwingModifier(v + swingmodifier);
 }
 
-//get energy usage
-int Ability::get_EnergyUsage() const {return energyusage;}
 //set energy usage
 void Ability::set_EnergyUsage(const unsigned int v) {energyusage = v;}
 //change energy usage, by adding v to swing

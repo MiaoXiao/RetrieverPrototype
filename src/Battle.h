@@ -78,6 +78,10 @@ class Battle
 		
 		//holds all abilities
 		AbilityManager abilityInfo;
+		//set to true if curent ability is single target only
+		bool abilityChooseTarget;
+		//id of ability to use
+		unsigned int abilityId;
 		
 		//set to true if player succesfully runs
 		bool runsuccessful;
@@ -111,13 +115,16 @@ class Battle
 		//choose target menu
 		void chooseTarget_State(int &target);
 		//choose ability menu
-		void chooseAbility_State(Character* player);
+		void chooseAbility_State(int &energychange, Character* player);
 		//choose item menu
 		void chooseItem_State();
 		//calculate energy, check if action is possible. if not, go back to choose action.
 		void checkEnergy_State(int &energychange, Character *player);
 		//calculate outcome menu
 		void prompt_State(const int target, const int energychange, Character* player);
+		
+		//check if enemy is defeated
+		void check_Enemy(const unsigned int target);
 		
 		//make decision in combat, based on current turn
 		void combatDecision(Character* c);
