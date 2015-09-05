@@ -135,8 +135,8 @@ void AbilityManager::load_Abilities()
 				if (abilityTypes[i] == "charged")
 				{
 					//create the ability depending on the ability type
-					Charged a(abilityName, abilityDescription, Attack_C, Charged_T, id, energyRequired, swingModifier, turns);
-					assign_ToAbilityPool(a, usage, Attack_C, Charged_T);
+					Ability a(abilityName, abilityDescription, Globals::Attack_C, Globals::Charged_T, id, energyRequired, swingModifier, turns);
+					assign_ToAbilityPool(a, usage, Globals::Attack_C, Globals::Charged_T);
 				}
 				else if (abilityTypes[i] == "pierce")
 				{

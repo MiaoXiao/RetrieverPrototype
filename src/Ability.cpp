@@ -10,9 +10,6 @@ int Ability::get_Type() const {return type;}
 //return ability id
 int Ability::get_Id() const {return id;}
 
-//return single target status
-bool Ability::get_SingleTarget() {return singletarget;}
-
 //get rank
 unsigned int Ability::get_Rank() const {return rank;}
 //set rank
@@ -26,8 +23,26 @@ void Ability::change_Rank(const int v)
 
 //get energy usage
 int Ability::get_EnergyUsage() {return energyusage;}
+//set energy usage
+void Ability::set_EnergyUsage(const unsigned int v) {energyusage = v;}
+//change energy usage, by adding v to swing
+void Ability::change_EnergyUsage(const int v)
+{
+	if (v + energyusage < 0) energyusage = 0;
+	else set_EnergyUsage(v + energyusage);
+}
+
+//return single target status
+bool Ability::get_SingleTarget() {return singletarget;}
+
+//use an ability
+void Ability::use_Ability(Character *attacker, std::vector<Character*> target)
+{
+	if (get_Type() == Globals::Charged_T) charged.use(attacker, target, get_EnergyUsage(), get_SwingModifier());
+}
 
 //--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//
+//--------------------------------------------------------------------PRIVATE--------------------------------------------------------------------//
 //set ability category to v
 void Ability::set_Category(const unsigned int v) {category = v;}
 //set ability type to v
@@ -45,14 +60,3 @@ void Ability::change_SwingModifier(const int v)
 	if (v + swingmodifier < 0) swingmodifier = 0;
 	else set_SwingModifier(v + swingmodifier);
 }
-
-//set energy usage
-void Ability::set_EnergyUsage(const unsigned int v) {energyusage = v;}
-//change energy usage, by adding v to swing
-void Ability::change_EnergyUsage(const int v)
-{
-	if (v + energyusage < 0) energyusage = 0;
-	else set_EnergyUsage(v + energyusage);
-}
-
-//--------------------------------------------------------------------PRIVATE--------------------------------------------------------------------//

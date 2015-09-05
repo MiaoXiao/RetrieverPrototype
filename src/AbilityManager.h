@@ -1,8 +1,8 @@
 #ifndef ABILITYMANAGER_H
 #define ABILITYMANAGER_H
 
-#include "AbilityManager.h"
-#include "Charged.h"
+#include "Ability.h"
+#include "Globals.h"
 
 #include <iostream>
 #include <fstream>
@@ -152,13 +152,6 @@ class AbilityManager
 	private:
 		//name of each file to read
 		std::string filename;
-	
-		//manages ability category
-		enum AbilityCategory {Attack_C, Support_C, Debuff_C};
-		//manage ability types of all ability categories
-		enum AttackAbilityType {Charged_T, Pierce_T, Area_T, Rapid_T};
-		enum SupportAbilityType {StatBuff_T};
-		enum DebuffAbilityType {StatDebuff_T};
 		
 		//player pool
 		std::vector<Ability> playerAbilityPool;
