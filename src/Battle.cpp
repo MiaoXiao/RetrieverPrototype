@@ -56,17 +56,23 @@ bool Battle::start_Battle()
 //end battle, reset status, check for level up
 void Battle::end_Battle()
 {
-	p1->status.reset_Status();
-	if (p1->level.checkLevelUp()) 
-	{
-		levelUp(p1);
-	}
+	string p1name = p1->get_Name();
+	string p2name = p2->get_Name();
 	
+	if (runsuccessful) cout << "Although your party flees..." << endl;
+	
+	//tally exp and digits
+	if (p1ExpFinal == p2ExpFinal) cout << p1name << " and " << p2name << " both earn " << p1ExpFinal << " experience." << endl;
+	else cout << p1name << " earns " << p1ExpFinal << " experience and " << p2name << " earns " << p2ExpFinal << " experience." << endl;
+	if (p1DigitsFinal == p2DigitsFinal) cout << p1name << " and " << p2name << " both earn " << p1DigitsFinal << " digits." << endl << endl; 
+	else cout << p1name << " earns " << p1DigitsFinal << " digits and " << p2name << " earns " << p2DigitsFinal << " digits." << endl << endl;
+
+	p1->status.reset_Status();
 	p2->status.reset_Status();
-	if (p2->level.checkLevelUp()) 
-	{
-		levelUp(p2);
-	}
+	
+	if (p1->level.checkLevelUp()) levelUp(p1);
+	if (p2->level.checkLevelUp()) levelUp(p2);
+	
 }
 
 //--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//
@@ -331,17 +337,23 @@ void Battle::checkEnergy_State(int &energychange, Character *player)
 //outcome menu
 void Battle::prompt_State(const int target, const int energychange, Character* player)
 {
+	//holds target information
+	vector<Character*> allTargets;
+	vector<Figment*> allFigmentsTarget;
+	allTargets.push_back(&figmentlist[target]);
+	allFigmentsTarget.push_back(&figmentlist[target]);
+	
 	//based on last prompt, calculate action and display prompts
 	switch (lastaction)
 	{
 		case Swing:
-			figmentlist[target].take_SwingDamage(player, 1.0, true);
-			check_Enemy(target);
+			for (unsigned int i = 0; i < allTargets.size(); ++i) allTargets[i]->take_SwingDamage(player, 1.0, true);
+			check_Enemy(allFigmentsTarget);
 			break;
 		case Ability:
-			if (player == p1) abilityInfo.p1AbilityTree.list[abilityId].ability->use_Ability(player, &figmentlist[target]);
-			else if (player == p2) abilityInfo.p2AbilityTree.list[abilityId].ability->use_Ability(player, &figmentlist[target]);
-			check_Enemy(target);
+			if (player == p1) abilityInfo.p1AbilityTree.list[abilityId].ability->use_Ability(player, allTargets);
+			else if (player == p2) abilityInfo.p2AbilityTree.list[abilityId].ability->use_Ability(player, allTargets);
+			check_Enemy(allFigmentsTarget);
 			break;
 		case Defend:
 			player->defend();
@@ -357,20 +369,23 @@ void Battle::prompt_State(const int target, const int energychange, Character* p
 	}
 }
 
-//check if enemy is defeated
-void Battle::check_Enemy(const unsigned int target)
+//check if any targeted enemies are defeated
+void Battle::check_Enemy(vector<Figment*> allTargets)
 {
 	//remove target from battlelog and figmentlist if figment is destroyed
-	if (!figmentlist[target].status.get_IsAlive())
-	{
-		//PROMPT
-		cout << figmentlist[target].get_Name() << " is defeated!" << endl;
-		
-		//add appropriate experience, digits, and items
-		add_Loot(figmentlist[target].level.get_Experience(), figmentlist[target].get_RandomDigits());
-		
-		//erase figment
-		figmentlist.erase(figmentlist.begin() + (target));
+	for(unsigned int i = 0; i < allTargets.size(); ++i)
+	{ 
+		if (!allTargets[i]->status.get_IsAlive())
+		{
+			//PROMPT
+			cout << allTargets[i]->get_Name() << " is defeated!" << endl;
+			
+			//add appropriate experience, digits, and items
+			add_Loot(allTargets[i]->level.get_Experience(), allTargets[i]->get_RandomDigits());
+			
+			//erase figment
+			figmentlist.erase(figmentlist.begin() + i);
+		}
 	}
 }
 
@@ -486,11 +501,19 @@ void Battle::add_Loot(const unsigned int exp, const unsigned int digits)
 	{
 		p1->level.change_Experience(exp);
 		p1->change_Digits(digits);
+		
+		//get cumulative total for exp and digits
+		p1ExpFinal += p1->level.get_Experience();
+		p1DigitsFinal += p1->get_Digits();
 	}
 	if (p2->status.get_IsAlive())
 	{
 		p2->level.change_Experience(exp);
 		p2->change_Digits(digits);		
+		
+		//get cumulative total for exp and digits
+		p2ExpFinal += p2->level.get_Experience();
+		p2DigitsFinal += p2->get_Digits();
 	}
 }
 

@@ -32,7 +32,7 @@ class Charged: public Ability
 		}
 		
 		//use an ability
-		void use_Ability(Character *attacker, Character *target);
+		void use_Ability(Character *attacker, std::vector<Character*> target);
 		
 	private:
 		//number of turns before this attack goes off

@@ -58,7 +58,12 @@ class Battle
 			
 			//TODO: assign figments their abilities
 			
+			//default values
 			runsuccessful = false;
+			p1ExpFinal = 0;
+			p2ExpFinal = 0;
+			p1DigitsFinal = 0;
+			p2DigitsFinal = 0;
 		}
 
 		//begin battle. return true if player wins or escapes
@@ -100,6 +105,13 @@ class Battle
 		//battlelog
 		std::multimap<float, Character*> battlelog;
 		
+		//final exp awarded to both players
+		unsigned int p1ExpFinal;
+		unsigned int p2ExpFinal;
+		//final digits awarded to both players
+		unsigned int p1DigitsFinal;
+		unsigned int p2DigitsFinal;
+		
 		//get gcd of 2 numbers
 		int gcd(unsigned int a, unsigned int b);
 		//get lcd of 2 numbers
@@ -123,8 +135,8 @@ class Battle
 		//calculate outcome menu
 		void prompt_State(const int target, const int energychange, Character* player);
 		
-		//check if enemy is defeated
-		void check_Enemy(const unsigned int target);
+		//check if any targeted enemies are defeated
+		void check_Enemy(std::vector<Figment*> allFigmentTargets);
 		
 		//make decision in combat, based on current turn
 		void combatDecision(Character* c);

@@ -4,7 +4,7 @@ using namespace std;
 
 //--------------------------------------------------------------------PUBLIC--------------------------------------------------------------------//
 //use an ability
-void Charged::use_Ability(Character *attacker, Character *target)
+void Charged::use_Ability(Character *attacker, vector<Character*> target)
 {
 	//check if currently charging
 	if (currentcharge != 0)
@@ -14,7 +14,9 @@ void Charged::use_Ability(Character *attacker, Character *target)
 			attacker->status.set_IsCharging(false);
 			
 			cout << attacker->get_Name() << "releases the charged attack!";
-			target->take_SwingDamage(attacker, get_SwingModifier(), false);
+			
+			for (unsigned int i = 0; i < target.size(); ++i) target[i]->take_SwingDamage(attacker, get_SwingModifier(), false);
+			
 			currentcharge = 0;
 		}
 		else if (currentcharge + 1 == maxcharge) 

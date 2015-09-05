@@ -28,7 +28,7 @@ class Ability: public Entity
 		int get_EnergyUsage();
 		
 		//use an ability
-		virtual void use_Ability(Character *attacker, Character *target) {return;}
+		virtual void use_Ability(Character *attacker, std::vector<Character*> target) {return;}
 		
 	protected:	
 		//ability category
