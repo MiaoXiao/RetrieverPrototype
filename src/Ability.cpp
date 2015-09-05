@@ -38,7 +38,12 @@ bool Ability::get_SingleTarget() {return singletarget;}
 //use an ability
 void Ability::use_Ability(Character *attacker, std::vector<Character*> target)
 {
-	if (get_Type() == Globals::Charged_T) charged.use(attacker, target, get_EnergyUsage(), get_SwingModifier());
+	if (get_Type() == Globals::Charged_T) charged.use(attacker, target, get_Id(), get_EnergyUsage(), get_SwingModifier());
+	else
+	{
+		cout << "Error trying to use ability. Exiting." << endl;
+		exit(1);
+	}
 }
 
 //--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//

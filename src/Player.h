@@ -20,6 +20,10 @@ class Player: public Character
 		{
 			status.set_IsPlayer(true);
 			assign_StartInfo(fn, NULL);
+			
+			//initial ability info
+			abilities.get_AbilityList().reserve(100);
+			abilities.get_EnergyRequirement().reserve(100);
 		}
 		
 		//get current funds

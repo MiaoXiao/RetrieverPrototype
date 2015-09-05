@@ -397,6 +397,13 @@ struct Abilities
 	private:
 		//array of abilities that this character has
 		std::vector<unsigned int> abilityList;
+		//lists energy requirement for each ability
+		std::vector<int> energyRequirement;
+		
+		//current charged ability
+		unsigned int currentChargeId = -1;
+		//all targets for the charged attack
+		unsigned int chargeTarget;
 		
 	public:
 		//get ability list
@@ -404,8 +411,20 @@ struct Abilities
 		//set ability list to v
 		void set_AbilityList(const std::vector<unsigned int> v) {abilityList = v;}
 		
+		//get ability energy req
+		std::vector<int> get_EnergyRequirement() const {return energyRequirement;}
+		
+		//get id of current charge ability
+		int get_CurrentChargeId() const {return currentChargeId;}
+		//set id of current charge ability
+		void set_CurrentChargeId(const int v) {currentChargeId = v;}
+		
+		int get_ChargeTarget() const {return chargeTarget;}
+		void set_ChargeTarget(const int v) {chargeTarget = v;}
+		
 		//return number abilities character has
 		unsigned int get_Size() const {return abilityList.size();}
+		
 };
 
 
@@ -496,7 +515,7 @@ struct Level
 		int experience = 0;
 		
 		//experience needed to reach the next level
-		int levelRange[50] = {50, 100, 200, 400, 800, 1600, 2400, 4800};
+		int levelRange[50] = {50, 150, 300, 600, 1200, 2400, 4800};
 		
 	public:
 		//get level

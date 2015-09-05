@@ -290,19 +290,27 @@ void Battle::chooseAbility_State(int &energychange, Character* player)
 			//set ability id
 			abilityId = player->abilities.get_AbilityList()[choice];
 			
-			//get energy change for that ability, decide if you need to choose target for ability
-			if (player == p1)
+			//check to see if this ability is already active
+			if (player->abilities.get_CurrentChargeId() == abilityId)
 			{
-				energychange = abilityInfo.p1AbilityTree.list[abilityId].ability->get_EnergyUsage();
-				abilityChooseTarget = abilityInfo.p1AbilityTree.list[abilityId].ability->get_SingleTarget();
+				cout << player->get_Name() << " is already charging an attack." << endl;
+				state = ChooseAction_S;
 			}
-			else if (player == p2)
+			else
 			{
-				energychange = abilityInfo.p2AbilityTree.list[abilityId].ability->get_EnergyUsage();
-				abilityChooseTarget = abilityInfo.p2AbilityTree.list[abilityId].ability->get_SingleTarget();
+				//get energy change for that ability, decide if you need to choose target for ability
+				if (player == p1)
+				{
+					energychange = abilityInfo.p1AbilityTree.list[abilityId].ability->get_EnergyUsage();
+					abilityChooseTarget = abilityInfo.p1AbilityTree.list[abilityId].ability->get_SingleTarget();
+				}
+				else if (player == p2)
+				{
+					energychange = abilityInfo.p2AbilityTree.list[abilityId].ability->get_EnergyUsage();
+					abilityChooseTarget = abilityInfo.p2AbilityTree.list[abilityId].ability->get_SingleTarget();
+				}
+				state = CheckEnergy_S;
 			}
-			
-			state = CheckEnergy_S;
 		}
 	}
 }
@@ -342,6 +350,19 @@ void Battle::prompt_State(const int target, const int energychange, Character* p
 	vector<Figment*> allFigmentsTarget;
 	allTargets.push_back(&figmentlist[target]);
 	allFigmentsTarget.push_back(&figmentlist[target]);
+
+	unsigned int chargeid = player->abilities.get_CurrentChargeId();
+	//keep charging attack if necessary
+	if (chargeid != -1)
+	{	
+		unsigned int chargetarget = player->abilities.get_ChargeTarget();
+		
+		vector<Character*> chargeTargetList;
+		chargeTargetList.push_back(&figmentlist[chargetarget]);
+		
+		if (player == p1) abilityInfo.p1AbilityTree.list[chargeid].ability->use_Ability(player, chargeTargetList);
+		else if (player == p2) abilityInfo.p2AbilityTree.list[chargeid].ability->use_Ability(player, chargeTargetList);
+	}
 	
 	//based on last prompt, calculate action and display prompts
 	switch (lastaction)

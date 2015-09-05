@@ -11,33 +11,42 @@ struct Charged
 	//how long character has charged for
 	unsigned int currentcharge = 0;
 	//use the
-	void use(Character *attacker, std::vector<Character*> target, const int energyusage, const float swingmodifier)
+	void use(Character *attacker, std::vector<Character*> target, const unsigned int id, const int energyusage, const float swingmodifier)
 	{
-		//check if currently charging
-		if (currentcharge != 0)
+		//begin charging if not already charging
+		if (!attacker->status.get_IsCharging())
+		{
+			//set active charged ability
+			attacker->abilities.set_CurrentChargeId(id);
+			attacker->abilities.set_ChargeTarget(0);
+			
+			attacker->status.set_IsCharging(true);
+			
+			currentcharge = 0;
+			std::cout << attacker->get_Name() << " uses " << energyusage << " energy and begins charging a swing attack!" << std::endl;
+			attacker->stats.change_CurrEnergy(-energyusage);
+		}
+		else
 		{
 			if(currentcharge == maxcharge)
 			{
+				attacker->abilities.set_CurrentChargeId(-1);
 				attacker->status.set_IsCharging(false);
 				
-				std::cout << attacker->get_Name() << "releases the charged attack!" << std::endl;
+				std::cout << attacker->get_Name() << " releases the charged attack!" << std::endl;
 				
 				for (unsigned int i = 0; i < target.size(); ++i) target[i]->take_SwingDamage(attacker, swingmodifier, false);
 				
 				currentcharge = 0;
 			}
-			else if (currentcharge + 1 == maxcharge) 
+			else
 			{
-				std::cout << attacker->get_Name() << "'s charged attack will go off on " << attacker->pronoun << " next turn." << std::endl;
+				if (currentcharge + 1 == maxcharge) 
+				{
+					std::cout << attacker->get_Name() << "'s charged attack will go off on " << attacker->pronoun << " next turn." << std::endl;
+				}
+				else currentcharge++;
 			}
-		}
-		else
-		{
-			attacker->status.set_IsCharging(true);
-			
-			//begin charging
-			currentcharge++;
-			std::cout << attacker->get_Name() << " uses " << energyusage << " and begins charging a swing attack!" << std::endl;
 		}
 	}
 };
