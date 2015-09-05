@@ -62,33 +62,33 @@ struct SkillTree
 		
 		while(!done)
 		{
-			std::cout << pointsLeft << " ability point(s) to spend." << std::endl;
+			std::cout << pointsLeft << " ability point(s) to spend." << std::endl << std::endl;
 			lrange = 0;
 			
-			std::cout << "Abilities that can be learned: " << std::endl;
-			if (newAbilities.size() == 0) std::cout << "No new abilities to learn." << std::endl;
+			std::cout << "Abilities that can be learned: " << std::endl << std::endl;
+			if (newAbilities.size() == 0) std::cout << "NONE" << std::endl;
 			else
 			{
 				//display all new abilities that can be learned
 				for (unsigned int i = 0; i < newAbilities.size(); ++i)
 				{
 					std::cout << lrange << ": " << newAbilities[i]->ability->get_Name() << std::endl;
-					std::cout << newAbilities[i]->ability->get_Description() << std::endl;
+					std::cout << newAbilities[i]->ability->get_Description() << std::endl << std::endl;
 					lrange++;
 				}
 			}
 			std::cout << std::endl;
 			
 			rrange = lrange;
-			std::cout << "Abilities that can be improved: " << std::endl;
-			if (rankAbilities.size() == 0) std::cout << "No abilities to improve." << std::endl;
+			std::cout << "Abilities that can be improved: " << std::endl << std::endl;
+			if (rankAbilities.size() == 0) std::cout << "NONE" << std::endl;
 			else
 			{
 				//display all abilities that can be improved
 				for (unsigned int i = 0; i < rankAbilities.size(); ++i)
 				{
 					std::cout << rrange << ": " << rankAbilities[i]->ability->get_Name() << std::endl;
-					std::cout << rankAbilities[i]->ability->get_Description() << std::endl;
+					std::cout << rankAbilities[i]->ability->get_Description() << std::endl << std::endl;
 					rrange++;
 				}
 			}
@@ -99,7 +99,7 @@ struct SkillTree
 			//check input
 			if (choice < 0 || choice > rrange)
 			{
-				std::cout << "Not a valid ability to learn or improve, try again." << std::endl;
+				std::cout << std::endl << "Not a valid ability to learn or improve, try again." << std::endl << std::endl;
 			}
 			else
 			{
@@ -138,20 +138,6 @@ class AbilityManager
 		//CONSTRUCTOR: set sizes for pool vectors
 		AbilityManager() 
 		{
-			std::vector< std::vector<Ability> > c;
-			std::vector<Ability> t;
-			
-			//init category vectors
-			for (unsigned int i = 0; i < CATEGORYCAP; ++i)
-			{
-				playerAbilityPool.push_back(c);
-				//init type vectors
-				for (unsigned int j = 0; j < TYPECAP; ++j)
-				{
-					playerAbilityPool[i].push_back(t);
-				}
-			}
-			
 			load_Abilities();
 			load_Trees();
 		}
@@ -161,16 +147,7 @@ class AbilityManager
 		SkillTree p2AbilityTree;
 		
 		//get all abilities for a player
-		std::vector< std::vector< std::vector<Ability> > > get_PlayerAbilityPool() const;
-		
-		//get all abilities for e0
-		std::vector< std::vector< std::vector<Ability> > > get_E0AbilityPool() const;
-		//get all abilities for e1
-		std::vector< std::vector< std::vector<Ability> > > get_E1AbilityPool() const;
-		//get all abilities for e2
-		std::vector< std::vector< std::vector<Ability> > > get_E2AbilityPool() const;
-		//get all abilities for e3
-		std::vector< std::vector< std::vector<Ability> > > get_E3AbilityPool() const;
+		std::vector<Ability> get_PlayerAbilityPool() const;
 		
 	private:
 		//name of each file to read
@@ -184,12 +161,7 @@ class AbilityManager
 		enum DebuffAbilityType {StatDebuff_T};
 		
 		//player pool
-		std::vector< std::vector< std::vector<Ability> > > playerAbilityPool;
-		//enemy pools
-		std::vector< std::vector< std::vector<Ability> > > e0AbilityPool;
-		std::vector< std::vector< std::vector<Ability> > > e1AbilityPool;
-		std::vector< std::vector< std::vector<Ability> > > e2AbilityPool;
-		std::vector< std::vector< std::vector<Ability> > > e3AbilityPool;
+		std::vector<Ability> playerAbilityPool;
 		
 		//loads all possible abilities
 		void load_Abilities();
@@ -198,7 +170,5 @@ class AbilityManager
 		
 		//fill player trees
 		void load_Trees();
-		//given id, search for ability in player ability list
-		Ability* find_Ability(unsigned int id);
 };
 #endif

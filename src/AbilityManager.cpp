@@ -4,16 +4,7 @@ using namespace std;
 
 //--------------------------------------------------------------------PUBLIC--------------------------------------------------------------------//
 //get all abilities for p1
-std::vector< std::vector< std::vector<Ability> > > AbilityManager::get_PlayerAbilityPool() const {return playerAbilityPool;}
-
-//get all abilities for e0
-std::vector< std::vector< std::vector<Ability> > > AbilityManager::get_E0AbilityPool() const {return e0AbilityPool;}
-//get all abilities for e1
-std::vector< std::vector< std::vector<Ability> > > AbilityManager::get_E1AbilityPool() const {return e1AbilityPool;}
-//get all abilities for e2
-std::vector< std::vector< std::vector<Ability> > > AbilityManager::get_E2AbilityPool() const {return e2AbilityPool;}
-//get all abilities for e3
-std::vector< std::vector< std::vector<Ability> > > AbilityManager::get_E3AbilityPool() const {return e3AbilityPool;}
+std::vector<Ability> AbilityManager::get_PlayerAbilityPool() const {return playerAbilityPool;}
 
 //--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//
 //loads all possible abilities into ability pools for player and enemies
@@ -181,7 +172,7 @@ void AbilityManager::assign_ToAbilityPool(Ability a, vector<string> usage, unsig
 	{
 		if (usage[i] == "Player")
 		{
-			playerAbilityPool[category][type].push_back(a);
+			playerAbilityPool.push_back(a);
 		}
 		else if (usage[i] == "E0")
 		{
@@ -251,7 +242,7 @@ void AbilityManager::load_Trees()
 					//first ability that can be learned
 					if (info == "S") 
 					{
-						Node n(find_Ability(currentId));
+						Node n(&playerAbilityPool[currentId]);
 						if (treeFiles[i] == "p1tree") //player 1
 						{
 							p1AbilityTree.list.push_back(n);
@@ -276,25 +267,5 @@ void AbilityManager::load_Trees()
 		}
 		f.close();
 	}
-}
-
-//given id, search for ability in player ability list
-Ability* AbilityManager::find_Ability(unsigned int id)
-{
-	//cout << "playerabilitypool: " << playerAbilityPool.size() << endl;
-	for (unsigned int i = 0; i < playerAbilityPool.size(); ++i)
-	{
-		for (unsigned int j = 0; j < playerAbilityPool[i].size(); ++j)
-		{
-			for (unsigned int k = 0; k < playerAbilityPool[i][j].size(); ++k)
-			{
-				//cout << "ability name " << playerAbilityPool[i][j][k].get_Description() << endl;
-				if (playerAbilityPool[i][j][k].get_Id() == id) return &playerAbilityPool[i][j][k];
-			}
-		}
-	}
-	
-	cerr << "Could not find ability given id: " << id << endl;
-	exit(1);
 }
 //--------------------------------------------------------------------PRIVATE--------------------------------------------------------------------//

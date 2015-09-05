@@ -14,8 +14,11 @@ bool Battle::start_Battle()
 	{
 		for (multimap<float, Character*>::iterator it = battlelog.begin(); it != battlelog.end(); ++it)
 		{
+				//get character name
+				Character* c = (*it).second;
+				
 				//if character is alive, calculate their turn
-				if (((*it).second->status.get_IsAlive()))
+				if ((c->status.get_IsAlive()))
 				{
 					//cout << p1->level.get_Experience();
 					cout << p1->get_Name() << endl;
@@ -25,10 +28,14 @@ bool Battle::start_Battle()
 					show_ActiveFigments(true);
 					
 					//at the start of turn, always set defending to false
-					(*it).second->status.set_Defending(false);
+					c->status.set_Defending(false);
 					
 					cout << "Turn Number: " << turnnumber << endl;
-					combatDecision((*it).second);
+					//PROMPT
+					cout << "It is " << c->get_Name() << "'s turn" << endl;
+					
+					//decide action
+					combatDecision(c);
 					
 					//battle is finished if no figments left in battle, or both tylor and liza are wiped out, or players succesfully run
 					if (figmentlist.empty() || runsuccessful)
@@ -256,7 +263,7 @@ void Battle::chooseAbility_State(int &energychange, Character* player)
 		cout << "'9' to go back." << endl << endl;
 		
 		//display ability information
-		for (int i = 0; i < numbAbilities; ++i)
+		for (unsigned int i = 0; i < numbAbilities; ++i)
 		{
 			//index pos
 			unsigned int pos = player->abilities.get_AbilityList()[i];
@@ -370,9 +377,6 @@ void Battle::check_Enemy(const unsigned int target)
 //make decision in combat based on selected character's turn
 void Battle::combatDecision(Character* c)
 {	
-	//PROMPT
-	cout << "It is " << c->get_Name() << "'s turn" << endl;
-	
 	//reset initial state
 	state = ChooseAction_S;
 	
@@ -380,7 +384,7 @@ void Battle::combatDecision(Character* c)
 	int target = 0;
 	//change in energy for an action
 	int energychange = 0;
-	//whether turn is over  or not
+	//whether turn is over or not
 	bool nextturn = false;
 	
 	if (c->status.get_IsPlayer()) //PLAYER TURN
@@ -540,7 +544,6 @@ void Battle::show_TurnOrder()
 //DEBUG: show active figment vector, set to true if showing all stats
 void Battle::show_ActiveFigments(const bool allstats) const
 {
-	
 	for (unsigned int i = 0; i < figmentlist.size(); ++i)
 	{
 		cout << i << ": " << figmentlist[i].get_Name() << endl;
