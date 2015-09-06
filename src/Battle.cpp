@@ -347,21 +347,15 @@ void Battle::prompt_State(const int target, const int energychange, Character* p
 {
 	//holds target information
 	vector<Character*> allTargets;
-	vector<Figment*> allFigmentsTarget;
 	allTargets.push_back(&figmentlist[target]);
-	allFigmentsTarget.push_back(&figmentlist[target]);
 
-	unsigned int chargeid = player->abilities.get_CurrentChargeId();
 	//keep charging attack if necessary
+	unsigned int chargeid = player->abilities.get_CurrentChargeId();
 	if (chargeid != -1)
 	{	
-		unsigned int chargetarget = player->abilities.get_ChargeTarget();
-		
-		vector<Character*> chargeTargetList;
-		chargeTargetList.push_back(&figmentlist[chargetarget]);
-		
-		if (player == p1) abilityInfo.p1AbilityTree.list[chargeid].ability->use_Ability(player, chargeTargetList);
-		else if (player == p2) abilityInfo.p2AbilityTree.list[chargeid].ability->use_Ability(player, chargeTargetList);
+		//since we are already charging, allTargets is not important
+		if (player == p1) abilityInfo.p1AbilityTree.list[chargeid].ability->use_Ability(player, allTargets);
+		else if (player == p2) abilityInfo.p2AbilityTree.list[chargeid].ability->use_Ability(player, allTargets);
 	}
 	
 	//based on last prompt, calculate action and display prompts
@@ -369,12 +363,12 @@ void Battle::prompt_State(const int target, const int energychange, Character* p
 	{
 		case Swing:
 			for (unsigned int i = 0; i < allTargets.size(); ++i) allTargets[i]->take_SwingDamage(player, 1.0, true);
-			check_Enemy(allFigmentsTarget);
+			check_Enemy(allTargets);
 			break;
 		case Ability:
 			if (player == p1) abilityInfo.p1AbilityTree.list[abilityId].ability->use_Ability(player, allTargets);
 			else if (player == p2) abilityInfo.p2AbilityTree.list[abilityId].ability->use_Ability(player, allTargets);
-			check_Enemy(allFigmentsTarget);
+			check_Enemy(allTargets);
 			break;
 		case Defend:
 			player->defend();
@@ -391,7 +385,7 @@ void Battle::prompt_State(const int target, const int energychange, Character* p
 }
 
 //check if any targeted enemies are defeated
-void Battle::check_Enemy(vector<Figment*> allTargets)
+void Battle::check_Enemy(vector<Character*> allTargets)
 {
 	//remove target from battlelog and figmentlist if figment is destroyed
 	for(unsigned int i = 0; i < allTargets.size(); ++i)
@@ -402,7 +396,7 @@ void Battle::check_Enemy(vector<Figment*> allTargets)
 			cout << allTargets[i]->get_Name() << " is defeated!" << endl;
 			
 			//add appropriate experience, digits, and items
-			add_Loot(allTargets[i]->level.get_Experience(), allTargets[i]->get_RandomDigits());
+			add_Loot(allTargets[i]->level.get_Experience(), allTargets[i]->get_Digits());
 			
 			//erase figment
 			figmentlist.erase(figmentlist.begin() + i);

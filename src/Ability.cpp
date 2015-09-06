@@ -21,6 +21,9 @@ void Ability::change_Rank(const int v)
 	else set_Rank(v + rank);
 }
 
+//return single target status
+bool Ability::get_SingleTarget() {return singletarget;}
+
 //get energy usage
 int Ability::get_EnergyUsage() {return energyusage;}
 //set energy usage
@@ -32,13 +35,15 @@ void Ability::change_EnergyUsage(const int v)
 	else set_EnergyUsage(v + energyusage);
 }
 
-//return single target status
-bool Ability::get_SingleTarget() {return singletarget;}
-
 //use an ability
-void Ability::use_Ability(Character *attacker, std::vector<Character*> target)
+void Ability::use_Ability(Character *attacker, std::vector<Character*> targets)
 {
-	if (get_Type() == Globals::Charged_T) charged.use(attacker, target, get_Id(), get_EnergyUsage(), get_SwingModifier());
+	if (get_Type() == Globals::Charged_T)
+	{
+		//set active charged ability
+		attacker->abilities.set_CurrentChargeId(id);
+		charged.use(attacker, targets, get_EnergyUsage(), get_SwingModifier());
+	}
 	else
 	{
 		cout << "Error trying to use ability. Exiting." << endl;

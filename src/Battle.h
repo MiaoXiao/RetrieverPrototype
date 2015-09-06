@@ -136,7 +136,7 @@ class Battle
 		void prompt_State(const int target, const int energychange, Character* player);
 		
 		//check if any targeted enemies are defeated
-		void check_Enemy(std::vector<Figment*> allFigmentTargets);
+		void check_Enemy(std::vector<Character*> allTargets);
 		
 		//make decision in combat, based on current turn
 		void combatDecision(Character* c);

@@ -37,8 +37,8 @@ class Figment: public Character
 			assign_StartInfo(fn, number);
 		}
 		
-		//distribution of digits earned from killing this figment
-		int get_RandomDigits() const;
+		//digits earned by figment
+		virtual int get_Digits();
 		
 	private:
 		

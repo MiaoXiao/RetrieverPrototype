@@ -400,7 +400,7 @@ struct Abilities
 		//lists energy requirement for each ability
 		std::vector<int> energyRequirement;
 		
-		//current charged ability
+		//current charged ability (-1 means no current charged ability)
 		unsigned int currentChargeId = -1;
 		//all targets for the charged attack
 		unsigned int chargeTarget;
@@ -548,6 +548,12 @@ struct Level
 		}
 };
 
+//all items player has, or possible items enemis can drop
+struct Items
+{
+
+};
+
 //Any entity with skills, abilities, and stats
 class Character: public Entity
 {
@@ -596,10 +602,13 @@ class Character: public Entity
 		//character attempts to run. return success or failure
 		bool run();
 		
+		//current digits, or digits earned from figment earned
+		virtual int get_Digits() = 0;
+		
 	protected:
 		//assign starting stats and other information for a character
 		virtual void assign_StartInfo(std::string filename, const unsigned int number) = 0;
-
+		
 };
 
 #endif

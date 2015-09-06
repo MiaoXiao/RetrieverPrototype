@@ -8,19 +8,18 @@ struct Charged
 {
 	//number of turns before this attack goes off
 	unsigned int maxcharge;
-	//how long character has charged for
+	//how long character has charged for (does not include the turn where the charge attack is first used)
 	unsigned int currentcharge = 0;
-	//use the
-	void use(Character *attacker, std::vector<Character*> target, const unsigned int id, const int energyusage, const float swingmodifier)
+	
+	//saves targets of charge attacks
+	std::vector<Character*> chargedTargets;
+	
+	void use(Character *attacker, std::vector<Character*> targets, const int energyusage, const float swingmodifier)
 	{
 		//begin charging if not already charging
-		if (!attacker->status.get_IsCharging())
+		if (attacker->abilities.get_CurrentChargeId() == -1)
 		{
-			//set active charged ability
-			attacker->abilities.set_CurrentChargeId(id);
-			attacker->abilities.set_ChargeTarget(0);
-			
-			attacker->status.set_IsCharging(true);
+			chargedTargets = targets;
 			
 			currentcharge = 0;
 			std::cout << attacker->get_Name() << " uses " << energyusage << " energy and begins charging a swing attack!" << std::endl;
@@ -31,11 +30,10 @@ struct Charged
 			if(currentcharge == maxcharge)
 			{
 				attacker->abilities.set_CurrentChargeId(-1);
-				attacker->status.set_IsCharging(false);
 				
 				std::cout << attacker->get_Name() << " releases the charged attack!" << std::endl;
 				
-				for (unsigned int i = 0; i < target.size(); ++i) target[i]->take_SwingDamage(attacker, swingmodifier, false);
+				for (unsigned int i = 0; i < chargedTargets.size(); ++i) chargedTargets[i]->take_SwingDamage(attacker, swingmodifier, false);
 				
 				currentcharge = 0;
 			}
@@ -107,7 +105,7 @@ class Ability: public Entity
 		void change_EnergyUsage(const int v);
 		
 		//use an ability
-		void use_Ability(Character *attacker, std::vector<Character*> target);
+		void use_Ability(Character *attacker, std::vector<Character*> targets);
 		
 	private:
 		

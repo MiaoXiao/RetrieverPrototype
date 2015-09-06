@@ -27,10 +27,10 @@ class Player: public Character
 		}
 		
 		//get current funds
-		int get_Digits() const;
+		int get_Digits();
 		//set current funds to v
 		void set_Digits(const unsigned int v);
-		//change current funds by addving v to digits
+		//change current funds by adding v to digits
 		void change_Digits(const int v);
 		
 		//get enemy point score

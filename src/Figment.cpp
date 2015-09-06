@@ -4,7 +4,7 @@ using namespace std;
 
 //--------------------------------------------------------------------PUBLIC--------------------------------------------------------------------//
 //distribution of digits earned from killing this figment
-int Figment::get_RandomDigits() const
+int Figment::get_Digits()
 {
 	//currently, recieve random amount of digits, between figment level and level + 10
 	return Probability::generateRandomNumber(level.get_Level(), level.get_Level() + 10);

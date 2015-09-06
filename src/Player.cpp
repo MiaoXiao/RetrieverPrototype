@@ -4,7 +4,7 @@ using namespace std;
 
 //--------------------------------------------------------------------PUBLIC--------------------------------------------------------------------//
 //current money get
-int Player::get_Digits() const {return digits;}
+int Player::get_Digits() {return digits;}
 //current money set to v
 void Player::set_Digits(const unsigned int v) {digits = v;}
 //change current funds by addving v to digits
