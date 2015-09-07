@@ -14,11 +14,12 @@ struct Charged
 	//saves targets of charge attacks
 	std::vector<Character*> chargedTargets;
 	
-	void use(Character *attacker, std::vector<Character*> targets, const int energyusage, const float swingmodifier)
+	void use(Character *attacker, std::vector<Character*> targets, const unsigned int id, const int energyusage, const float swingmodifier)
 	{
 		//begin charging if not already charging
 		if (attacker->abilities.get_CurrentChargeId() == -1)
 		{
+			attacker->abilities.set_CurrentChargeId(id);
 			chargedTargets = targets;
 			
 			currentcharge = 0;
@@ -43,7 +44,7 @@ struct Charged
 				{
 					std::cout << attacker->get_Name() << "'s charged attack will go off on " << attacker->pronoun << " next turn." << std::endl;
 				}
-				else currentcharge++;
+				currentcharge++;
 			}
 		}
 	}
@@ -57,7 +58,6 @@ class Ability: public Entity
 		Ability(std::string n, std::string description, unsigned int category, unsigned int type, unsigned int id, 
 						const unsigned int energy, const float swingmodifier, const unsigned int turns)
 		{
-			
 			//name and description
 			set_Name(n);
 			set_Description(description);
@@ -108,7 +108,6 @@ class Ability: public Entity
 		void use_Ability(Character *attacker, std::vector<Character*> targets);
 		
 	private:
-		
 		//ability handlers
 		Charged charged;
 		

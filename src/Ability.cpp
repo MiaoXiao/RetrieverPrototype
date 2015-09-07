@@ -41,8 +41,7 @@ void Ability::use_Ability(Character *attacker, std::vector<Character*> targets)
 	if (get_Type() == Globals::Charged_T)
 	{
 		//set active charged ability
-		attacker->abilities.set_CurrentChargeId(id);
-		charged.use(attacker, targets, get_EnergyUsage(), get_SwingModifier());
+		charged.use(attacker, targets, get_Id(), get_EnergyUsage(), get_SwingModifier());
 	}
 	else
 	{
