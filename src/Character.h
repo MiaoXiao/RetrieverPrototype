@@ -554,8 +554,43 @@ struct Inventory
 	private:
 		//list of all item ids
 		std::vector<unsigned int> itemsList;
+		
+		//max intentory size
+		unsigned int maxcapacity;
+		//current size
+		unsigned int currentcapacity = 0;
+		
 	public:
+		//get all item ids that this character has 
 		std::vector<unsigned int> get_ItemsList() const {return itemsList;}
+		
+		//returns true if item can be added
+		bool add_Item(const unsigned int id, const unsigned int itemsize)
+		{
+			if (itemsize + currentcapacity > maxcapacity) return false;
+			currentcapacity += itemsize;
+			itemsList.push_back(id);
+			std::sort(itemsList.begin(), itemsList.end());
+			return true;
+		}
+		
+		//remove item from pool
+		void remove_Item(const unsigned int id, const unsigned int itemsize)
+		{
+			currentcapacity -= itemsize;
+			itemsList.erase(find(itemsList.begin(), itemsList.end(), id));
+		}
+		
+		//get max size
+		int get_MaxCapacity() const {return maxcapacity;}
+		//set max size to v
+		void set_MaxCapacity(const unsigned int v) {maxcapacity = v;}
+		//change max size by adding v to max size
+		void change_MaxCapacity(const int v)
+		{
+			if (v + maxcapacity < 1) maxcapacity = 0;
+			else set_MaxCapacity(v + maxcapacity);
+		}
 };
 
 //Any entity with skills, abilities, and stats
