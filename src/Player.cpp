@@ -15,7 +15,7 @@ void Player::change_Digits(const int v)
 }
 
 //get enemy point score
-int Player::get_Eps() const {return eps;}
+int Player::get_Eps() {return eps;}
 //set enemy point score to v
 void Player::set_Eps(const unsigned int v) {eps = v;}
 //change current funds by addving v to digits

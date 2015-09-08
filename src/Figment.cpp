@@ -10,6 +10,12 @@ int Figment::get_Digits()
 	return Probability::generateRandomNumber(level.get_Level(), level.get_Level() + 10);
 }
 
+//return figment eps,
+int Figment::get_Eps()
+{
+	return level.get_Level();
+}
+
 //--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//
 
 //--------------------------------------------------------------------PRIVATE--------------------------------------------------------------------//

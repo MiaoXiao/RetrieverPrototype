@@ -38,7 +38,8 @@ class Figment: public Character
 		}
 		
 		//digits earned by figment
-		virtual int get_Digits();
+		int get_Digits();
+		int get_Eps();
 		
 	private:
 		

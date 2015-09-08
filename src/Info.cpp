@@ -1,14 +1,14 @@
-#include "AbilityManager.h"
+#include "Info.h"
 
 using namespace std;
 
 //--------------------------------------------------------------------PUBLIC--------------------------------------------------------------------//
 //get all abilities for p1
-std::vector<Ability> AbilityManager::get_PlayerAbilityPool() const {return playerAbilityPool;}
+std::vector<Ability> Info::get_PlayerAbilityPool() const {return playerAbilityPool;}
 
 //--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//
 //loads all possible abilities into ability pools for player and enemies
-void AbilityManager::load_Abilities()
+void Info::load_Abilities()
 {
 	//stream
 	fstream f;
@@ -135,8 +135,8 @@ void AbilityManager::load_Abilities()
 				if (abilityTypes[i] == "charged")
 				{
 					//create the ability depending on the ability type
-					Ability a(abilityName, abilityDescription, Globals::Attack_C, Globals::Charged_T, id, energyRequired, swingModifier, turns);
-					assign_ToAbilityPool(a, usage, Globals::Attack_C, Globals::Charged_T);
+					Ability a(abilityName, abilityDescription, Enumerator::Attack_C, Enumerator::Charged_T, id, energyRequired, swingModifier, turns);
+					assign_ToAbilityPool(a, usage, Enumerator::Attack_C, Enumerator::Charged_T);
 				}
 				else if (abilityTypes[i] == "pierce")
 				{
@@ -165,7 +165,7 @@ void AbilityManager::load_Abilities()
 }
 
 //assign ability to correct either a player or enemy pool
-void AbilityManager::assign_ToAbilityPool(Ability a, vector<string> usage, unsigned int category, unsigned int type)
+void Info::assign_ToAbilityPool(Ability a, vector<string> usage, unsigned int category, unsigned int type)
 {
 	//assign ability to ability pool for all valid character
 	for (unsigned int i = 0; i < usage.size(); ++i)
@@ -200,7 +200,7 @@ void AbilityManager::assign_ToAbilityPool(Ability a, vector<string> usage, unsig
 }
 
 //fill player trees
-void AbilityManager::load_Trees()
+void Info::load_Trees()
 {	
 	vector<string> treeFiles;
 	treeFiles.push_back("p1tree");

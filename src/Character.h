@@ -549,7 +549,7 @@ struct Level
 };
 
 //all items player has, or possible items enemis can drop
-struct Items
+struct Inventory
 {
 	private:
 		//list of all item ids
@@ -578,6 +578,8 @@ class Character: public Entity
 		Level level;
 		//messages specific to this character
 		Message message;
+		//stores all player items, or items that can be dropped
+		Inventory inventory;
 		
 		//get energy change, given an action
 		int get_EnergyDifference(const unsigned int action);
@@ -608,6 +610,8 @@ class Character: public Entity
 		
 		//current digits, or digits earned from figment earned
 		virtual int get_Digits() = 0;
+		//get current eps, or how much eps enemy is worth
+		virtual int get_Eps() = 0;
 		
 	protected:
 		//assign starting stats and other information for a character

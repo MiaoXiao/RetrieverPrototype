@@ -1,7 +1,8 @@
-#ifndef ABILITYMANAGER_H
-#define ABILITYMANAGER_H
+#ifndef INFO_H
+#define INFO_H
 
 #include "Ability.h"
+#include "Item.h"
 #include "Globals.h"
 
 #include <iostream>
@@ -126,17 +127,19 @@ struct SkillTree
 				
 			}
 		}
+		//sort ability list
+		std::sort (abilityList.begin(), abilityList.end());
 		return abilityList;
 	}
 	
 };
 
-//manages abilities and player skill trees
-class AbilityManager
+//manages abilities and player skill trees and items
+class Info
 {
 	public:
 		//CONSTRUCTOR: set sizes for pool vectors
-		AbilityManager() 
+		Info() 
 		{
 			load_Abilities();
 			load_Trees();
@@ -148,6 +151,8 @@ class AbilityManager
 		
 		//get all abilities for a player
 		std::vector<Ability> get_PlayerAbilityPool() const;
+		//get all items that can be obtained or dropped
+		std::vector<Item> get_ItemPool() const;
 		
 	private:
 		//name of each file to read
@@ -155,13 +160,17 @@ class AbilityManager
 		
 		//player pool
 		std::vector<Ability> playerAbilityPool;
+		//item pool
+		std::vector<Item> itemPool;
 		
 		//loads all possible abilities
 		void load_Abilities();
 		//assign ability to correct character pool
 		void assign_ToAbilityPool(Ability a, std::vector<std::string> usage, unsigned int category, unsigned int type);
-		
 		//fill player trees
 		void load_Trees();
+		
+		//loads all possible items
+		void load_Items();
 };
 #endif

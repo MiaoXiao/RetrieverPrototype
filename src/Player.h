@@ -34,7 +34,7 @@ class Player: public Character
 		void change_Digits(const int v);
 		
 		//get enemy point score
-		int get_Eps() const;
+		int get_Eps();
 		//set enemy point score to v
 		void set_Eps(const unsigned int v);
 		//change current eps by addving v to eps

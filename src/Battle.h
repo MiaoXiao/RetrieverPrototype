@@ -2,7 +2,7 @@
 #define BATTLE_H
 
 #include "Globals.h"
-#include "AbilityManager.h"
+#include "Info.h"
 #include "Player.h"
 #include "Figment.h"
 
@@ -28,11 +28,11 @@ class Battle
 {
 	public:
 		//CONSTRUCTOR: construct battle using both players and vector of figments
-		Battle(Player* p1, Player* p2, const int area, const unsigned int initialfigments, AbilityManager abilityInfo):
+		Battle(Player* p1, Player* p2, const int area, const unsigned int initialfigments, Info loadInfo):
 			p1(p1),
 			p2(p2),
 			area(area),
-			abilityInfo(abilityInfo)
+			loadInfo(loadInfo)
 		{ 
 			//check if valid number of enemies
 			int count = 0;
@@ -81,8 +81,8 @@ class Battle
 		//area id
 		int area;
 		
-		//holds all abilities
-		AbilityManager abilityInfo;
+		//holds all loading info for abilities and items
+		Info loadInfo;
 		//set to true if curent ability is single target only
 		bool abilityChooseTarget;
 		//id of ability to use

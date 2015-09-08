@@ -38,7 +38,7 @@ void Ability::change_EnergyUsage(const int v)
 //use an ability
 void Ability::use_Ability(Character *attacker, std::vector<Character*> targets)
 {
-	if (get_Type() == Globals::Charged_T)
+	if (get_Type() == Enumerator::Charged_T)
 	{
 		//set active charged ability
 		charged.use(attacker, targets, get_Id(), get_EnergyUsage(), get_SwingModifier());

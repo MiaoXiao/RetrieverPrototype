@@ -13,12 +13,19 @@ namespace Globals
 	const int RANGE = 5;
 	//probability to run
 	const float RUNPROBABILITY = 0.2;
-		
+}
+
+namespace Enumerator
+{
 	//manages ability category
 	enum ABILITYCATEGORY {Attack_C, Support_C, Debuff_C};
 	//manage ability types of all ability categories
 	enum ABILITYTYPE {Charged_T, Pierce_T, Area_T, Rapid_T};
-}
+	//manages item types
+	enum ITEMTYPE {Food, Drinks, Helpers, Liars, Circuits, Illuminites, Gadgets, Reminders, Weapons, Dust, Balls};
+
+};
+
 namespace Probability
 {
 	//will return true given probability, given number between 0 - 1

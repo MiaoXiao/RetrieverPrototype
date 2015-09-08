@@ -274,8 +274,8 @@ void Battle::chooseAbility_State(int &energychange, Character* player)
 			//index pos
 			unsigned int pos = player->abilities.get_AbilityList()[i];
 			
-			cout << i << ": " << abilityInfo.p1AbilityTree.list[pos].ability->get_Name() << endl;
-			cout << abilityInfo.p1AbilityTree.list[pos].ability->get_Description() << endl << endl;
+			cout << i << ": " << loadInfo.p1AbilityTree.list[pos].ability->get_Name() << endl;
+			cout << loadInfo.p1AbilityTree.list[pos].ability->get_Description() << endl << endl;
 		}
 		
 		cin >> choice;
@@ -301,13 +301,13 @@ void Battle::chooseAbility_State(int &energychange, Character* player)
 				//get energy change for that ability, decide if you need to choose target for ability
 				if (player == p1)
 				{
-					energychange = abilityInfo.p1AbilityTree.list[abilityId].ability->get_EnergyUsage();
-					abilityChooseTarget = abilityInfo.p1AbilityTree.list[abilityId].ability->get_SingleTarget();
+					energychange = loadInfo.p1AbilityTree.list[abilityId].ability->get_EnergyUsage();
+					abilityChooseTarget = loadInfo.p1AbilityTree.list[abilityId].ability->get_SingleTarget();
 				}
 				else if (player == p2)
 				{
-					energychange = abilityInfo.p2AbilityTree.list[abilityId].ability->get_EnergyUsage();
-					abilityChooseTarget = abilityInfo.p2AbilityTree.list[abilityId].ability->get_SingleTarget();
+					energychange = loadInfo.p2AbilityTree.list[abilityId].ability->get_EnergyUsage();
+					abilityChooseTarget = loadInfo.p2AbilityTree.list[abilityId].ability->get_SingleTarget();
 				}
 				state = CheckEnergy_S;
 			}
@@ -354,8 +354,8 @@ void Battle::prompt_State(const int target, const int energychange, Character* p
 	if (chargeid != -1)
 	{	
 		//since we are already charging, allTargets is not important
-		if (player == p1) abilityInfo.p1AbilityTree.list[chargeid].ability->use_Ability(player, allTargets);
-		else if (player == p2) abilityInfo.p2AbilityTree.list[chargeid].ability->use_Ability(player, allTargets);
+		if (player == p1) loadInfo.p1AbilityTree.list[chargeid].ability->use_Ability(player, allTargets);
+		else if (player == p2) loadInfo.p2AbilityTree.list[chargeid].ability->use_Ability(player, allTargets);
 	}
 	
 	//based on last prompt, calculate action and display prompts
@@ -371,8 +371,8 @@ void Battle::prompt_State(const int target, const int energychange, Character* p
 			check_Enemy(allTargets);
 			break;
 		case Ability:
-			if (player == p1) abilityInfo.p1AbilityTree.list[abilityId].ability->use_Ability(player, allTargets);
-			else if (player == p2) abilityInfo.p2AbilityTree.list[abilityId].ability->use_Ability(player, allTargets);
+			if (player == p1) loadInfo.p1AbilityTree.list[abilityId].ability->use_Ability(player, allTargets);
+			else if (player == p2) loadInfo.p2AbilityTree.list[abilityId].ability->use_Ability(player, allTargets);
 			check_Enemy(allTargets);
 			break;
 		case Defend:
@@ -558,11 +558,11 @@ void Battle::levelUp(Player* player)
 		player->stats.levelUpStats(levelsGained);
 		if (player == p1) 
 		{
-			player->abilities.set_AbilityList(abilityInfo.p1AbilityTree.learn_Ability(levelsGained, player->abilities.get_AbilityList()));
+			player->abilities.set_AbilityList(loadInfo.p1AbilityTree.learn_Ability(levelsGained, player->abilities.get_AbilityList()));
 		}
 		else if (player == p2)
 		{
-			player->abilities.set_AbilityList(abilityInfo.p2AbilityTree.learn_Ability(levelsGained, player->abilities.get_AbilityList()));
+			player->abilities.set_AbilityList(loadInfo.p2AbilityTree.learn_Ability(levelsGained, player->abilities.get_AbilityList()));
 		}
 		else
 		{
