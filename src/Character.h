@@ -551,7 +551,11 @@ struct Level
 //all items player has, or possible items enemis can drop
 struct Items
 {
-
+	private:
+		//list of all item ids
+		std::vector<unsigned int> itemsList;
+	public:
+		std::vector<unsigned int> get_ItemsList() const {return itemsList;}
 };
 
 //Any entity with skills, abilities, and stats
@@ -587,7 +591,7 @@ class Character: public Entity
 		//calculate swing damage from enemy to this character
 		//calculate evasion chance, crit chance, defense, and swing multiplier which is defaulted to 1
 		//useEnergy determines if this attack should use energy
-		void take_SwingDamage(Character *attacker, const float swingMultiplier, const bool useEnergy);
+		void take_SwingDamage(Character *attacker, const float swingMultiplier);
 		//take regular damage
 		void take_NormalDamage(const int damage);
 		

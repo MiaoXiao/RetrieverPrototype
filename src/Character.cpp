@@ -52,11 +52,8 @@ int Character::calculate_Damage(const float swingMultiplier)
 //calculate swing damage from enemy to this character
 //calculate evasion chance, crit chance, defense, and swing multiplier which is defaulted to 1
 //useEnergy determines if this attack should use energy
-void Character::take_SwingDamage(Character *attacker, const float swingMultiplier, const bool useEnergy)
+void Character::take_SwingDamage(Character *attacker, const float swingMultiplier)
 {
-	//PROMPT
-	if (useEnergy) cout << attacker->get_Name() << " uses " << abs(attacker->stats.get_SwingEnergy()) << " energy and swings at " << get_Name() << "!" << endl;
-
 	//reduce energy
 	attacker->stats.change_CurrEnergy(attacker->stats.get_SwingEnergy());
 	

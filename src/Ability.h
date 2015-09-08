@@ -34,7 +34,7 @@ struct Charged
 				
 				std::cout << attacker->get_Name() << " releases the charged attack!" << std::endl;
 				
-				for (unsigned int i = 0; i < chargedTargets.size(); ++i) chargedTargets[i]->take_SwingDamage(attacker, swingmodifier, false);
+				for (unsigned int i = 0; i < chargedTargets.size(); ++i) chargedTargets[i]->take_SwingDamage(attacker, swingmodifier);
 				
 				currentcharge = 0;
 			}
@@ -47,6 +47,22 @@ struct Charged
 				currentcharge++;
 			}
 		}
+	}
+};
+
+struct Pierce
+{
+	void use(Character *attacker, std::vector<Character*> targets, const unsigned int id, const int energyusage, const float swingmodifier)
+	{
+		
+	}
+};
+
+struct Area
+{
+	void use(Character *attacker, std::vector<Character*> targets, const unsigned int id, const int energyusage, const float swingmodifier)
+	{
+		
 	}
 };
 

@@ -362,7 +362,12 @@ void Battle::prompt_State(const int target, const int energychange, Character* p
 	switch (lastaction)
 	{
 		case Swing:
-			for (unsigned int i = 0; i < allTargets.size(); ++i) allTargets[i]->take_SwingDamage(player, 1.0, true);
+			for (unsigned int i = 0; i < allTargets.size(); ++i)
+			{
+				//PROMPT
+				cout << player->get_Name() << " uses " << abs(player->stats.get_SwingEnergy()) << " energy and swings at " << allTargets[i]->get_Name() << "!" << endl;
+				allTargets[i]->take_SwingDamage(player, 1.0);
+			}
 			check_Enemy(allTargets);
 			break;
 		case Ability:
@@ -488,7 +493,9 @@ void Battle::combatDecision(Character* c)
 				else if (Probability::chanceToOccur(0.5)) target = p1;
 				else target = p2;
 				
-				target->take_SwingDamage(c, 1.0, true);
+				//PROMPT
+				cout << c->get_Name() << " uses " << abs(c->stats.get_SwingEnergy()) << " energy and swings at " << target->get_Name() << "!" << endl;
+				target->take_SwingDamage(c, 1.0);
 				break;
 			}
 			case Ability:
