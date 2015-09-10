@@ -438,9 +438,6 @@ struct Status
 		//set to false if this character is wiped out, destroyed
 		bool isAlive = true;
 		
-		//whether player is charging an attack
-		bool isCharging = false;
-		
 		//set to true if player, set to false if enemy
 		bool isPlayer;
 		
@@ -473,11 +470,6 @@ struct Status
 		//set isAlive to v (true or false)
 		void set_IsAlive(const bool v) {isAlive = v;}
 		
-		//get isAlive status
-		bool get_IsCharging() const {return isCharging;}
-		//set isAlive to v (true or false)
-		void set_IsCharging(const bool v) {isCharging = v;}
-		
 		//get isPlayer status
 		bool get_IsPlayer() const {return isPlayer;}
 		//set isPlayer to v (true or false)
@@ -493,15 +485,14 @@ struct Status
 			uncertain = false;
 			broken = false;
 			lethargy = false;
-			isCharging = false;
 		}
 };
 
 //handles message prompts specific to that character
 struct Message
 {
-		private:
-		public:
+	private:
+	public:
 };
 
 //manages leveling

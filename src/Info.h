@@ -3,6 +3,7 @@
 
 #include "Ability.h"
 #include "Item.h"
+#include "Illuminite.h"
 #include "Globals.h"
 
 #include <iostream>
@@ -143,6 +144,7 @@ class Info
 		{
 			load_Abilities();
 			load_Trees();
+			load_Items();
 		}
 		
 		//controls which abilities can be obtained first for each player
@@ -152,7 +154,7 @@ class Info
 		//get all abilities for a player
 		std::vector<Ability> get_PlayerAbilityPool() const;
 		//get all items that can be obtained or dropped
-		std::vector<Item> get_ItemPool() const;
+		std::vector<Item*> get_ItemPool() const;
 		
 	private:
 		//name of each file to read
@@ -161,7 +163,7 @@ class Info
 		//player pool
 		std::vector<Ability> playerAbilityPool;
 		//item pool
-		std::vector<Item> itemPool;
+		std::vector<Item*> itemPool;
 		
 		//loads all possible abilities
 		void load_Abilities();

@@ -7,6 +7,7 @@ using namespace std;
 std::vector<Ability> Info::get_PlayerAbilityPool() const {return playerAbilityPool;}
 
 //--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//
+//--------------------------------------------------------------------PRIVATE--------------------------------------------------------------------//
 //loads all possible abilities into ability pools for player and enemies
 void Info::load_Abilities()
 {
@@ -15,7 +16,7 @@ void Info::load_Abilities()
 	//info from stream
 	string info;
 	
-	//name of ability type
+	//VALID FILES TO READ
 	vector<string> abilityTypes;
 	//attack
 	abilityTypes.push_back("charged");
@@ -28,12 +29,12 @@ void Info::load_Abilities()
 	abilityTypes.push_back("statdebuff");
 	
 	//numeric value for filename numbers
-	vector<string> abilityIds;
-	abilityIds.push_back("0");
-	abilityIds.push_back("1");
-	abilityIds.push_back("2");
-	abilityIds.push_back("3");
-	abilityIds.push_back("4");
+	vector<string> abilityTags;
+	abilityTags.push_back("0");
+	abilityTags.push_back("1");
+	abilityTags.push_back("2");
+	abilityTags.push_back("3");
+	abilityTags.push_back("4");
 	
 	//id of ability, unique to that ability. starts at 0
 	unsigned int id = 0;
@@ -57,10 +58,10 @@ void Info::load_Abilities()
 	//check all possible ability type and ability ids
 	for (unsigned int i = 0; i < abilityTypes.size(); ++i)
 	{
-		for (unsigned int j = 0; j < abilityIds.size(); ++j)
+		for (unsigned int j = 0; j < abilityTags.size(); ++j)
 		{
 			//get filename
-			filename = abilityTypes[i] + abilityIds[j];
+			filename = abilityTypes[i] + abilityTags[j];
 			
 			//open file based on type
 			f.open((ABILITYPATH + filename).c_str());
@@ -202,6 +203,7 @@ void Info::assign_ToAbilityPool(Ability a, vector<string> usage, unsigned int ca
 //fill player trees
 void Info::load_Trees()
 {	
+	//VALID FILES TO READ
 	vector<string> treeFiles;
 	treeFiles.push_back("p1tree");
 	treeFiles.push_back("p2tree");
@@ -268,4 +270,115 @@ void Info::load_Trees()
 		f.close();
 	}
 }
-//--------------------------------------------------------------------PRIVATE--------------------------------------------------------------------//
+
+//loads all possible items
+void Info::load_Items()
+{
+	//stream
+	fstream f;
+	//info from stream
+	string info;
+	
+	//VALID FILES TO READ
+	//name of ability type
+	vector<string> itemTypes;
+	//attack
+	itemTypes.push_back("illuminite");
+	
+	//numeric value for filename numbers
+	vector<string> itemTags;
+	itemTags.push_back("0");
+	itemTags.push_back("1");
+	itemTags.push_back("2");
+	itemTags.push_back("3");
+	itemTags.push_back("4");
+	
+	//id of item, unique to that item. starts at 0
+	unsigned int id = 0;
+	
+	//size of item
+	unsigned int itemSize;
+	//selling cost of item
+	unsigned int itemValue;
+	//type of item
+	unsigned int itemType;
+	
+	//name of item
+	string itemName;
+	//description of item
+	string itemDescription;
+	
+	//illuminites
+	//number of item charges left
+	unsigned int itemcharges;
+	
+	//check all possible ability type and ability ids
+	for (unsigned int i = 0; i < itemTypes.size(); ++i)
+	{
+		for (unsigned int j = 0; j < itemTags.size(); ++j)
+		{
+			//get filename
+			filename = itemTypes[i] + itemTags[j];
+			
+			//open file based on type
+			f.open((ABILITYPATH + filename).c_str());
+			if (f.is_open())
+			{
+				//cerr << filename << " being read..." << endl;
+				//go through list of information in text file
+				while (!f.eof())
+				{
+					f >> info;
+					//cerr << "listname: " << info << endl;
+					if (info == "Value:")
+					{
+						f >> info;
+						itemValue = atoi(info.c_str());
+					}
+					else if (info == "Name:")
+					{
+						f >> info;
+						itemName = info;
+					}
+					else if (info == "ItemCharges:")
+					{
+						f >> info;
+						itemcharges = atoi(info.c_str());
+					}
+					else if (info == "Description:")
+					{
+						f >> info;
+						while (info != "*")
+						{
+							//cout << info << " " << endl;
+							itemDescription += info + " ";
+							f >> info;
+						}
+						f >> info;
+					}
+					else
+					{
+						cerr << "Invalid category: " << info << ", in " << filename << ". Exiting." << endl;
+						exit(1);
+					}
+				}
+				
+				//based on ability category, assign ability to correct player
+				if (itemTypes[i] == "illuminite")
+				{
+					//create illuminite item here
+				}
+				else
+				{
+					cerr << "Invalid item type in " << filename << ". Exiting." << endl;
+					exit(1);
+				}
+				f.close();
+			}
+			
+			//move to next id
+			id++;
+		}
+	}
+}
+

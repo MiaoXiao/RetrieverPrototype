@@ -7,8 +7,6 @@ using namespace std;
 int Ability::get_Category() const {return category;}
 //return ability type
 int Ability::get_Type() const {return type;}
-//return ability id
-int Ability::get_Id() const {return id;}
 
 //get rank
 unsigned int Ability::get_Rank() const {return rank;}
@@ -56,8 +54,6 @@ void Ability::use_Ability(Character *attacker, std::vector<Character*> targets)
 void Ability::set_Category(const unsigned int v) {category = v;}
 //set ability type to v
 void Ability::set_Type(const unsigned int v) {type = v;}
-//set ability id to v
-void Ability::set_Id(const unsigned int v) {id = v;}
 
 //get swingmodifier
 float Ability::get_SwingModifier() const {return swingmodifier;}

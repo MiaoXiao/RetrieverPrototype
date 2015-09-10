@@ -100,8 +100,6 @@ class Ability: public Entity
 		int get_Category() const;
 		//return ability type
 		int get_Type() const;
-		//return ability id
-		int get_Id() const;
 		
 		//get rank
 		unsigned int get_Rank() const;
@@ -130,7 +128,6 @@ class Ability: public Entity
 		//ability category, type, id
 		unsigned int category;
 		unsigned int type;
-		unsigned int id;
 		
 		//rank of ability
 		unsigned int rank;
@@ -148,8 +145,6 @@ class Ability: public Entity
 		void set_Category(const unsigned int v);
 		//set ability type to v
 		void set_Type(const unsigned int v);
-		//set ability id to v
-		void set_Id(const unsigned int v);
 		
 		//get swing modifier
 		float get_SwingModifier() const;

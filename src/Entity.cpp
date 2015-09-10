@@ -15,6 +15,11 @@ std::string Entity::get_Description() const {return description;}
 //set description
 void Entity::set_Description(const std::string v) {description = v;}
 
+//get id
+unsigned int Entity::get_Id() const {return id;}
+
+//set id
+void Entity::set_Id(const unsigned int v) {id = v;}
 //--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//
 
 //--------------------------------------------------------------------PRIVATE--------------------------------------------------------------------//
