@@ -23,7 +23,6 @@ namespace Enumerator
 	enum ABILITYTYPE {Charged_T, Pierce_T, Area_T, Rapid_T};
 	//manages item types
 	enum ITEMTYPE {Food, Drinks, Helpers, Liars, Circuits, Illuminites, Gadgets, Reminders, Weapons, Dust, Balls};
-
 };
 
 namespace Probability

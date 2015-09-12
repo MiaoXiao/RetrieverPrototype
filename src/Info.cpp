@@ -311,6 +311,11 @@ void Info::load_Items()
 	//illuminites
 	//number of item charges left
 	unsigned int itemcharges;
+	//percentage of health gained or lost
+	unsigned int healthchange;
+	
+	//flat health gained or lost
+	unsigned int flathealthchange;
 	
 	//check all possible ability type and ability ids
 	for (unsigned int i = 0; i < itemTypes.size(); ++i)
@@ -339,6 +344,11 @@ void Info::load_Items()
 					{
 						f >> info;
 						itemName = info;
+					}
+					else if (info == "HealthChange: ")
+					{
+						f >> info;
+						healthchange == atof(info.c_str());
 					}
 					else if (info == "ItemCharges:")
 					{

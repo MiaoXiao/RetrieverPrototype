@@ -473,6 +473,7 @@ struct Status
 		//get isPlayer status
 		bool get_IsPlayer() const {return isPlayer;}
 		//set isPlayer to v (true or false)
+		
 		void set_IsPlayer(const bool v) {isPlayer = v;}
 		
 		//after every battle reset most statuses; unless characters are wiped out, then reset all

@@ -18,6 +18,10 @@ class Item: public Entity
 		int get_Value() const;
 		//get type
 		int get_Type() const;
+		//get value
+		int get_MaxCharges();
+		//get type
+		int get_CurrentCharges();
 		
 	protected:
 		//use specific item
@@ -27,6 +31,13 @@ class Item: public Entity
 		void set_Value(const unsigned int v);
 		void set_Type(const unsigned int v);
 		
+		void set_MaxCharges(const unsigned int v);
+		void set_CurrentCharges(const unsigned int v);
+		void change_CurrentCharges(const int v);
+		
+		//set all approrpriate information for each item
+		void init_ItemInfo(std::string n, std::string d, const unsigned int s, const unsigned int v, const unsigned int t, const unsigned int i);
+		
 	private:
 		//how much space this item takes up
 		unsigned int size;
@@ -34,6 +45,11 @@ class Item: public Entity
 		unsigned int value;
 		//type of item
 		unsigned int type;
+		
+		//maxcharges
+		unsigned int maxcharges;
+		//currentcharges
+		unsigned int currentcharges;
 		
 };
 

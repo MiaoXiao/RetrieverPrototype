@@ -3,7 +3,7 @@
 
 #include "Ability.h"
 #include "Item.h"
-#include "Illuminite.h"
+#include "HealthPercentage.h"
 #include "Globals.h"
 
 #include <iostream>
