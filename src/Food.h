@@ -10,10 +10,14 @@
 class Food: public Item
 {
 	public:
+		float get_HealthGained();
 		
 	protected:
-		unsigned int healthgained;
-
+		void set_HealthGained(const float v);
+		
+	private:
+		//a percentage or flat value
+		float healthgained;
 };
 
 #endif
