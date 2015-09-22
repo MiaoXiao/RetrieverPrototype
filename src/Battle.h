@@ -140,9 +140,11 @@ class Battle
 		
 		//make decision in combat, based on current turn
 		void combatDecision(Character* c);
-
+		
 		//add loot to player: exp and money
 		void add_Loot(const unsigned int exp, const unsigned int digits);
+		//calculate possible items to give to player
+		void add_Item(float itemfindprobability, unsigned int itemId);
 		
 		//level up 1 player
 		void levelUp(Player* player);

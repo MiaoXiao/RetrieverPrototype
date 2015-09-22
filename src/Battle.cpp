@@ -72,7 +72,6 @@ void Battle::end_Battle()
 	
 	if (p1->level.checkLevelUp()) levelUp(p1);
 	if (p2->level.checkLevelUp()) levelUp(p2);
-	
 }
 
 //--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//
@@ -516,7 +515,7 @@ void Battle::combatDecision(Character* c)
 	//figmentlist[target].showall_Stats();
 }
 
-//add loot to player: exp and money
+//add loot to player: exp money and possible items
 void Battle::add_Loot(const unsigned int exp, const unsigned int digits)
 {
 	if (p1->status.get_IsAlive())
@@ -536,6 +535,47 @@ void Battle::add_Loot(const unsigned int exp, const unsigned int digits)
 		//get cumulative total for exp and digits
 		p2ExpFinal += p2->level.get_Experience();
 		p2DigitsFinal += p2->get_Digits();
+	}
+}
+
+//calculate possible items to give to player
+void Battle::add_Item(float itemfindprobability, unsigned int itemId)
+{
+	int choice;
+	
+	//calculate items
+	if (Probability::chanceToOccur(itemfindprobability))
+	{
+		bool done = false;
+		
+		//get player to give to
+		while (!done)
+		{
+			cout << "Choose a player to give this item, 0 or 1." << endl;
+			cin >> choice;
+			
+			if (choice < 0 || choice > 1) cout << "Invalid player, try again." << endl << endl;
+			else
+			{
+				done = true;
+			}
+		}
+	}
+	
+	//add item to correct inventory, if capacity of inventory allows it
+	if (choice == 0)
+	{
+		if (!p1->inventory.add_Item(itemId, loadInfo.get_ItemPool()[itemId]->get_Size()))
+		{
+			//do something if item cant fit
+		}
+	}
+	else
+	{
+		if (!p2->inventory.add_Item(itemId, loadInfo.get_ItemPool()[itemId]->get_Size()))
+		{
+			//do something if item cant fit
+		}
 	}
 }
 

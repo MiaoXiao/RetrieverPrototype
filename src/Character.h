@@ -547,7 +547,10 @@ struct Inventory
 		//list of all item ids
 		std::vector<unsigned int> itemsList;
 		
-		//max intentory size
+		//list of all pouch ids
+		std::vector<unsigned int> pouchList;
+		
+		//max inventory size
 		unsigned int maxcapacity;
 		//current size
 		unsigned int currentcapacity = 0;
@@ -555,6 +558,9 @@ struct Inventory
 	public:
 		//get all item ids that this character has 
 		std::vector<unsigned int> get_ItemsList() const {return itemsList;}
+		
+		//get all pouch ids
+		std::vector<unsigned int> get_PouchList() const {return pouchList;}
 		
 		//returns true if item can be added
 		bool add_Item(const unsigned int id, const unsigned int itemsize)
@@ -571,6 +577,12 @@ struct Inventory
 		{
 			currentcapacity -= itemsize;
 			itemsList.erase(find(itemsList.begin(), itemsList.end(), id));
+		}
+		
+		//exchange item from inventory to pouch
+		void change_Pouch()
+		{
+			
 		}
 		
 		//get max size

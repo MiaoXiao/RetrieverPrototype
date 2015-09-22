@@ -7,7 +7,7 @@ using namespace std;
 std::vector<Ability> Info::get_PlayerAbilityPool() const {return playerAbilityPool;}
 
 //get all items that can be obtained or dropped
-//std::vector<Item> Info::get_ItemPool() const {return itemPool;}
+std::vector<Item*> Info::get_ItemPool() const {return itemPool;}
 
 //--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//
 //--------------------------------------------------------------------PRIVATE--------------------------------------------------------------------//
@@ -313,7 +313,8 @@ void Info::load_Items()
 	
 	//illuminites
 	//number of item charges left
-	unsigned int itemcharges;
+	unsigned int itemcharges = 0;
+	
 	//percentage of health gained or lost
 	unsigned int healthchange;
 	
