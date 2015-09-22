@@ -6,9 +6,6 @@ using namespace std;
 float Food::get_HealthGained() {return healthgained;}
 
 //--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//
-void Food::set_HealthGained(const float v)
-{
-	healthgained = v;
-}
+void Food::set_HealthGained(const float v){healthgained = v;}
 
 //--------------------------------------------------------------------PRIVATE--------------------------------------------------------------------//

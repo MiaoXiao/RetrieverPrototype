@@ -6,6 +6,9 @@ using namespace std;
 //get all abilities for p1
 std::vector<Ability> Info::get_PlayerAbilityPool() const {return playerAbilityPool;}
 
+//get all items that can be obtained or dropped
+//std::vector<Item> Info::get_ItemPool() const {return itemPool;}
+
 //--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//
 //--------------------------------------------------------------------PRIVATE--------------------------------------------------------------------//
 //loads all possible abilities into ability pools for player and enemies
@@ -283,7 +286,7 @@ void Info::load_Items()
 	//name of ability type
 	vector<string> itemTypes;
 	//attack
-	itemTypes.push_back("illuminite");
+	itemTypes.push_back("food");
 	
 	//numeric value for filename numbers
 	vector<string> itemTags;
@@ -374,9 +377,19 @@ void Info::load_Items()
 				}
 				
 				//based on ability category, assign ability to correct player
-				if (itemTypes[i] == "illuminite")
+				if (itemTypes[i] == "food")
 				{
-					//create illuminite item here
+					if (itemcharges != 0)
+					{
+						HealthPercentage hp(itemName, itemDescription, itemSize, itemValue, itemType, id, healthchange, itemcharges);
+						healthpercentagePool.push_back(hp);
+					}
+					else
+					{
+						HealthPercentage hp(itemName, itemDescription, itemSize, itemValue, itemType, id, healthchange);
+						healthpercentagePool.push_back(hp);
+					}
+					itemPool.push_back(&healthpercentagePool[healthpercentagePool.size() - 1]);
 				}
 				else
 				{
