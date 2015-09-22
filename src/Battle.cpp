@@ -21,10 +21,10 @@ bool Battle::start_Battle()
 				if ((c->status.get_IsAlive()))
 				{
 					//cout << p1->level.get_Experience();
-					cout << p1->get_Name() << endl;
-					p1->stats.show_Stats();
-					cout << p2->get_Name() << endl;
-					p2->stats.show_Stats();
+					cout << playerList[0]->get_Name() << endl;
+					playerList[0]->stats.show_Stats();
+					cout << playerList[1]->get_Name() << endl;
+					playerList[1]->stats.show_Stats();
 					show_ActiveFigments(true);
 					
 					//at the start of turn, always set defending to false
@@ -43,7 +43,7 @@ bool Battle::start_Battle()
 						end_Battle();
 						return true;
 					}
-					else if (!(p1->status.get_IsAlive()) && !(p2->status.get_IsAlive())) 
+					else if (!(playerList[0]->status.get_IsAlive()) && !(playerList[1]->status.get_IsAlive())) 
 					{
 						return false;
 					}
@@ -56,22 +56,32 @@ bool Battle::start_Battle()
 //end battle, reset status, check for level up
 void Battle::end_Battle()
 {
-	string p1name = p1->get_Name();
-	string p2name = p2->get_Name();
+	string p1name = playerList[0]->get_Name();
+	string p2name = playerList[1]->get_Name();
 	
 	if (runsuccessful) cout << "Although your party flees..." << endl;
 	
-	//tally exp and digits
-	if (p1ExpFinal == p2ExpFinal) cout << p1name << " and " << p2name << " both earn " << p1ExpFinal << " experience." << endl;
-	else cout << p1name << " earns " << p1ExpFinal << " experience and " << p2name << " earns " << p2ExpFinal << " experience." << endl;
-	if (p1DigitsFinal == p2DigitsFinal) cout << p1name << " and " << p2name << " both earn " << p1DigitsFinal << " digits." << endl << endl; 
-	else cout << p1name << " earns " << p1DigitsFinal << " digits and " << p2name << " earns " << p2DigitsFinal << " digits." << endl << endl;
-
-	p1->status.reset_Status();
-	p2->status.reset_Status();
 	
-	if (p1->level.checkLevelUp()) levelUp(p1);
-	if (p2->level.checkLevelUp()) levelUp(p2);
+	unsigned int p1exp = expFinal[0];
+	unsigned int p2exp = expFinal[1];
+	unsigned int p1digits = digitsFinal[0];
+	unsigned int p2digits = digitsFinal[1];
+	
+	//tally exp and digits
+	if (p1exp == p2exp) cout << p1name << " and " << p2name << " both earn " << p1exp << " experience." << endl;
+	else cout << p1name << " earns " << p1exp << " experience and " << p2name << " earns " << p2exp << " experience." << endl;
+	if (p1digits == p2digits) cout << p1name << " and " << p2name << " both earn " << p1digits << " digits." << endl << endl; 
+	else cout << p1name << " earns " << p1digits << " digits and " << p2name << " earns " << p2digits << " digits." << endl << endl;
+	
+	for (unsigned int i = 0; i < playerList.size(); ++i)
+	{
+		playerList[i]->status.reset_Status();
+	}
+	
+	for (unsigned int i = 0; i < playerList.size(); ++i)
+	{
+		if (playerList[i]->level.checkLevelUp()) levelUp(playerList[i]);
+	}
 }
 
 //--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//
@@ -103,8 +113,8 @@ void Battle::assign_BattleLog()
 	battlelog.clear();
 	
 	//stores reaction for tylor and liza
-	unsigned int r_t = p1->stats.get_Reaction();
-	unsigned int r_l = p2->stats.get_Reaction();
+	unsigned int r_t = playerList[0]->stats.get_Reaction();
+	unsigned int r_l = playerList[1]->stats.get_Reaction();
 
 	vector<unsigned int> r_enemy(6, 1);
 	//store enemy reaction in vector
@@ -120,7 +130,7 @@ void Battle::assign_BattleLog()
 	while (r_t <= entireGCD)
 	{
 		//cout << "tylor" << endl;
-		battlelog.insert(pair<float, Character*>(r_t, p1));
+		battlelog.insert(pair<float, Character*>(r_t, playerList[0]));
 		r_t += reactionvalue;
 	}
 	//get all liza turns
@@ -128,7 +138,7 @@ void Battle::assign_BattleLog()
 	while (r_l <= entireGCD)
 	{
 		//cout << "liza" << endl;
-		battlelog.insert(pair<int, Character*>(r_l, p2));
+		battlelog.insert(pair<int, Character*>(r_l, playerList[1]));
 		r_l += reactionvalue;
 	}
 	//get all enemy turns
@@ -298,12 +308,12 @@ void Battle::chooseAbility_State(int &energychange, Character* player)
 			else
 			{
 				//get energy change for that ability, decide if you need to choose target for ability
-				if (player == p1)
+				if (player == playerList[0])
 				{
 					energychange = loadInfo.p1AbilityTree.list[abilityId].ability->get_EnergyUsage();
 					abilityChooseTarget = loadInfo.p1AbilityTree.list[abilityId].ability->get_SingleTarget();
 				}
-				else if (player == p2)
+				else if (player == playerList[1])
 				{
 					energychange = loadInfo.p2AbilityTree.list[abilityId].ability->get_EnergyUsage();
 					abilityChooseTarget = loadInfo.p2AbilityTree.list[abilityId].ability->get_SingleTarget();
@@ -353,8 +363,8 @@ void Battle::prompt_State(const int target, const int energychange, Character* p
 	if (chargeid != -1)
 	{	
 		//since we are already charging, allTargets is not important
-		if (player == p1) loadInfo.p1AbilityTree.list[chargeid].ability->use_Ability(player, allTargets);
-		else if (player == p2) loadInfo.p2AbilityTree.list[chargeid].ability->use_Ability(player, allTargets);
+		if (player == playerList[0]) loadInfo.p1AbilityTree.list[chargeid].ability->use_Ability(player, allTargets);
+		else if (player == playerList[1]) loadInfo.p2AbilityTree.list[chargeid].ability->use_Ability(player, allTargets);
 	}
 	
 	//based on last prompt, calculate action and display prompts
@@ -370,8 +380,8 @@ void Battle::prompt_State(const int target, const int energychange, Character* p
 			check_Enemy(allTargets);
 			break;
 		case Ability:
-			if (player == p1) loadInfo.p1AbilityTree.list[abilityId].ability->use_Ability(player, allTargets);
-			else if (player == p2) loadInfo.p2AbilityTree.list[abilityId].ability->use_Ability(player, allTargets);
+			if (player == playerList[0]) loadInfo.p1AbilityTree.list[abilityId].ability->use_Ability(player, allTargets);
+			else if (player == playerList[1]) loadInfo.p2AbilityTree.list[abilityId].ability->use_Ability(player, allTargets);
 			check_Enemy(allTargets);
 			break;
 		case Defend:
@@ -487,10 +497,10 @@ void Battle::combatDecision(Character* c)
 				Player *target;
 				
 				//choose which player to attack, first check if any players are wiped out
-				if (!p1->status.get_IsAlive()) target = p2;
-				else if (!p2->status.get_IsAlive()) target = p1;
-				else if (Probability::chanceToOccur(0.5)) target = p1;
-				else target = p2;
+				if (!playerList[0]->status.get_IsAlive()) target = playerList[0];
+				else if (!playerList[1]->status.get_IsAlive()) target = playerList[1];
+				else if (Probability::chanceToOccur(0.5)) target = playerList[0];
+				else target = playerList[1];
 				
 				//PROMPT
 				cout << c->get_Name() << " uses " << abs(c->stats.get_SwingEnergy()) << " energy and swings at " << target->get_Name() << "!" << endl;
@@ -518,23 +528,17 @@ void Battle::combatDecision(Character* c)
 //add loot to player: exp money and possible items
 void Battle::add_Loot(const unsigned int exp, const unsigned int digits)
 {
-	if (p1->status.get_IsAlive())
+	for (unsigned int i = 0; i < playerList.size(); ++i)
 	{
-		p1->level.change_Experience(exp);
-		p1->change_Digits(digits);
-		
-		//get cumulative total for exp and digits
-		p1ExpFinal += p1->level.get_Experience();
-		p1DigitsFinal += p1->get_Digits();
-	}
-	if (p2->status.get_IsAlive())
-	{
-		p2->level.change_Experience(exp);
-		p2->change_Digits(digits);		
-		
-		//get cumulative total for exp and digits
-		p2ExpFinal += p2->level.get_Experience();
-		p2DigitsFinal += p2->get_Digits();
+		if (playerList[i]->status.get_IsAlive())
+		{
+			playerList[i]->level.change_Experience(exp);
+			playerList[i]->change_Digits(digits);
+			
+			//get cumulative total for exp and digits
+			expFinal[i] += playerList[i]->level.get_Experience();
+			digitsFinal[i] += playerList[i]->get_Digits();
+		}
 	}
 }
 
@@ -562,17 +566,9 @@ void Battle::add_Item(float itemfindprobability, unsigned int itemId)
 		}
 	}
 	
-	//add item to correct inventory, if capacity of inventory allows it
-	if (choice == 0)
+	for (unsigned int i = 0; i < playerList.size(); ++i)
 	{
-		if (!p1->inventory.add_Item(itemId, loadInfo.get_ItemPool()[itemId]->get_Size()))
-		{
-			//do something if item cant fit
-		}
-	}
-	else
-	{
-		if (!p2->inventory.add_Item(itemId, loadInfo.get_ItemPool()[itemId]->get_Size()))
+		if (playerList[choice]->inventory.add_Item(itemId, loadInfo.get_ItemPool()[itemId]->get_Size()))
 		{
 			//do something if item cant fit
 		}
@@ -596,11 +592,11 @@ void Battle::levelUp(Player* player)
 	{
 		cout << player->get_Name() << " gained " << levelsGained << " level(s)!" << endl;
 		player->stats.levelUpStats(levelsGained);
-		if (player == p1) 
+		if (player == playerList[0]) 
 		{
 			player->abilities.set_AbilityList(loadInfo.p1AbilityTree.learn_Ability(levelsGained, player->abilities.get_AbilityList()));
 		}
-		else if (player == p2)
+		else if (player == playerList[1])
 		{
 			player->abilities.set_AbilityList(loadInfo.p2AbilityTree.learn_Ability(levelsGained, player->abilities.get_AbilityList()));
 		}

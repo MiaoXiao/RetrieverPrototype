@@ -29,11 +29,13 @@ class Battle
 	public:
 		//CONSTRUCTOR: construct battle using both players and vector of figments
 		Battle(Player* p1, Player* p2, const int area, const unsigned int initialfigments, Info loadInfo):
-			p1(p1),
-			p2(p2),
 			area(area),
 			loadInfo(loadInfo)
 		{ 
+			//assign player objects to vector
+			playerList.push_back(p1);
+			playerList.push_back(p2);
+			
 			//check if valid number of enemies
 			int count = 0;
 			//check if valid number of figments
@@ -60,10 +62,12 @@ class Battle
 			
 			//default values
 			runsuccessful = false;
-			p1ExpFinal = 0;
-			p2ExpFinal = 0;
-			p1DigitsFinal = 0;
-			p2DigitsFinal = 0;
+			
+			//resize exp and digit vectors
+			expFinal.push_back(0);
+			expFinal.push_back(0);
+			digitsFinal.push_back(0);
+			digitsFinal.push_back(0);
 		}
 
 		//begin battle. return true if player wins or escapes
@@ -97,8 +101,10 @@ class Battle
 		int lastaction;
 		
 		//player references	
-		Player* p1;
-		Player* p2;
+		//Player* p1;
+		//Player* p2;
+		//list of avaliable players
+		std::vector<Player*> playerList;
 		//list of all figments in battle
 		std::vector<Figment> figmentlist;		
 
@@ -106,11 +112,13 @@ class Battle
 		std::multimap<float, Character*> battlelog;
 		
 		//final exp awarded to both players
-		unsigned int p1ExpFinal;
-		unsigned int p2ExpFinal;
+		std::vector<unsigned int> expFinal;
+		//unsigned int p1ExpFinal;
+		//unsigned int p2ExpFinal;
 		//final digits awarded to both players
-		unsigned int p1DigitsFinal;
-		unsigned int p2DigitsFinal;
+		std::vector<unsigned int> digitsFinal;
+		//unsigned int p1DigitsFinal;
+		//unsigned int p2DigitsFinal;
 		
 		//get gcd of 2 numbers
 		int gcd(unsigned int a, unsigned int b);
