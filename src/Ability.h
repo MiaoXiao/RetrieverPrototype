@@ -50,22 +50,6 @@ struct Charged
 	}
 };
 
-struct Pierce
-{
-	void use(Character *attacker, std::vector<Character*> targets, const unsigned int id, const int energyusage, const float swingmodifier)
-	{
-		
-	}
-};
-
-struct Area
-{
-	void use(Character *attacker, std::vector<Character*> targets, const unsigned int id, const int energyusage, const float swingmodifier)
-	{
-		
-	}
-};
-
 //abilities that can have various effects on the stats of a player or enemy
 class Ability: public Entity
 {

@@ -1,5 +1,6 @@
 Name: HealthFlask
 Value: 0
+Weight: 10
 HealthChange: 0.5
 ItemCharges: 3
 Description: Refills the user's health. Can be used numerous times, but upon depletion this item can only be recharged at clinics or hideouts.

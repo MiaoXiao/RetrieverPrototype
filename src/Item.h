@@ -11,7 +11,7 @@
 //handles all objects in game
 class Item: public Entity
 {
-	public:		
+	public:	
 		//get size
 		int get_Size() const;
 		//get value
@@ -26,6 +26,9 @@ class Item: public Entity
 	protected:
 		//use specific item
 		virtual void use_Item(Character* user, std::vector<Character*> targets) = 0;
+		
+		//get full item description
+		virtual void get_ItemDescription() = 0;
 		
 		void set_Size(const unsigned int v);
 		void set_Value(const unsigned int v);

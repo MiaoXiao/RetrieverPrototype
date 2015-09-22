@@ -32,6 +32,7 @@ class HealthPercentage: public Food
 		
 		void use_Item(Character* user, std::vector<Character*> targets);
 		
+		void get_ItemDescription();
 	private:
 };
 

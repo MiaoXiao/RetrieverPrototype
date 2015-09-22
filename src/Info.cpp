@@ -344,6 +344,11 @@ void Info::load_Items()
 						f >> info;
 						itemValue = atoi(info.c_str());
 					}
+					else if (info == "Weight:")
+					{
+						f >> info;
+						itemSize = atoi(info.c_str());
+					}
 					else if (info == "Name:")
 					{
 						f >> info;
