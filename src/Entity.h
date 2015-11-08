@@ -20,7 +20,7 @@ class Entity
 		//get id
 		unsigned int get_Id() const;
 		//set id
-		void set_Id(const unsigned int v);
+		void set_Id(unsigned int v);
 		
 	protected:
 		//name of entity

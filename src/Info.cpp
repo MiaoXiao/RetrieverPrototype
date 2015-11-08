@@ -208,8 +208,8 @@ void Info::load_Trees()
 {	
 	//VALID FILES TO READ
 	vector<string> treeFiles;
+	treeFiles.push_back("p0tree");
 	treeFiles.push_back("p1tree");
-	treeFiles.push_back("p2tree");
 	
 	for (unsigned int i = 0; i < treeFiles.size(); ++i)
 	{
@@ -248,21 +248,12 @@ void Info::load_Trees()
 					if (info == "S") 
 					{
 						Node n(&playerAbilityPool[currentId]);
-						if (treeFiles[i] == "p1tree") //player 1
-						{
-							p1AbilityTree.list.push_back(n);
-							p1AbilityTree.newAbilities.push_back(&p1AbilityTree.list[currentId]); 
-						}
-						else if (treeFiles[i] == "p2tree") //player 2
-						{
-							p2AbilityTree.list.push_back(n);
-							p2AbilityTree.newAbilities.push_back(&p2AbilityTree.list[currentId]); 
-						}
-						else
-						{
-							cerr << "Could not add starting ability, invalid tree name. Exiting." << endl;
-							exit(1);
-						}
+						unsigned int treeid =  treeFiles[i][1] - 48;
+						//cout << "treeid: " << treeid << endl;	
+						abilitytrees[treeid].list.push_back(n);
+						abilitytrees[treeid].newAbilities.push_back(&abilitytrees[treeid].list[currentId]); 
+						//cout << "ability name: " << abilitytrees[treeid].newAbilities[0]->ability->get_Name() << endl;
+						//cout << "newability size: " << abilitytrees[treeid].newAbilities.size() << endl;
 					}
 					f >> info;
 					//cout << "end " << info << endl;
@@ -381,8 +372,7 @@ void Info::load_Items()
 						exit(1);
 					}
 				}
-				
-				//based on ability category, assign ability to correct player
+
 				if (itemTypes[i] == "food")
 				{
 					if (itemcharges != 0)

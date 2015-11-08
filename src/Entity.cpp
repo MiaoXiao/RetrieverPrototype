@@ -19,7 +19,7 @@ void Entity::set_Description(const std::string v) {description = v;}
 unsigned int Entity::get_Id() const {return id;}
 
 //set id
-void Entity::set_Id(const unsigned int v) {id = v;}
+void Entity::set_Id(unsigned int v) {id = v;}
 //--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//
 
 //--------------------------------------------------------------------PRIVATE--------------------------------------------------------------------//

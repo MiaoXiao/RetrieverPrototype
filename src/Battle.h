@@ -68,6 +68,9 @@ class Battle
 			expFinal.push_back(0);
 			digitsFinal.push_back(0);
 			digitsFinal.push_back(0);
+			
+			//std::cout << "id1: " << p1->get_Id() << std::endl;
+			//std::cout << "id2: " << p2->get_Id() << std::endl;
 		}
 
 		//begin battle. return true if player wins or escapes

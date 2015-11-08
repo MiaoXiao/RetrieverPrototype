@@ -28,9 +28,8 @@ void Player::change_Eps(const int v)
 //--------------------------------------------------------------------PROTECTED--------------------------------------------------------------------//
 
 //--------------------------------------------------------------------PRIVATE--------------------------------------------------------------------//
-
 //assign starting stats and other information for a character
-void Player::assign_StartInfo(string filename, const unsigned int number)
+void Player::assign_StartInfo(string filename, const unsigned int id)
 {
 	fstream f;
 	//info from stream
@@ -46,7 +45,7 @@ void Player::assign_StartInfo(string filename, const unsigned int number)
 	//cout << "File opened." << endl;
 	
 	//assign id; check second character of file
-	id = "p" + filename[1];
+	set_Id(id);
 	
 	//get name of character
 	f >> info;
@@ -146,4 +145,6 @@ void Player::assign_StartInfo(string filename, const unsigned int number)
 	//showall_Stats();
 }
 
+//set index
+//void Player::set_Index(unsigned int v) {index = v;}
 

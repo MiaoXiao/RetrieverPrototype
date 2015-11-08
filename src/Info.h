@@ -51,6 +51,7 @@ struct SkillTree
 	//learn a new ability
 	std::vector<unsigned int> learn_Ability(const unsigned int abilityPoints, std::vector<unsigned int> al)
 	{	
+		std::cout << "newability size: " << newAbilities.size() << std::endl;
 		std::vector<unsigned int> abilityList = al;
 		
 		int choice;
@@ -74,8 +75,10 @@ struct SkillTree
 				//display all new abilities that can be learned
 				for (unsigned int i = 0; i < newAbilities.size(); ++i)
 				{
+					std::cout << "ijsdf" << std::endl;
 					std::cout << lrange << ": " << newAbilities[i]->ability->get_Name() << std::endl;
 					std::cout << newAbilities[i]->ability->get_Description() << std::endl << std::endl;
+					std::cout << "ijsdf" << std::endl;
 					lrange++;
 				}
 			}
@@ -142,14 +145,22 @@ class Info
 		//CONSTRUCTOR: set sizes for pool vectors
 		Info() 
 		{
+			//create ability trees
+			//controls which abilities can be obtained first for each player
+			SkillTree p1AbilityTree;
+			SkillTree p2AbilityTree;
+
+			abilitytrees.push_back(p1AbilityTree);
+			abilitytrees.push_back(p2AbilityTree);
+			
 			load_Abilities();
 			load_Trees();
 			load_Items();
+
 		}
 		
-		//controls which abilities can be obtained first for each player
-		SkillTree p1AbilityTree;
-		SkillTree p2AbilityTree;
+		//holds ability trees for players
+		std::vector<SkillTree> abilitytrees;
 		
 		//get all abilities for a player
 		std::vector<Ability> get_PlayerAbilityPool() const;

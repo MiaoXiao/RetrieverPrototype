@@ -12,13 +12,12 @@ int main()
 	string statpath = "src/stats/";
 	
 	Info loadinfo;
-
 	srand(time(0));	
 
 	vector<Figment> figmentlist;
-
-	Player tylor(statpath + "p0_stats");
-	Player liza(statpath + "p1_stats");
+	
+	Player tylor(statpath + "p0_stats", 0);
+	Player liza(statpath + "p1_stats", 1);
 	cout << endl;
 	
 	Battle battle1(&tylor, &liza, 0, 1, loadinfo);

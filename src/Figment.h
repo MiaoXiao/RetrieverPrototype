@@ -42,7 +42,6 @@ class Figment: public Character
 		int get_Eps();
 		
 	private:
-		
 		//numb of perks
 		unsigned int numbPerks;
 		//number of abilities

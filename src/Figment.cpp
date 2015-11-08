@@ -35,7 +35,7 @@ void Figment::assign_StartInfo(string filename, const unsigned int number)
 	}
 	
 	//get id by checking second character of filename
-	id = "e" + filename[1];
+	set_Id(filename[1] - 48);
 	
 	//get name of character
 	f >> info;

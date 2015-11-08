@@ -14,12 +14,12 @@ class Player: public Character
 {
 	public:
 		//CONSTRUCTOR: init instance of playable character and pronoun
-		Player(std::string fn):
+		Player(std::string fn, unsigned int index):
 			digits(0),
 			fullParty(false)
 		{
 			status.set_IsPlayer(true);
-			assign_StartInfo(fn, NULL);
+			assign_StartInfo(fn, index);
 			
 			//initial ability info
 			abilities.get_AbilityList().reserve(100);
@@ -49,7 +49,10 @@ class Player: public Character
 		bool fullParty;
 		
 		//assign starting stats and other information for a character
-		void assign_StartInfo(std::string filename, const unsigned int number);
+		void assign_StartInfo(std::string filename, const unsigned int id);
+		
+		//set index
+		//void set_Index(unsigned int v);
 };
 
 #endif

@@ -604,8 +604,8 @@ class Character: public Entity
 		//pronoun for prompts
 		std::string pronoun;
 		
-		//id for which player/figment type
-		std::string id;
+		//index for which player/figment type
+		std::string index;
 		
 		//combat stats
 		Stats stats;
