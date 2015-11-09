@@ -51,10 +51,7 @@ struct SkillTree
 	//learn a new ability
 	std::vector<unsigned int> learn_Ability(const unsigned int abilityPoints, std::vector<unsigned int> al)
 	{	
-		std::cout << "newability size: " << newAbilities.size() << std::endl;
 		std::vector<unsigned int> abilityList = al;
-		
-		int choice;
 		bool done = false;
 		
 		//range of abilities to learn and rank up
@@ -63,6 +60,7 @@ struct SkillTree
 		
 		unsigned int pointsLeft = abilityPoints;
 		
+		int choice;
 		while(!done)
 		{
 			std::cout << pointsLeft << " ability point(s) to spend." << std::endl << std::endl;
@@ -75,10 +73,8 @@ struct SkillTree
 				//display all new abilities that can be learned
 				for (unsigned int i = 0; i < newAbilities.size(); ++i)
 				{
-					std::cout << "ijsdf" << std::endl;
-					std::cout << lrange << ": " << newAbilities[i]->ability->get_Name() << std::endl;
-					std::cout << newAbilities[i]->ability->get_Description() << std::endl << std::endl;
-					std::cout << "ijsdf" << std::endl;
+					std::cout << lrange << ": ";
+					newAbilities[i]->ability->get_AbilityDescription();
 					lrange++;
 				}
 			}
@@ -92,8 +88,8 @@ struct SkillTree
 				//display all abilities that can be improved
 				for (unsigned int i = 0; i < rankAbilities.size(); ++i)
 				{
-					std::cout << rrange << ": " << rankAbilities[i]->ability->get_Name() << std::endl;
-					std::cout << rankAbilities[i]->ability->get_Description() << std::endl << std::endl;
+					std::cout << lrange << ": ";
+					newAbilities[i]->ability->get_AbilityDescription();
 					rrange++;
 				}
 			}
